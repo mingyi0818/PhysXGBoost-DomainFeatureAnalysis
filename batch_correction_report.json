@@ -1,0 +1,302 @@
+{
+  "01_Tabular_Framework": {
+    "exists": true,
+    "files_processed": [
+      "01_Tabular_Framework/paper/paper_draft.md"
+    ],
+    "code_refs_removed": 4,
+    "conclusion_changes": [],
+    "image_changes": [
+      "Copied baseline_comparison.png from plots/ to paper/figures/",
+      "Copied feature_ablation.png from plots/ to paper/figures/",
+      "Copied framework_architecture.png from plots/ to paper/figures/",
+      "Copied parameter_sensitivity.png from plots/ to paper/figures/",
+      "Copied transfer_heatmap.png from plots/ to paper/figures/"
+    ],
+    "reference_changes": [],
+    "consistency_issues": [],
+    "errors": []
+  },
+  "02_HSIC_FDANet": {
+    "exists": true,
+    "files_processed": [
+      "02_HSIC_FDANet/paper/paper_draft_v5.md"
+    ],
+    "code_refs_removed": 0,
+    "conclusion_changes": [],
+    "image_changes": [
+      "Copied ablation_results.png from plots/ to paper/figures/",
+      "Copied baseline_comparison.png from plots/ to paper/figures/",
+      "Copied disentangled_features.png from plots/ to paper/figures/",
+      "Copied edge_deployment.png from plots/ to paper/figures/",
+      "Copied failure_mode_analysis.png from plots/ to paper/figures/",
+      "Copied failure_mode_analysis.svg from plots/ to paper/figures/",
+      "Copied training_curves.png from plots/ to paper/figures/"
+    ],
+    "reference_changes": [],
+    "consistency_issues": [],
+    "errors": []
+  },
+  "03_Imbalanced_Learning": {
+    "exists": true,
+    "files_processed": [
+      "03_Imbalanced_Learning/paper/paper_draft_v2.md"
+    ],
+    "code_refs_removed": 0,
+    "conclusion_changes": [],
+    "image_changes": [
+      "Copied baseline_comparison.png from plots/ to paper/figures/",
+      "Copied framework_architecture.png from plots/ to paper/figures/",
+      "Copied parameter_sensitivity.png from plots/ to paper/figures/",
+      "Copied sampling_comparison.png from plots/ to paper/figures/",
+      "Copied uncertainty_comparison.png from plots/ to paper/figures/",
+      "Copied fig1_f1_comparison.png from results/plots/ to paper/figures/",
+      "Copied fig2_auc_comparison.png from results/plots/ to paper/figures/",
+      "Copied fig3_radar_comparison.png from results/plots/ to paper/figures/",
+      "Copied fig4_imbalance_vs_f1.png from results/plots/ to paper/figures/",
+      "Copied fig5_lightgbm_failure.png from results/plots/ to paper/figures/"
+    ],
+    "reference_changes": [],
+    "consistency_issues": [],
+    "errors": []
+  },
+  "04_Time_Series_Framework": {
+    "exists": true,
+    "files_processed": [
+      "04_Time_Series_Framework/paper/paper_draft.md"
+    ],
+    "code_refs_removed": 0,
+    "conclusion_changes": [],
+    "image_changes": [
+      "Copied baseline_comparison.png from plots/ to paper/figures/",
+      "Copied framework_architecture.png from plots/ to paper/figures/",
+      "Copied time_series_visualization.png from plots/ to paper/figures/",
+      "Copied transfer_heatmap.png from plots/ to paper/figures/",
+      "Copied uncertainty_comparison.png from plots/ to paper/figures/"
+    ],
+    "reference_changes": [],
+    "consistency_issues": [],
+    "errors": []
+  },
+  "05_Agriculture_Fusion": {
+    "exists": true,
+    "files_processed": [
+      "05_Agriculture_Fusion/paper/paper_draft.md"
+    ],
+    "code_refs_removed": 0,
+    "conclusion_changes": [],
+    "image_changes": [
+      "Copied ablation_results.png from plots/ to paper/figures/",
+      "Copied baseline_comparison.png from plots/ to paper/figures/",
+      "Copied framework_architecture.png from plots/ to paper/figures/",
+      "Copied multi_seed_stability.png from plots/ to paper/figures/",
+      "Copied parameter_sensitivity.png from plots/ to paper/figures/",
+      "Copied wheat_yield_comparison.png from plots/ to paper/figures/"
+    ],
+    "reference_changes": [],
+    "consistency_issues": [],
+    "errors": []
+  },
+  "06_Tourism_Prediction": {
+    "exists": true,
+    "files_processed": [
+      "06_Tourism_Prediction/paper/paper_draft_v2.md"
+    ],
+    "code_refs_removed": 0,
+    "conclusion_changes": [],
+    "image_changes": [
+      "Copied ablation_results.png from results/plots/ to paper/figures/",
+      "Copied baseline_comparison.png from results/plots/ to paper/figures/",
+      "Copied framework_architecture.png from results/plots/ to paper/figures/",
+      "Copied parameter_sensitivity.png from results/plots/ to paper/figures/"
+    ],
+    "reference_changes": [],
+    "consistency_issues": [],
+    "errors": []
+  },
+  "07_Tabular_FewShot": {
+    "exists": true,
+    "files_processed": [
+      "07_Tabular_FewShot/paper/paper_draft.md"
+    ],
+    "code_refs_removed": 0,
+    "conclusion_changes": [],
+    "image_changes": [
+      "Copied ablation_results.png from plots/ to paper/figures/",
+      "Copied fewshot_performance.png from plots/ to paper/figures/",
+      "Copied fig1_kshot_performance.png from plots/ to paper/figures/",
+      "Copied fig2_dataset_comparison.png from plots/ to paper/figures/",
+      "Copied fig3_method_comparison.png from plots/ to paper/figures/",
+      "Copied fig4_f1_comparison.png from plots/ to paper/figures/",
+      "Copied fig5_1shot_advantage.png from plots/ to paper/figures/",
+      "Copied figure2_performance_comparison.png from plots/ to paper/figures/",
+      "Copied figure2_performance_comparison.svg from plots/ to paper/figures/",
+      "Copied figure3_multiseed_comparison.png from plots/ to paper/figures/",
+      "Copied figure3_multiseed_comparison.svg from plots/ to paper/figures/",
+      "Copied figure4_parameter_sensitivity.png from plots/ to paper/figures/",
+      "Copied figure4_parameter_sensitivity.svg from plots/ to paper/figures/",
+      "Copied figure5_improvement_bars.png from plots/ to paper/figures/",
+      "Copied figure5_improvement_bars.svg from plots/ to paper/figures/",
+      "Copied framework_architecture.png from plots/ to paper/figures/",
+      "Copied incremental_learning.png from plots/ to paper/figures/",
+      "Copied training_curves.png from plots/ to paper/figures/"
+    ],
+    "reference_changes": [],
+    "consistency_issues": [],
+    "errors": []
+  },
+  "08_Agriculture_FewShot": {
+    "exists": true,
+    "files_processed": [
+      "08_Agriculture_FewShot/paper/paper_draft.md"
+    ],
+    "code_refs_removed": 0,
+    "conclusion_changes": [],
+    "image_changes": [
+      "Copied edge_deployment.png from plots/ to paper/figures/",
+      "Copied forgetting_rate.png from plots/ to paper/figures/",
+      "Copied methods_overview.png from plots/ to paper/figures/",
+      "Copied performance_comparison.png from plots/ to paper/figures/"
+    ],
+    "reference_changes": [],
+    "consistency_issues": [],
+    "errors": []
+  },
+  "09_AI_Tourism_Forecast": {
+    "exists": true,
+    "files_processed": [
+      "09_AI_Tourism_Forecast/paper/paper_draft.md"
+    ],
+    "code_refs_removed": 0,
+    "conclusion_changes": [],
+    "image_changes": [
+      "Copied ablation_results.png from results/plots/ to paper/figures/",
+      "Copied feature_importance.png from results/plots/ to paper/figures/",
+      "Copied framework_architecture.png from results/plots/ to paper/figures/",
+      "Copied mae_comparison.png from results/plots/ to paper/figures/",
+      "Copied parameter_sensitivity.png from results/plots/ to paper/figures/",
+      "Copied predicted_vs_actual.png from results/plots/ to paper/figures/",
+      "Copied r2_comparison.png from results/plots/ to paper/figures/"
+    ],
+    "reference_changes": [],
+    "consistency_issues": [],
+    "errors": []
+  },
+  "10_Tourism_ABSA": {
+    "exists": true,
+    "files_processed": [
+      "10_Tourism_ABSA/paper/paper_draft.md"
+    ],
+    "code_refs_removed": 0,
+    "conclusion_changes": [],
+    "image_changes": [],
+    "reference_changes": [],
+    "consistency_issues": [],
+    "errors": []
+  },
+  "11_EuroSAT_Classification": {
+    "exists": false,
+    "files_processed": [],
+    "code_refs_removed": 0,
+    "conclusion_changes": [],
+    "image_changes": [],
+    "reference_changes": [],
+    "consistency_issues": [],
+    "errors": [
+      "File not found: 11_EuroSAT_Classification/paper/paper_draft.md"
+    ]
+  },
+  "12_Student_Dropout": {
+    "exists": true,
+    "files_processed": [
+      "12_Student_Dropout/paper/paper_draft.md"
+    ],
+    "code_refs_removed": 0,
+    "conclusion_changes": [],
+    "image_changes": [
+      "Copied figure1_architecture.png from results/plots/ to paper/figures/",
+      "Copied figure1_architecture.svg from results/plots/ to paper/figures/",
+      "Copied figure2_performance_comparison.png from results/plots/ to paper/figures/",
+      "Copied figure2_performance_comparison.svg from results/plots/ to paper/figures/",
+      "Copied figure3_ablation.png from results/plots/ to paper/figures/",
+      "Copied figure3_ablation.svg from results/plots/ to paper/figures/",
+      "Copied figure4_sensitivity.png from results/plots/ to paper/figures/",
+      "Copied figure4_sensitivity.svg from results/plots/ to paper/figures/",
+      "Copied figure5_early_warning.png from results/plots/ to paper/figures/",
+      "Copied figure5_early_warning.svg from results/plots/ to paper/figures/"
+    ],
+    "reference_changes": [],
+    "consistency_issues": [],
+    "errors": []
+  },
+  "13_LUCAS_Soil": {
+    "exists": false,
+    "files_processed": [],
+    "code_refs_removed": 0,
+    "conclusion_changes": [],
+    "image_changes": [],
+    "reference_changes": [],
+    "consistency_issues": [],
+    "errors": [
+      "File not found: 13_LUCAS_Soil/paper/paper_draft.md"
+    ]
+  },
+  "14_Tabular_Anomaly": {
+    "exists": true,
+    "files_processed": [
+      "14_Tabular_Anomaly/paper/paper_draft.md"
+    ],
+    "code_refs_removed": 0,
+    "conclusion_changes": [],
+    "image_changes": [
+      "Copied fig1_architecture.png from results/plots/ to paper/figures/",
+      "Copied fig1_architecture.svg from results/plots/ to paper/figures/",
+      "Copied fig2_main_comparison.png from results/plots/ to paper/figures/",
+      "Copied fig2_main_comparison.svg from results/plots/ to paper/figures/",
+      "Copied fig3_ablation.png from results/plots/ to paper/figures/",
+      "Copied fig3_ablation.svg from results/plots/ to paper/figures/",
+      "Copied fig4_sensitivity.png from results/plots/ to paper/figures/",
+      "Copied fig4_sensitivity.svg from results/plots/ to paper/figures/",
+      "Copied fig5_tsne.png from results/plots/ to paper/figures/",
+      "Copied fig5_tsne.svg from results/plots/ to paper/figures/"
+    ],
+    "reference_changes": [],
+    "consistency_issues": [
+      "Possibly missing equation numbers: [6]"
+    ],
+    "errors": []
+  },
+  "JX01_Teaching_Research_1": {
+    "exists": true,
+    "files_processed": [
+      "JX01_Teaching_Research_1/manuscript/manuscript.md",
+      "JX01_Teaching_Research_1/submission_cae/manuscript_cae_formatted.md"
+    ],
+    "code_refs_removed": 0,
+    "conclusion_changes": [],
+    "image_changes": [],
+    "reference_changes": [],
+    "consistency_issues": [],
+    "errors": []
+  },
+  "JX02_Teaching_Research_2": {
+    "exists": true,
+    "files_processed": [
+      "JX02_Teaching_Research_2/paper/paper_draft.md"
+    ],
+    "code_refs_removed": 0,
+    "conclusion_changes": [],
+    "image_changes": [
+      "Copied figure1_masf_architecture.png from results/plots/ to paper/figures/",
+      "Copied figure2_classification_benchmark.png from results/plots/ to paper/figures/",
+      "Copied figure3_ablation_study.png from results/plots/ to paper/figures/",
+      "Copied figure4_parameter_sensitivity.png from results/plots/ to paper/figures/",
+      "Copied figure5_kc_distribution.png from results/plots/ to paper/figures/"
+    ],
+    "reference_changes": [],
+    "consistency_issues": [
+      "Missing Figure numbers: [2, 3]"
+    ],
+    "errors": []
+  }
+}

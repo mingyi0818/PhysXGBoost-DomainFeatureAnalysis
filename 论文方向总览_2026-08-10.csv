@@ -1,0 +1,17 @@
+方向,研究主题,状态,数据集,投入材料,目标期刊,是否超越SOTA,优缺点,路径
+47_OnlineShoppers,物理衍生特征 → 购物意向,planning 规划,"Online Shoppers 12,330×18",data/ + results 桩,TBD,? 实验未启动,仅数据/结果桩，尚未写稿,D:/ResearchPaperPrepare/47_OnlineShoppers
+48_CreditDefault,物理衍生特征 → 信用卡违约,planning 规划,"Credit Card Default 30,000×25",data/ + results 桩,TBD,? 实验未启动,仅数据/结果桩，尚未写稿,D:/ResearchPaperPrepare/48_CreditDefault
+49_Superconductor,物理衍生特征 → 超导,planning 规划,"Superconductivity 21,263×81",data/ + results 桩,TBD,? 实验未启动,仅数据/结果桩，尚未写稿,D:/ResearchPaperPrepare/49_Superconductor
+51_GasTurbine,物理衍生特征 → 燃气轮机,planning 规划,燃气轮机传感 ~36k,data/ + results 桩,TBD,?? 未超越但可改进,仅数据/结果桩，尚未写稿,D:/ResearchPaperPrepare/51_GasTurbine
+52_CCPP,物理衍生特征 → 电厂,planning 规划,"CCPP 9,568×5",data/ + results 桩,TBD,?? 未超越但可改进,仅数据/结果桩，尚未写稿,D:/ResearchPaperPrepare/52_CCPP
+53_BikeSharing,物理衍生特征 → 共享单车,planning 规划,"Bike-Sharing 17,379×16",data/ + results 桩,TBD,? 实验未启动,仅数据/结果桩，尚未写稿,D:/ResearchPaperPrepare/53_BikeSharing
+54_NewsPopularity,物理衍生特征 → 新闻热度,planning 规划,"Online News 39,644×61",data/ + results 桩,TBD,? 实验未启动,仅数据/结果桩，尚未写稿,D:/ResearchPaperPrepare/54_NewsPopularity
+55_CalHousing,物理衍生特征 → 房价,planning 规划,"California Housing 20,640×9",data/ + results 桩,TBD,? 实验未启动,仅数据/结果桩，尚未写稿,D:/ResearchPaperPrepare/55_CalHousing
+56_PowerConsumption,物理衍生特征 → 家庭用电,planning 规划,Individual household ~2.07M×9,data/ + results 桩,TBD,? 实验未启动,仅数据/结果桩，尚未写稿,D:/ResearchPaperPrepare/56_PowerConsumption
+58_CDNOW,物理衍生特征 → CDNOW,planning 规划,"CDNOW 69,693 交易",data/ + results 桩,TBD,?? 未超越但可改进,仅数据/结果桩，尚未写稿,D:/ResearchPaperPrepare/58_CDNOW
+59_NYCProperty,物理衍生特征 → NYC房产,planning 规划,NYC property (TBD),data/ 仅,TBD,? 实验未启动,仅数据/结果桩，尚未写稿；数据集 TBD（未公开/未跑）,D:/ResearchPaperPrepare/59_NYCProperty
+60_StudentPerf,物理衍生特征 → 学生表现,planning 规划,Student Performance 649/395,data/ 仅,TBD,? 实验未启动,仅数据/结果桩，尚未写稿,D:/ResearchPaperPrepare/60_StudentPerf
+61_DryBean,物理衍生特征 → 干豆,planning 规划,"Dry Bean 13,611×17",data/ 仅,TBD,? 实验未启动,仅数据/结果桩，尚未写稿,D:/ResearchPaperPrepare/61_DryBean
+63_HotelBooking,物理衍生特征 → 酒店预订,planning 规划,"Hotel Booking 119,390×32",data/ + results 桩,TBD,?? 未超越但可改进,仅数据/结果桩，尚未写稿,D:/ResearchPaperPrepare/63_HotelBooking
+64_FlightDelay,物理衍生特征 → 航班延误,planning 规划,US flights (TBD),results 桩 仅,TBD,? 实验未启动,仅数据/结果桩，尚未写稿；数据集 TBD（未公开/未跑）,D:/ResearchPaperPrepare/64_FlightDelay
+65_HR,物理衍生特征 → HR分析,planning 规划,"IBM HR 1,470×35",results 桩 仅,TBD,?? 未超越但可改进,仅数据/结果桩，尚未写稿,D:/ResearchPaperPrepare/65_HR

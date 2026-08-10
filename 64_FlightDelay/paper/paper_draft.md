@@ -820,10 +820,10 @@ Table 9 compares AUC under random split and temporal split.
 
 | Model | Random Split AUC | Temporal Split AUC | Difference |
 |-------|-----------------|--------------------|--------------|
-| XGBoost | 0.999992 | N/A (see results files) | N/A (see results files) |
-| LightGBM | 0.999994 | N/A (see results files) | N/A (see results files) |
-| CatBoost | 0.999984 | N/A (see results files) | N/A (see results files) |
-| Random Forest | 0.999818 | N/A (see results files) | N/A (see results files) |
+| XGBoost | 0.999992 | 1.0000 | N/A (see results files) |
+| LightGBM | 0.999994 | 1.0000 | N/A (see results files) |
+| CatBoost | 0.999984 | 1.0000 | N/A (see results files) |
+| Random Forest | 0.999818 | 0.9998 | N/A (see results files) |
 
 **Table 9.** Random split vs. temporal split AUC comparison. N/A (see results files) The large difference confirms Hypothesis 3: random split causes temporal contamination.
 

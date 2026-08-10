@@ -387,7 +387,7 @@ The UCI Student Performance dataset contains 649 student records from two Portug
 |--------|-----|-----|-----|-----|---------|
 | Between groups | N/A (see results files) | 4 | N/A (see results files) | N/A (see results files) | N/A (see results files) |
 | Within groups | N/A (see results files) | 20 | N/A (see results files) | | |
-| Total | N/A (see results files) | 24 | | | |
+| Total | N/A (see results files) | 24 |  |  |  |
 
 ### 3.6 Parameter Sensitivity Analysis
 

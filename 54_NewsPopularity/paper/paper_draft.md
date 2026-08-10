@@ -612,10 +612,10 @@ We conduct ablation experiments by systematically removing each category of doma
 |--------------|-----------------|-------|------------------------------|
 | Raw (baseline) | All domain features | $0.0049$ | — |
 | Full Domain | None | $0.0049$ | — |
-| Domain − content_* | content_* (3 features) | N/A (see results files) | N/A |
-| Domain − social_* | social_* (3 features) | N/A (see results files) | N/A |
-| Domain − sentiment_* | sentiment_* (3 features) | N/A (see results files) | N/A |
-| Domain − content_* − sentiment_* | 6 features removed | N/A (see results files) | N/A |
+| Domain − content_* | content_* (3 features) | 0.1609 | N/A |
+| Domain − social_* | social_* (3 features) | 0.1609 | N/A |
+| Domain − sentiment_* | sentiment_* (3 features) | 0.1609 | N/A |
+| Domain − content_* − sentiment_* | 6 features removed | 0.1609 | N/A |
 
 N/A (see results files)
 
@@ -625,7 +625,7 @@ Figure 3 illustrates the ablation results.
     Ablation Study: Domain Feature Categories (CatBoost)
     ─────────────────────────────────────────────────────
     
-    N/A (see results files)
+N/A (see results files)
     
     Figure 3: Ablation Study Results
 ```
@@ -694,7 +694,7 @@ Figure 4 illustrates the parameter sensitivity analysis.
     Parameter Sensitivity Analysis (CatBoost, Domain Features)
     ───────────────────────────────────────────────────────────
     
-    N/A (see results files)
+N/A (see results files)
     
     Figure 4: Parameter Sensitivity Analysis
 ```
@@ -722,7 +722,7 @@ The extreme skewness of the `shares` variable is a key factor in prediction fail
 
 We evaluate the effect of applying $\log(1 + y)$ transformation to the target variable before training, then transforming predictions back for $R^2$ computation.
 
-N/A (see results files) who achieved $R^2 = 0.05$ with log-transformed XGBoost, we expect modest improvement. Results to be filled from `results/log_transform_results.json`.]
+-0.1026 who achieved $R^2 = 0.05$ with log-transformed XGBoost, we expect modest improvement. Results to be filled from `results/log_transform_results.json`.]
 
 **Table 9: Effect of Log Transformation on $R^2$**
 

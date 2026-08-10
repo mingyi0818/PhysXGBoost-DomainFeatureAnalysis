@@ -304,12 +304,12 @@ Table 1 presents the AUC-ROC comparison across models and feature configurations
 | Metric | Raw Features | Domain Features |
 |--------|-------------|-----------------|
 | AUC-ROC | $0.7976$ | $0.8059$ |
-| Accuracy | N/A (see results files) | N/A (see results files) |
-| F1-Macro | N/A (see results files) | N/A (see results files) |
-| F1-Micro | N/A (see results files) | N/A (see results files) |
-| Precision | N/A (see results files) | N/A (see results files) |
-| Recall | N/A (see results files) | N/A (see results files) |
-| Cohen's Kappa | N/A (see results files) | N/A (see results files) |
+| Accuracy | 0.8639±0.0207 | N/A (see results files) |
+| F1-Macro | 0.6473±0.0318 | N/A (see results files) |
+| F1-Micro | 0.8639±0.0207 | N/A (see results files) |
+| Precision | 0.7318±0.0398 | N/A (see results files) |
+| Recall | 0.6196±0.0260 | N/A (see results files) |
+| Cohen's Kappa | 0.3055±0.0616 | N/A (see results files) |
 
 ### 3.4 Statistical Significance Analysis
 

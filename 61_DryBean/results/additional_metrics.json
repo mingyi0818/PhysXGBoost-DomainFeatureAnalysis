@@ -5,10 +5,10 @@
   "n_features": 5,
   "models": {
     "XGB": {
-      "train_time_s_mean": 0.29846806526184083,
-      "train_time_s_std": 0.008216160389155538,
-      "pred_time_s_mean": 0.004830598831176758,
-      "pred_time_s_std": 0.0004536905224136253,
+      "train_time_s_mean": 0.19091215133666992,
+      "train_time_s_std": 0.01737301900527786,
+      "pred_time_s_mean": 0.0034759044647216797,
+      "pred_time_s_std": 0.0003558469936134155,
       "AUC_mean": 0.9770377235311312,
       "AUC_std": 0.0038373621252376657,
       "Accuracy_mean": 0.9824999999999999,
@@ -27,10 +27,10 @@
       "MCC_std": 0.026109952017252264
     },
     "LGB": {
-      "train_time_s_mean": 0.24704155921936036,
-      "train_time_s_std": 0.06583091040172818,
-      "pred_time_s_mean": 0.004843616485595703,
-      "pred_time_s_std": 0.000485835890433387,
+      "train_time_s_mean": 0.209147310256958,
+      "train_time_s_std": 0.010489265406376493,
+      "pred_time_s_mean": 0.004974985122680664,
+      "pred_time_s_std": 0.00024639517291903163,
       "AUC_mean": 0.9705357703887942,
       "AUC_std": 0.008549616926611263,
       "Accuracy_mean": 0.9832999999999998,
@@ -49,10 +49,10 @@
       "MCC_std": 0.05588261732336449
     },
     "Cat": {
-      "train_time_s_mean": 0.831377363204956,
-      "train_time_s_std": 0.04329046054802506,
-      "pred_time_s_mean": 0.005212116241455078,
-      "pred_time_s_std": 0.0008697376490709565,
+      "train_time_s_mean": 0.8881981849670411,
+      "train_time_s_std": 0.08813168702195129,
+      "pred_time_s_mean": 0.004782438278198242,
+      "pred_time_s_std": 0.0006167817585391698,
       "AUC_mean": 0.9804396577339523,
       "AUC_std": 0.006042808660455088,
       "Accuracy_mean": 0.983,
@@ -71,10 +71,10 @@
       "MCC_std": 0.046360824348306115
     },
     "RF": {
-      "train_time_s_mean": 1.199754285812378,
-      "train_time_s_std": 0.06179002326863935,
-      "pred_time_s_mean": 0.24422922134399414,
-      "pred_time_s_std": 0.034367675108022265,
+      "train_time_s_mean": 1.3479857921600342,
+      "train_time_s_std": 0.15915987206564444,
+      "pred_time_s_mean": 0.27639331817626955,
+      "pred_time_s_std": 0.031139468750314665,
       "AUC_mean": 0.9749689431562167,
       "AUC_std": 0.00784957361545945,
       "Accuracy_mean": 0.9846,

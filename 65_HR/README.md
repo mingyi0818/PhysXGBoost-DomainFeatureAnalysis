@@ -1,8 +1,8 @@
-# PhysXGBoost: Domain Feature Engineering for Employee Attrition Prediction
+# HRFeat: Workforce Domain Feature Analysis for Employee Attrition Prediction
 
-> A domain feature engineering approach for predicting employee attrition. Domain features include career satisfaction composites, work-life balance indices, compensation ratios, and tenure-based indicators.
+> A workforce domain feature engineering approach for predicting employee attrition. Domain features capturing compensation ratios, career progression, work-life balance, and organizational factors are compared against raw features across tree-based models.
 
-**Task**: Binary Classification | **Target**: Attrition (Yes/No) | **Primary Metric**: AUC
+**Task**: Classification | **Target**: Attrition (yes/no) | **Primary Metric**: AUC
 
 ## Dataset
 
@@ -11,10 +11,42 @@
 | Name | IBM HR Analytics Employee Attrition (Kaggle) |
 | File | `data/hr_data.csv` |
 | Size | 0.22 MB |
-| Source | IBM HR Analytics Employee Attrition & Performance dataset, available via Kaggle (https://www.kaggle.com/datasets/pavansubhasht/ibm-hr-analytics-attrition-dataset). 1,470 samples with 35 features. |
-| Task | Binary Classification |
-| Target | Attrition (Yes/No) |
+| Source | IBM HR Analytics Employee Attrition & Performance Dataset (Kaggle). 1,470 samples with 35 features covering job satisfaction, compensation, work environment, and demographic information for IBM employees. |
+| Task | Classification |
+| Target | Attrition (yes/no) |
 | Metric | AUC |
+
+## Method
+
+PhysXGBoost framework: domain feature engineering + tree models. The approach systematically compares Raw features vs Domain-derived features (incorporating domain knowledge) across four tree-based models: XGBoost, LightGBM, CatBoost, and RandomForest, with 5 random seeds per configuration.
+
+## Directory Structure
+
+```
+65_HR/
+├── data/          # Dataset files
+├── code/          # Source code
+├── results/       # Experimental results (JSON/CSV)
+├── paper/         # Paper draft
+└── plots/         # Figures (PNG, 300 DPI)
+```
+
+## Key Results
+
+| Metric | Best Model | Value |
+|--------|-----------|-------|
+| AUC | CatBoost (Domain features) | AUC = 0.8120 |
+
+> All metrics are computed on the **test set** (20% holdout) and averaged across 5 random seeds [42, 123, 456, 789, 2024]. Results are sourced from `results/summary.json`.
+
+### Result Files
+
+| File | Description |
+|------|-------------|
+| `summary.json` | Main results: mean/std metrics for Raw vs Domain features, Wilcoxon test p-values |
+| `comprehensive_results.json` | Ablation and sensitivity analysis |
+| `per_seed_results.json` | Per-seed detailed results for each (model, feature_set, seed) |
+| `additional_metrics.json` | Additional metrics (Accuracy, F1, RMSE, MAE, 95% CI, Cohen's d) |
 
 ## Environment Requirements
 
@@ -22,87 +54,17 @@
 - OS: Windows 11 Professional (tested)
 - CPU: Intel Xeon W7-2595X (24 cores, 2.5-4.8 GHz)
 - RAM: 48 GB DDR5 RDIMM
-- GPU: NVIDIA RTX 2000 Pro (16 GB) — not required for tree models
+- GPU: NVIDIA RTX 2000 Pro (16 GB) -- not required for tree models
 
 ### Python Dependencies
 
 ```
-xgboost>=2.0.0
-lightgbm>=4.0.0
-catboost>=1.2.0
-scikit-learn>=1.3.0
-scipy>=1.11.0
-matplotlib>=3.7.0
-pandas>=2.0.0
-numpy>=1.24.0
+xgboost>=2.0.0, lightgbm>=4.0.0, catboost>=1.2.0, scikit-learn>=1.3.0, pandas>=2.0.0, numpy>=1.24.0, scipy>=1.11.0, matplotlib>=3.7.0
 ```
 
-## Directory Structure
+## How to Reproduce
 
-```
-65_HR/
-├── code/
-│   ├── run_experiments.py
-├── data/
-│   └── hr_data.csv
-├── results/
-│   ├── summary.json
-│   ├── comprehensive_results.json
-│   ├── per_seed_results.json
-│   └── additional_metrics.json
-├── plots/
-│   ├── fig1_architecture.png
-│   ├── fig2_performance_comparison.png
-│   ├── fig3_ablation_results.png
-│   ├── fig4_sensitivity_analysis.png
-│   └── fig5_training_time.png
-├── paper/
-│   └── paper_draft.md
-├── reference/
-│   └── REFERENCE_MATERIALS.md
-└── README.md
-```
-
-## Quick Start
-
-### 1. Install dependencies
-
-```bash
-pip install xgboost lightgbm catboost scikit-learn scipy matplotlib pandas numpy
-```
-
-### 2. Verify data is present
-
-```bash
-# Verify hr_data.csv exists in data/
-```
-
-### 3. Run experiments
-
-```bash
-cd code
-python run_experiments.py --direction 65_HR
-```
-
-### 4. Check results
-
-```bash
-# Results saved to results/ directory
-# Key file: results/summary.json
-```
-
-## Result Files
-
-| File | Description |
-|------|-------------|
-| `summary.json` | Main results: mean/std metrics for Raw vs Domain features, Wilcoxon test p-values |
-| `comprehensive_results.json` | Extended metrics including all model-variant-seed combinations |
-| `per_seed_results.json` | Per-seed breakdown of all metrics |
-| `additional_metrics.json` | Supplementary metrics (95% CI, Cohen's d, etc.) |
-
-## Reproduction
-
-For detailed reproduction instructions, see [reproduce.md](reproduce.md).
+See [reproduce.md](reproduce.md) for detailed step-by-step instructions.
 
 ## Citation
 

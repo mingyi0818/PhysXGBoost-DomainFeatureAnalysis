@@ -417,11 +417,11 @@ We employ TreeSHAP [24] to analyze feature importance and interaction effects.
 
 **Figure 1: TurbFeat Framework Architecture**
 
-N/A (see results files)
+See plots/fig1_architecture.png
 
 **Figure 2: Model Performance Comparison (Raw vs. Domain)**
 
-N/A (see results files)
+See plots/fig2_performance_comparison.png
 
 **Table 10: Top-10 SHAP Feature Importance (XGBoost, Domain)**
 
@@ -440,11 +440,11 @@ N/A (see results files)
 
 **Figure 3: SHAP Summary Plot**
 
-N/A (see results files)
+See plots/fig3_ablation_results.png
 
 **Figure 4: Ablation Study Results**
 
-N/A (see results files)
+See plots/fig4_sensitivity_analysis.png
 
 ### 3.6 Parameter Sensitivity Analysis
 
@@ -478,7 +478,7 @@ Sensitivity levels: High ($|E_\theta| > 0.5$), Medium ($0.2 \leq |E_\theta| \leq
 
 **Figure 5: Parameter Sensitivity Curves**
 
-N/A (see results files)
+See plots/fig5_training_time.png
 
 ### 3.7 Computational Performance
 

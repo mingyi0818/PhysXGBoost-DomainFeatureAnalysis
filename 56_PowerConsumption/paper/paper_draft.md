@@ -725,7 +725,7 @@ The paper includes the following figures (saved as high-resolution PNG files in 
 
 **Figure 5 (optional). Physical-redundancy scatter.** A scatter plot of `global_active_power` vs. `voltage * global_intensity / 1000`, with the identity line, visually confirming the $P = V \times I$ relationship and hence the physical-redundancy channel. `[Figure file: plots/figure5_physical_redundancy.png]`
 
-`N/A (see results files)`
+`See plots/fig5_*.png`
 
 ### 3.10 Real-World Case Study
 

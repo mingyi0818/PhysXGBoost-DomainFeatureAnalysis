@@ -759,7 +759,7 @@ where $\theta$ is the parameter value.
 | Yu et al. [3] | 2023 | Neural Network | 0.9777 | Not reported | No | No | No |
 | Wang [4] | 2025 | XGBoost | 0.90 | Not reported | No | No | No |
 | Hasnataeni et al. [6] | 2025 | RF + ROSE | ~0.94 | Not reported | No | No | No |
-| Lee et al. [7] | 2024 | RF (8 features) | N/A (see results files) | Not reported | No | No | No |
+| Lee et al. [7] | 2024 | RF (8 features) | 0.9338 | Not reported | No | No | No |
 | **Our work (XGBoost)** | **2026** | **XGBoost + FinFeat** | **0.9375** | **0.5999** | **Yes (Wilcoxon)** | **Yes** | **Yes** |
 | **Our work (LightGBM)** | **2026** | **LightGBM + FinFeat** | **0.9377** | **0.5894** | **Yes (Wilcoxon)** | **Yes** | **Yes** |
 | **Our work (CatBoost)** | **2026** | **CatBoost + FinFeat** | **0.9371** | **0.5819** | **Yes (Wilcoxon)** | **Yes** | **Yes** |

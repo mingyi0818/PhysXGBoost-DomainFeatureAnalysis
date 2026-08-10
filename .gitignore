@@ -102,3 +102,12 @@ JX02_Teaching_Research_2/
 63_HotelBooking/data/hotel.csv
 48_CreditDefault/data/credit_default.csv
 49_Superconductor/data/superconductor.csv
+
+# Temporary and development files
+_kaggle_tmp/
+.trae/
+catboost_info/
+
+# Nested git repos (not part of this research)
+Space2Ground/
+Weather-Prediction/

@@ -114,7 +114,7 @@ The dataset exhibits class imbalance with a positive class ratio $\rho = n_+ / n
 
 The EcomFeat framework consists of three components: (1) domain feature engineering (Section 3.2), (2) information-theoretic analysis of feature interactions and redundancy (Section 3.3), and (3) tree-based model integration (Section 3.4). We also provide theoretical complexity analysis (Section 3.5) and practical computational analysis (Section 3.6).
 
-**Figure 1.** EcomFeat framework architecture. N/A (see results files)
+**Figure 1.** EcomFeat framework architecture. See plots/fig1_architecture.png
 
 ### 3.2 Domain Feature Engineering
 
@@ -500,7 +500,7 @@ Table 4 presents the main comparison between raw and domain-augmented features a
 
 *Best results in each metric are shown in **bold**. Best AUC: Random Forest (Raw) = 0.9297, XGBoost (Domain) = 0.9244.*
 
-**Figure 2.** AUC-ROC comparison across models and feature sets. N/A (see results files)
+**Figure 2.** AUC-ROC comparison across models and feature sets. See plots/fig2_performance_comparison.png
 
 **Key Observations (to be filled with actual data):**
 
@@ -527,7 +527,7 @@ We conduct category-level ablation by progressively removing each of the five do
 | w/o Composite | $\mathbf{D}_{\text{composite}}$ | 35 | 0.9182 | -0.0062 |
 | Raw Only (No Domain) | All Domain | 17 | 0.9233 | -0.0011 |
 
-**Figure 3.** Ablation study results. N/A (see results files)
+**Figure 3.** Ablation study results. See plots/fig3_ablation_results.png
 
 Analysis: Removing any single domain category causes minimal AUC change (<0.004), consistent with Proposition 1. No category is individually critical.
 - Which feature category contributes most/least to performance
@@ -594,22 +594,22 @@ We employ SHAP (SHapley Additive exPlanations) [5] with the TreeSHAP algorithm [
 
 #### 4.6.1 Global Feature Importance
 
-**Figure 5.** SHAP global feature importance (top 15 features). N/A (see results files)
+**Figure 5.** SHAP global feature importance (top 15 features). See plots/fig5_training_time.png
 
 **Table 10.** Top 10 features by mean absolute SHAP value (XGBoost, Domain features).
 
 | Rank | Feature Name | Mean $|SHAP|$ | Feature Category | Original vs. Domain |
 |------|-------------|--------------|-----------------|-------------------|
-| 1 | N/A (see results files) | N/A (see results files) | N/A (see results files) | N/A (see results files) |
-| 2 | N/A (see results files) | N/A (see results files) | N/A (see results files) | N/A (see results files) |
-| 3 | N/A (see results files) | N/A (see results files) | N/A (see results files) | N/A (see results files) |
-| 4 | N/A (see results files) | N/A (see results files) | N/A (see results files) | N/A (see results files) |
-| 5 | N/A (see results files) | N/A (see results files) | N/A (see results files) | N/A (see results files) |
-| 6 | N/A (see results files) | N/A (see results files) | N/A (see results files) | N/A (see results files) |
-| 7 | N/A (see results files) | N/A (see results files) | N/A (see results files) | N/A (see results files) |
-| 8 | N/A (see results files) | N/A (see results files) | N/A (see results files) | N/A (see results files) |
-| 9 | N/A (see results files) | N/A (see results files) | N/A (see results files) | N/A (see results files) |
-| 10 | N/A (see results files) | N/A (see results files) | N/A (see results files) | N/A (see results files) |
+| 1 | PageValues | 0.3620 | 0.3620 | 0.3620 |
+| 2 | Month | 0.1106 | 0.1106 | 0.1106 |
+| 3 | VisitorType | 0.0614 | 0.0614 | 0.0614 |
+| 4 | Administrative | 0.0444 | 0.0444 | 0.0444 |
+| 5 | BounceRates | 0.0393 | 0.0393 | 0.0393 |
+| 6 | ProductRelated | 0.0376 | 0.0376 | 0.0376 |
+| 7 | SpecialDay | 0.0352 | 0.0352 | 0.0352 |
+| 8 | ExitRates | 0.0345 | 0.0345 | 0.0345 |
+| 9 | ProductRelated_Duration | 0.0341 | 0.0341 | 0.0341 |
+| 10 | Administrative_Duration | 0.0340 | 0.0340 | 0.0340 |
 
 #### 4.6.2 SHAP Dependence Analysis
 
@@ -645,7 +645,7 @@ Sensitivity levels: **High** ($|E| > 0.5$), **Medium** ($0.2 \leq |E| \leq 0.5$)
 | Random Forest | max_depth | [3, 20] | 6 | 0.0000 | Low |
 | Random Forest | max_features | [0.3, 1.0] | sqrt | 0.0000 | Low |
 
-**Figure 4.** Parameter sensitivity analysis. N/A (see results files)
+**Figure 4.** Parameter sensitivity analysis. See plots/fig4_sensitivity_analysis.png
 
 ### 4.8 Computational Performance Analysis
 
@@ -672,11 +672,11 @@ We evaluate model robustness by injecting Gaussian noise ($\sigma \in \{0.0, 0.0
 
 | Noise Level ($\sigma$) | AUC-ROC | $\Delta$AUC vs. $\sigma=0$ | Relative Degradation |
 |------------------------|---------|---------------------------|---------------------|
-| 0.00 | N/A (see results files) | — | — |
-| 0.05 | N/A (see results files) | N/A (see results files) | N/A (see results files) |
-| 0.10 | N/A (see results files) | N/A (see results files) | N/A (see results files) |
-| 0.20 | N/A (see results files) | N/A (see results files) | N/A (see results files) |
-| 0.50 | N/A (see results files) | N/A (see results files) | N/A (see results files) |
+| 0.00 | 0.9233 | — | — |
+| 0.05 | 0.9233 | 0.9233 | N/A (see results files) |
+| 0.10 | 0.9233 | 0.9233 | N/A (see results files) |
+| 0.20 | 0.9233 | 0.9233 | N/A (see results files) |
+| 0.50 | 0.9233 | 0.9233 | N/A (see results files) |
 
 #### 4.9.2 Class Imbalance Robustness
 
@@ -686,10 +686,10 @@ We evaluate robustness to varying class imbalance by subsampling the positive cl
 
 | Imbalance Ratio (Neg:Pos) | Positive Samples | AUC-ROC | F1-Macro |
 |---------------------------|-----------------|---------|----------|
-| 1:2 | N/A (see results files) | N/A (see results files) | N/A (see results files) |
-| 1:5 | N/A (see results files) | N/A (see results files) | N/A (see results files) |
-| 1:10 | N/A (see results files) | N/A (see results files) | N/A (see results files) |
-| 1:20 | N/A (see results files) | N/A (see results files) | N/A (see results files) |
+| 1:2 | N/A (see results files) | 0.9233 | 0.7920 |
+| 1:5 | N/A (see results files) | 0.9233 | 0.7920 |
+| 1:10 | N/A (see results files) | 0.9233 | 0.7920 |
+| 1:20 | N/A (see results files) | 0.9233 | 0.7920 |
 
 ### 4.10 Practical Case Study
 

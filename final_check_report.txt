@@ -1,0 +1,43 @@
+﻿Direction | 1.paper_draft | 2.cover_letter | 3.highlights | 4.response_letter | 5.figures_png | 6.code_dir | 7.reqs_txt | 8.results_data(csv/json) | 9.results_plots(png) | 10.reproduce | 11.readme | Missing Items
+--- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | ---
+
+01_Tabular_Framework | OK | OK | OK | OK | OK(5) | x | OK(root) | OK(15) | OK(5) | x | OK | code_dir, reproduce.md
+02_HSIC_FDANet | x | x | x | OK | OK(6) | x | OK(root) | OK(5) | OK(6) | x | OK | paper_draft, cover_letter, highlights, code_dir, reproduce.md
+03_Imbalanced_Learning | OK | OK | OK | OK | OK(10) | OK | OK | OK(4) | OK(10) | x | OK | reproduce.md
+04_Time_Series_Framework | OK | OK | OK | OK | OK(5) | OK | OK(root) | OK(14) | OK(5) | x | OK | reproduce.md
+05_Agriculture_Fusion | OK | OK | OK | OK | OK(6) | OK | x | OK(8) | OK(6) | x | x | requirements.txt, reproduce.md, README.md
+06_Tourism_Prediction | OK | OK | OK | OK | OK(4) | OK | OK(root) | OK(7) | OK(4) | x | OK | reproduce.md
+07_Tabular_FewShot | OK | OK | OK | OK | OK(14) | OK | OK | OK(7) | x | OK | OK | results_plots
+08_Agriculture_FewShot | OK | OK | OK | OK | OK(10) | OK | OK(root) | OK(11) | OK(6) | x | x | reproduce.md, README.md
+09_AI_Tourism_Forecast | OK | OK | OK | OK | OK(7) | OK | OK(root) | OK(8) | OK(7) | x | OK | reproduce.md
+10_Tourism_ABSA | OK | OK | OK | x | OK(4) | OK | OK | OK(4) | OK(4) | x | OK | response_letter, reproduce.md
+12_Student_Dropout | OK | OK | OK | OK | OK(5) | OK | OK | OK(9) | OK(5) | x | OK | reproduce.md
+14_Tabular_Anomaly | OK | OK | OK | OK | OK(5) | OK | OK | OK(5) | OK(5) | OK | OK | 
+15_Hotel_Cancellation | OK | OK | OK | OK | OK(6) | OK | x | OK(4) | OK(6) | OK | OK | requirements.txt
+16_Hotel_Sentiment_Topic | OK | OK | OK | OK | OK(6) | OK | OK | OK(5) | OK(6) | OK | OK | 
+17_Evidence_Rainfall | OK | OK | OK | OK | OK(6) | OK | x | OK(1) | OK(6) | OK | OK | requirements.txt
+18_CrossRegion_Energy | OK | OK | OK | x | x | OK | OK | OK(7) | OK(6) | x | x | response_letter, figures_png, reproduce.md, README.md
+19_MultiScale_Power | OK | OK | OK | x | OK(3) | OK | x | OK(5) | OK(3) | x | x | response_letter, requirements.txt, reproduce.md, README.md
+20_Fraud_SelfSupervised | OK | OK | OK | OK | OK(5) | OK | OK | OK(16) | OK(5) | OK | x | README.md
+21_Contrastive_Churn | OK | OK | OK | x | OK(5) | OK | OK | OK(9) | OK(5) | x | x | response_letter, reproduce.md, README.md
+22_Graph_Purchase | OK | OK | OK | x | OK(5) | OK | OK | OK(16) | OK(5) | x | x | response_letter, reproduce.md, README.md
+23_Ensemble_Imbalanced | OK | OK | OK | x | OK(7) | OK | OK | OK(9) | OK(7) | x | OK | response_letter, reproduce.md
+24_FeatureInteraction_House | OK | OK | OK | OK | OK(6) | OK | OK | OK(11) | OK(5) | OK | OK | 
+25_FewShot_Weed | OK | OK | OK | OK | OK(2) | OK | OK | OK(14) | OK(4) | OK | OK | 
+26_Lightweight_EuroSAT | OK | OK | OK | x | x | OK | OK | OK(4) | OK(5) | x | x | response_letter, figures_png, reproduce.md, README.md
+27_AdaptiveIntrusion | OK | OK | OK | OK | OK(5) | OK | OK | OK(9) | OK(4) | OK | OK | 
+29_Fairness_Tabular | OK | OK | OK | x | OK(7) | OK | OK | OK(8) | OK(7) | x | x | response_letter, reproduce.md, README.md
+30_STGCN_PM25 | OK | OK | OK | x | x | OK | x | OK(5) | OK(4) | x | x | response_letter, figures_png, requirements.txt, reproduce.md, README.md
+35_Federated_Tabular | OK | OK | OK | x | OK(5) | OK | OK | OK(14) | x | x | x | response_letter, results_plots, reproduce.md, README.md
+36_Interpretable_Tabular | OK | OK | OK | x | x | OK | OK | OK(12) | OK(7) | x | x | response_letter, figures_png, reproduce.md, README.md
+37_GenAug_Tabular | OK | OK | OK | x | x | OK | x | OK(4) | OK(4) | x | x | response_letter, figures_png, requirements.txt, reproduce.md, README.md
+38_AdaptiveAttention_Rain | OK | OK | OK | OK | OK(7) | OK | OK | OK(8) | OK(7) | OK | OK | 
+39_Phishing_URL | OK | OK | OK | OK | OK(6) | OK | OK | OK(9) | OK(6) | OK | OK | 
+40_Tabular_FeatureSelection | OK | OK | OK | OK | OK(7) | OK | OK | OK(5) | OK(7) | OK | OK | 
+41_Carbon_Emission | OK | OK | OK | OK | OK(4) | OK | OK | OK(4) | OK(4) | OK | OK | 
+42_Probabilistic_TS | OK | OK | OK | OK | OK(6) | OK | OK | OK(10) | OK(6) | OK | OK | 
+43_Tourism_Recommend | x | x | x | x | x | OK | OK | x | x | x | x | paper_draft, cover_letter, highlights, response_letter, figures_png, results_data, results_plots, reproduce.md, README.md
+JX01_Teaching_Research_1 | OK(cae) | OK(cae) | OK(cae) | OK(cae) | OK(9) | OK(pub) | OK(pub) | OK(18) | OK(9) | x | OK | reproduce.md
+JX02_Teaching_Research_2 | OK | OK | OK | OK(inf) | OK(5) | OK(exp) | OK | OK(6) | OK(5) | x | OK | reproduce.md
+
+Total: 38 directions | All items present: 10 | Has missing items: 28

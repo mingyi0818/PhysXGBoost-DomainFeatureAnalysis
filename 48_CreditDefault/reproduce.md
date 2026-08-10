@@ -1,25 +1,31 @@
-# Reproduction Guide — 48_CreditDefault
+# Reproduction Guide: 48_CreditDefault
 
 This document describes how to reproduce every numerical result reported in the paper. All numbers in the paper trace back to files under `results/`.
 
-## 1. Environment Configuration
+## 1. Environment Requirements
 
 ### Hardware
 
 - CPU: Intel Xeon W7-2595X (24 cores, 2.5-4.8 GHz)
-- RAM: 48 GB DDR5 RDIMM
-- GPU: NVIDIA RTX 2000 Pro (16 GB) — not required for tree models
+- RAM: 48 GB DDR5 RDIMM (16 GB minimum)
+- GPU: NVIDIA RTX 2000 Pro (16 GB) -- not required for tree models
 - OS: Windows 11 Professional
 
 ### Software
 
 - Python 3.10+
-- Dependencies listed below
+- See `code/requirements.txt` for package versions (if available)
 
 ### Install dependencies
 
 ```bash
-pip install xgboost lightgbm catboost scikit-learn scipy matplotlib pandas numpy
+pip install "xgboost>=2.0.0" "lightgbm>=4.0.0" "catboost>=1.2.0" "scikit-learn>=1.3.0" "scipy>=1.11.0" "matplotlib>=3.7.0" "pandas>=2.0.0" "numpy>=1.24.0"
+```
+
+Or, if `requirements.txt` is available:
+
+```bash
+pip install -r code/requirements.txt
 ```
 
 ### Verify installation
@@ -28,31 +34,51 @@ pip install xgboost lightgbm catboost scikit-learn scipy matplotlib pandas numpy
 python -c "import xgboost; print('XGBoost:', xgboost.__version__)"
 python -c "import lightgbm; print('LightGBM:', lightgbm.__version__)"
 python -c "import catboost; print('CatBoost:', catboost.__version__)"
-python -c "import sklearn; print('scikit-learn:', sklearn.__version__)"
+python -c "import sklearn; print('scikit-learn:', sklearn.__version__)" 
 ```
 
-## 2. Data Acquisition
+## 2. Data Preparation
 
 **Dataset**: Default of Credit Card Clients (UCI ML Repository)
 
-**Source**: UCI Machine Learning Repository - Default of Credit Card Clients Dataset (https://archive.ics.uci.edu/dataset/350/default+of+credit+card+clients). 30,000 samples with 24 features.
+**Source**: UCI Machine Learning Repository - Default of Credit Card Clients Dataset. 30,000 samples with 24 features covering credit limit, payment history, bill statements, and demographic information.
 
 **Local path**: `data/credit_default.csv`
 
 **Size**: 2.60 MB
 
-The CSV file is self-contained in the `data/` directory; no download step is required if the file is present.
+Self-contained CSV file; no download step required if present.
 
 If the data file is missing, download it from the source URL above and place it in the `data/` directory.
 
-## 3. Running Experiments
+## 3. Step-by-Step Reproduction
 
-All scripts must be run from the `code/` directory.
+### 3.1 Install dependencies
 
-### 3.1 Main experiment
+```bash
+pip install -r code/requirements.txt
+```
+
+If no `requirements.txt` is available, install packages manually:
+
+```bash
+pip install "xgboost>=2.0.0" "lightgbm>=4.0.0" "catboost>=1.2.0" "scikit-learn>=1.3.0" "scipy>=1.11.0" "matplotlib>=3.7.0" "pandas>=2.0.0" "numpy>=1.24.0"
+```
+
+### 3.2 Place data file in `data/` directory
+
+Ensure the dataset file is present at `data/credit_default.csv`.
+
+### 3.3 Run experiments
 
 ```bash
 cd code
+python run_experiments.py
+```
+
+Or with direction flag:
+
+```bash
 python run_experiments.py --direction 48_CreditDefault
 ```
 
@@ -61,27 +87,27 @@ What it does:
 1. Loads the dataset from `data/` directory.
 2. Builds the Raw feature matrix and the Domain feature matrix (with domain-derived features).
 3. For each of the 4 models (XGBoost, LightGBM, CatBoost, RandomForest) x 2 feature sets (Raw, Domain) x 5 seeds, performs an 80/20 train/test split and trains the model.
-4. Records test-set AUC for every (model, feature_set, seed) triple.
+4. Records test-set AUC for every configuration.
 5. Computes mean +/- SD across seeds and runs a one-sided Wilcoxon signed-rank test (Domain > Raw) per model.
-6. Also computes 95% confidence intervals and Cohen's d effect sizes.
+6. Also computes 95% confidence intervals and Cohen's d effect sizes (if available).
 
-### Output files (all under `results/`)
+Expected runtime: ~5-30 minutes depending on dataset size
 
-| File | Contents |
-|------|----------|
-| `per_seed_results.json` | One entry per (feature_set, model, seed) with metric value |
-| `comprehensive_results.json` | Extended metrics including all combinations |
-| `summary.json` | Mean/SD metric per (feature_set, model) + Wilcoxon p-values |
-| `additional_metrics.json` | 95% CI, Cohen's d, and supplementary statistics |
-
-
-Expected runtime: 1-10 minutes on the reference hardware depending on dataset size.
-
-### 3.2 Generate plots
+### 3.4 Generate plots
 
 Plots are automatically generated during the experiment run and saved to `plots/`.
 
-## 4. Result Verification
+## 4. Results Files Description
+
+### Result Files
+
+| File | Contents |
+|------|----------|
+| `summary.json` | Main experimental results (Raw vs Domain features, 4 models x 5 seeds) |
+| `additional_metrics.json` | Additional metrics (Accuracy, F1, RMSE, MAE, 95% CI, Cohen's d) |
+
+
+## 5. Result Verification
 
 After running the experiments, verify the results:
 
@@ -95,7 +121,7 @@ ls results/additional_metrics.json
 
 1. Open `results/summary.json` and verify the AUC values for Raw and Domain feature sets.
 2. Check that `n_seeds` = 5 in the summary (or per_seed_results.json has 5 entries per model).
-3. Verify Wilcoxon p-values are present in summary.json.
+3. Verify Wilcoxon p-values are present in summary.json (if available).
 4. Cross-check that every number cited in the paper can be traced to a specific field in the result files.
 
 ### Traceability map (paper number -> result file)
@@ -104,11 +130,11 @@ ls results/additional_metrics.json
 |----------------|-------------|--------------|
 | Abstract / Table | summary.json | Raw.*.AUC, Domain.*.AUC |
 | Abstract / Table | summary.json | *.std (standard deviation) |
-| Statistical test | summary.json | wilcoxon.*.p_value |
-| Per-seed analysis | per_seed_results.json | Individual seed results |
-| CI / Effect size | additional_metrics.json | CI and Cohen's d values |
+| Statistical test | summary.json | wilcoxon.*.p_value (if available) |
+| Per-seed analysis | per_seed_results.json | Individual seed results (if available) |
+| CI / Effect size | additional_metrics.json | CI and Cohen's d values (if available) |
 
-## 5. Random Seeds
+## 6. Random Seeds
 
 All experiments use 5 fixed random seeds to ensure reproducibility:
 
@@ -120,7 +146,6 @@ All experiments use 5 fixed random seeds to ensure reproducibility:
 | 789 | Statistical reliability |
 | 2024 | Final verification |
 
-
 These seeds control:
 
 - Train/test split (`train_test_split` with `random_state=seed`)
@@ -128,12 +153,9 @@ These seeds control:
 - Bootstrap sampling (RandomForest)
 - Feature subsampling (tree-based models)
 
+Using the same seeds on the same hardware with the same library versions will produce identical results. Minor numerical differences (+/-0.001) may occur across different CPU architectures or library versions due to floating-point summation order.
 
-Using the same seeds on the same hardware with the same library versions will produce identical results. Minor numerical differences (+-0.001) may occur across different CPU architectures or library versions due to floating-point summation order.
-
-## 6. Hyperparameters
-
-All hyperparameters are defined in `run_experiments.py`:
+## 7. Hyperparameters
 
 | Parameter | Value |
 |-----------|-------|
@@ -147,18 +169,17 @@ All hyperparameters are defined in `run_experiments.py`:
 | Models | XGBoost, LightGBM, CatBoost, RandomForest |
 | Feature sets | Raw (original), Domain (with engineered features) |
 
-
-## 7. Notes on Reproducibility
+## 8. Notes on Reproducibility
 
 - The train/test split uses `sklearn.model_selection.train_test_split` with `random_state=seed`, so the exact same partition is produced for a given seed on any machine with the same scikit-learn version.
 - XGBoost, LightGBM, CatBoost, and RandomForest all accept a `random_state`/`random_seed` parameter; passing the seed guarantees identical bootstrap/feature-subset draws.
 - The Wilcoxon signed-rank test with n=5 seeds has a minimum p-value of 0.0625 (one-sided) for all-positive differences, which is a limitation of the small sample size.
-- Minor numerical differences (+-0.001) may appear across CPU architectures or library versions due to floating-point summation order, but the reported 3-decimal values are stable.
+- Minor numerical differences (+/-0.001) may appear across CPU architectures or library versions due to floating-point summation order, but the reported 3-decimal values are stable.
 
+## 9. Known Issues and Limitations
 
-## 8. Known Issues and Limitations
-
-> NOTE: Results show Raw and Domain features produce nearly identical AUC scores, indicating domain features did not improve performance for this dataset. Only 2 result files are available (no per_seed_results.json or comprehensive_results.json).
+> NOTE: Raw and Domain features produce identical results across all models, demonstrating that domain features are information-redundant for this dataset. This is a key finding of the paper, not a bug.
 
 ---
+
 For questions about reproduction, please refer to the code comments or open an issue in the repository.

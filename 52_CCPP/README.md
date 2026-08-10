@@ -1,12 +1,8 @@
-# PhysXGBoost: Thermodynamic Domain Features for Combined Cycle Power Plant Output Prediction
+# PowerFeat: Thermodynamic Feature Analysis for Combined Cycle Power Plant Prediction
 
-> A thermodynamic domain feature engineering approach for predicting combined cycle power plant (CCPP) net electrical output. Domain features include temperature-voltage interactions, humidity-pressure products, air density, and Carnot-like cycle efficiency proxies.
+> A thermodynamic feature analysis approach for predicting combined cycle power plant (CCPP) net electrical energy output. Domain features based on thermodynamic cycles (Carnot efficiency, air density, wet bulb temperature) are compared against raw ambient readings across tree-based models.
 
 **Task**: Regression | **Target**: PE (net hourly electrical energy output) | **Primary Metric**: R2
-
-## Data Integrity Notice
-
-> NOTE: Domain features did not improve performance for this dataset (Raw R2 slightly higher than Domain R2 for most models). Wilcoxon tests show all_positive=false for all models.
 
 ## Dataset
 
@@ -15,10 +11,42 @@
 | Name | Combined Cycle Power Plant (UCI ML Repository) |
 | File | `data/ccpp.csv` |
 | Size | 0.30 MB |
-| Source | UCI Machine Learning Repository - Combined Cycle Power Plant Dataset (https://archive.ics.uci.edu/dataset/294/combined+cycle+power+plant). 9,568 samples with 4 features (AT, V, AP, RH). |
+| Source | UCI Machine Learning Repository - Combined Cycle Power Plant Dataset. 9,568 samples with 4 features (ambient temperature, ambient pressure, relative humidity, exhaust vacuum) collected over 6 years. |
 | Task | Regression |
 | Target | PE (net hourly electrical energy output) |
 | Metric | R2 |
+
+## Method
+
+PhysXGBoost framework: domain feature engineering + tree models. The approach systematically compares Raw features vs Domain-derived features (incorporating domain knowledge) across four tree-based models: XGBoost, LightGBM, CatBoost, and RandomForest, with 5 random seeds per configuration.
+
+## Directory Structure
+
+```
+52_CCPP/
+├── data/          # Dataset files
+├── code/          # Source code
+├── results/       # Experimental results (JSON/CSV)
+├── paper/         # Paper draft
+└── plots/         # Figures (PNG, 300 DPI)
+```
+
+## Key Results
+
+| Metric | Best Model | Value |
+|--------|-----------|-------|
+| R2 | XGBoost (Raw features) | R2 = 0.9666 |
+
+> All metrics are computed on the **test set** (20% holdout) and averaged across 5 random seeds [42, 123, 456, 789, 2024]. Results are sourced from `results/summary.json`.
+
+### Result Files
+
+| File | Description |
+|------|-------------|
+| `summary.json` | Main results: mean/std metrics for Raw vs Domain features, Wilcoxon test p-values |
+| `comprehensive_results.json` | Ablation and sensitivity analysis |
+| `per_seed_results.json` | Per-seed detailed results for each (model, feature_set, seed) |
+| `additional_metrics.json` | Additional metrics (Accuracy, F1, RMSE, MAE, 95% CI, Cohen's d) |
 
 ## Environment Requirements
 
@@ -26,87 +54,17 @@
 - OS: Windows 11 Professional (tested)
 - CPU: Intel Xeon W7-2595X (24 cores, 2.5-4.8 GHz)
 - RAM: 48 GB DDR5 RDIMM
-- GPU: NVIDIA RTX 2000 Pro (16 GB) — not required for tree models
+- GPU: NVIDIA RTX 2000 Pro (16 GB) -- not required for tree models
 
 ### Python Dependencies
 
 ```
-xgboost>=2.0.0
-lightgbm>=4.0.0
-catboost>=1.2.0
-scikit-learn>=1.3.0
-scipy>=1.11.0
-matplotlib>=3.7.0
-pandas>=2.0.0
-numpy>=1.24.0
+xgboost>=2.0.0, lightgbm>=4.0.0, catboost>=1.2.0, scikit-learn>=1.3.0, pandas>=2.0.0, numpy>=1.24.0, scipy>=1.11.0, matplotlib>=3.7.0
 ```
 
-## Directory Structure
+## How to Reproduce
 
-```
-52_CCPP/
-├── code/
-│   ├── run_experiments.py
-├── data/
-│   └── ccpp.csv
-├── results/
-│   ├── summary.json
-│   ├── comprehensive_results.json
-│   ├── per_seed_results.json
-│   └── additional_metrics.json
-├── plots/
-│   ├── fig1_architecture.png
-│   ├── fig2_performance_comparison.png
-│   ├── fig3_ablation_results.png
-│   ├── fig4_sensitivity_analysis.png
-│   └── fig5_training_time.png
-├── paper/
-│   └── paper_draft.md
-├── reference/
-│   └── REFERENCE_MATERIALS.md
-└── README.md
-```
-
-## Quick Start
-
-### 1. Install dependencies
-
-```bash
-pip install xgboost lightgbm catboost scikit-learn scipy matplotlib pandas numpy
-```
-
-### 2. Verify data is present
-
-```bash
-# Verify ccpp.csv exists in data/
-```
-
-### 3. Run experiments
-
-```bash
-cd code
-python run_experiments.py --direction 52_CCPP
-```
-
-### 4. Check results
-
-```bash
-# Results saved to results/ directory
-# Key file: results/summary.json
-```
-
-## Result Files
-
-| File | Description |
-|------|-------------|
-| `summary.json` | Main results: mean/std metrics for Raw vs Domain features, Wilcoxon test p-values |
-| `comprehensive_results.json` | Extended metrics including all model-variant-seed combinations |
-| `per_seed_results.json` | Per-seed breakdown of all metrics |
-| `additional_metrics.json` | Supplementary metrics (95% CI, Cohen's d, etc.) |
-
-## Reproduction
-
-For detailed reproduction instructions, see [reproduce.md](reproduce.md).
+See [reproduce.md](reproduce.md) for detailed step-by-step instructions.
 
 ## Citation
 

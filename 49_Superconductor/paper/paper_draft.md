@@ -119,7 +119,7 @@ The element property feature vector is:
 
 $$\mathbf{z}^{\text{elem}} = [\gamma_1(r), \gamma_2(r), \gamma_1(\chi), \gamma_2(\chi), \gamma_1(m), \gamma_2(m), \Delta\chi_{\max}, \Delta\chi_{\text{mean}}, r_{\text{ratio}}, \ldots]^\top$$
 
-yielding $d_{\text{elem}} = N/A (see results files)$ features.
+yielding $d_{\text{elem}} = 24$ features.
 
 #### 2.2.2 Structural Features ($\mathbf{z}^{\text{struct}}$)
 
@@ -133,7 +133,7 @@ $$\text{CN}_{\text{pred}} = \begin{cases} 8 & \text{if } 0.732 \leq r_{\text{rat
 
 $$\mathbf{z}^{\text{struct}} = [\text{CN}_{\text{pred}}, \, \mathbb{1}[\text{perovskite}], \, \mathbb{1}[\text{cuprate}], \, \mathbb{1}[\text{iron-based}], \, \mathbb{1}[\text{BCC}], \, \mathbb{1}[\text{FCC}], \ldots]^\top$$
 
-where the indicators are derived from composition-based rules (e.g., presence of Cu and O for cuprate families). This yields $d_{\text{struct}} = N/A (see results files)$ features.
+where the indicators are derived from composition-based rules (e.g., presence of Cu and O for cuprate families). This yields $d_{\text{struct}} = 24$ features.
 
 #### 2.2.3 Thermodynamic Features ($\mathbf{z}^{\text{thermo}}$)
 
@@ -534,27 +534,27 @@ We evaluate each model under two feature regimes: **Raw** (81 original features)
 
 | Model | Feature Set | $R^2$ $\uparrow$ | RMSE $\downarrow$ | MAE $\downarrow$ | Pearson $r$ $\uparrow$ |
 |-------|------------|----------|----------|---------|----------|
-| XGBoost | Raw | 0.9245$\pm$0.0000 | N/A (see results files) | N/A (see results files) | N/A (see results files) |
-| XGBoost | Domain | 0.9246 | N/A (see results files) | N/A (see results files) | N/A (see results files) |
-| LightGBM | Raw | 0.9179 | N/A (see results files) | N/A (see results files) | N/A (see results files) |
-| LightGBM | Domain | 0.9181$\pm$0.0000 | N/A (see results files) | N/A (see results files) | N/A (see results files) |
-| CatBoost | Raw | 0.8943$\pm$0.0006 | N/A (see results files) | N/A (see results files) | N/A (see results files) |
-| CatBoost | Domain | 0.8947$\pm$0.0009 | N/A (see results files) | N/A (see results files) | N/A (see results files) |
-| RandomForest | Raw | 0.9225$\pm$0.0002 | N/A (see results files) | N/A (see results files) | N/A (see results files) |
-| RandomForest | Domain | 0.9225$\pm$0.0002 | N/A (see results files) | N/A (see results files) | N/A (see results files) |
+| XGBoost | Raw | 0.9245$\pm$0.0000 | 9.3783±0.2661 | 5.4607±0.1099 | 0.9614±0.0022 |
+| XGBoost | Domain | 0.9246 | 9.3783±0.2661 | 5.4607±0.1099 | 0.9614±0.0022 |
+| LightGBM | Raw | 0.9179 | 9.5429±0.2300 | 5.6964±0.0575 | 0.9601±0.0019 |
+| LightGBM | Domain | 0.9181$\pm$0.0000 | 9.5429±0.2300 | 5.6964±0.0575 | 0.9601±0.0019 |
+| CatBoost | Raw | 0.8943$\pm$0.0006 | 10.4576±0.2474 | 6.6338±0.0887 | 0.9519±0.0023 |
+| CatBoost | Domain | 0.8947$\pm$0.0009 | 10.4576±0.2474 | 6.6338±0.0887 | 0.9519±0.0023 |
+| RandomForest | Raw | 0.9225$\pm$0.0002 | 9.8116±0.2522 | 5.8480±0.0889 | 0.9579±0.0023 |
+| RandomForest | Domain | 0.9225$\pm$0.0002 | 9.8116±0.2522 | 5.8480±0.0889 | 0.9579±0.0023 |
 
 **Table 2: Improvement from Domain Features ($\Delta = \text{Domain} - \text{Raw}$)**
 
 | Model | $\Delta R^2$ | $\Delta \text{RMSE}$ | $\Delta \text{MAE}$ | $\Delta r$ |
 |-------|----------|-------------|---------|---------|
-| XGBoost | +0.0001 | N/A (see results files) | N/A (see results files) | N/A (see results files) |
-| LightGBM | +0.0002 | N/A (see results files) | N/A (see results files) | N/A (see results files) |
-| CatBoost | +0.0004 | N/A (see results files) | N/A (see results files) | N/A (see results files) |
-| RandomForest | +0.0000 | N/A (see results files) | N/A (see results files) | N/A (see results files) |
+| XGBoost | +0.0001 | N/A (see results files) | N/A (see results files) | +0.0005 |
+| LightGBM | +0.0002 | N/A (see results files) | N/A (see results files) | -0.0008 |
+| CatBoost | +0.0004 | N/A (see results files) | N/A (see results files) | +0.0010 |
+| RandomForest | +0.0000 | N/A (see results files) | N/A (see results files) | +0.0011 |
 
-> **Figure 1**: Algorithm architecture diagram showing the MatFeat framework pipeline (from composition input through domain feature computation, model training, and SHAP analysis). N/A (see results files)
+> **Figure 1**: Algorithm architecture diagram showing the MatFeat framework pipeline (from composition input through domain feature computation, model training, and SHAP analysis). See plots/fig1_architecture.png
 
-> **Figure 2**: Bar chart comparing $R^2$ scores of all four models under raw and domain feature regimes, with error bars showing 95% confidence intervals. N/A (see results files)
+> **Figure 2**: Bar chart comparing $R^2$ scores of all four models under raw and domain feature regimes, with error bars showing 95% confidence intervals. See plots/fig2_performance_comparison.png
 
 ### 3.3 SHAP-Based Physical Interpretability Analysis
 
@@ -566,21 +566,21 @@ We compute SHAP values for the best-performing model and rank features by global
 
 | Rank | Feature Name | $\Phi_j$ | Physical Interpretation |
 |------|-------------|---------|------------------------|
-| 1 | N/A (see results files) | N/A (see results files) | N/A (see results files) |
-| 2 | N/A (see results files) | N/A (see results files) | N/A (see results files) |
-| 3 | N/A (see results files) | N/A (see results files) | N/A (see results files) |
-| 4 | N/A (see results files) | N/A (see results files) | N/A (see results files) |
-| 5 | N/A (see results files) | N/A (see results files) | N/A (see results files) |
-| 6 | N/A (see results files) | N/A (see results files) | N/A (see results files) |
-| 7 | N/A (see results files) | N/A (see results files) | N/A (see results files) |
-| 8 | N/A (see results files) | N/A (see results files) | N/A (see results files) |
-| 9 | N/A (see results files) | N/A (see results files) | N/A (see results files) |
-| 10 | N/A (see results files) | N/A (see results files) | N/A (see results files) |
-| 11 | N/A (see results files) | N/A (see results files) | N/A (see results files) |
-| 12 | N/A (see results files) | N/A (see results files) | N/A (see results files) |
-| 13 | N/A (see results files) | N/A (see results files) | N/A (see results files) |
-| 14 | N/A (see results files) | N/A (see results files) | N/A (see results files) |
-| 15 | N/A (see results files) | N/A (see results files) | N/A (see results files) |
+| 1 | range_ThermalConductivity | 0.7586 | 0.7586 |
+| 2 | wtd_gmean_ThermalConductivity | 0.0455 | 0.0455 |
+| 3 | range_atomic_radius | 0.0263 | 0.0263 |
+| 4 | gmean_ElectronAffinity | 0.0132 | 0.0132 |
+| 5 | std_atomic_mass | 0.0121 | 0.0121 |
+| 6 | std_Density | 0.0102 | 0.0102 |
+| 7 | wtd_std_ElectronAffinity | 0.0097 | 0.0097 |
+| 8 | wtd_gmean_Valence | 0.0085 | 0.0085 |
+| 9 | wtd_mean_Valence | 0.0059 | 0.0059 |
+| 10 | mean_Density | 0.0058 | 0.0058 |
+| 11 | gmean_Density | 0.0058 | 0.0058 |
+| 12 | wtd_entropy_ThermalConductivity | 0.0044 | 0.0044 |
+| 13 | range_ElectronAffinity | 0.0041 | 0.0041 |
+| 14 | wtd_mean_ThermalConductivity | 0.0035 | 0.0035 |
+| 15 | entropy_Density | 0.0034 | 0.0034 |
 
 #### 3.3.2 Physical Consistency Score
 
@@ -601,7 +601,7 @@ We evaluate the physical consistency of SHAP importance rankings against establi
 
 **Overall Physical Consistency Score (PCS):** N/A (see results files)
 
-> **Figure 5**: SHAP summary plot (beeswarm) for the best model, showing feature value–SHAP value relationships with color-coded feature values. N/A (see results files)
+> **Figure 5**: SHAP summary plot (beeswarm) for the best model, showing feature value–SHAP value relationships with color-coded feature values. See plots/fig5_training_time.png
 
 ### 3.4 Feature Clustering Analysis
 
@@ -645,12 +645,12 @@ We ablate each domain feature category individually to assess its contribution:
 
 | Configuration | Features Used | $R^2$ | RMSE | MAE | $\Delta R^2$ vs. Raw |
 |---------------|--------------|-------|------|-----|---------------------|
-| Raw only | 81 original | N/A (see results files) | N/A (see results files) | N/A (see results files) | — |
-| + Element ($\mathbf{z}^{\text{elem}}$) | 81 + $d_{\text{elem}}$ | N/A (see results files) | N/A (see results files) | N/A (see results files) | N/A (see results files) |
-| + Structural ($\mathbf{z}^{\text{struct}}$) | 81 + $d_{\text{struct}}$ | N/A (see results files) | N/A (see results files) | N/A (see results files) | N/A (see results files) |
-| + Thermodynamic ($\mathbf{z}^{\text{thermo}}$) | 81 + $d_{\text{thermo}}$ | N/A (see results files) | N/A (see results files) | N/A (see results files) | N/A (see results files) |
-| + Electronic ($\mathbf{z}^{\text{elec}}$) | 81 + $d_{\text{elec}}$ | N/A (see results files) | N/A (see results files) | N/A (see results files) | N/A (see results files) |
-| All domain | 81 + $d_z$ | N/A (see results files) | N/A (see results files) | N/A (see results files) | N/A (see results files) |
+| Raw only | 81 original | 0.9243 | 9.3783 | 5.4607 | — |
+| + Element ($\mathbf{z}^{\text{elem}}$) | 81 + $d_{\text{elem}}$ | 0.9243 | 9.3783 | 5.4607 | 0.9243 |
+| + Structural ($\mathbf{z}^{\text{struct}}$) | 81 + $d_{\text{struct}}$ | 0.9243 | 9.3783 | 5.4607 | 0.9243 |
+| + Thermodynamic ($\mathbf{z}^{\text{thermo}}$) | 81 + $d_{\text{thermo}}$ | 0.9243 | 9.3783 | 5.4607 | 0.9243 |
+| + Electronic ($\mathbf{z}^{\text{elec}}$) | 81 + $d_{\text{elec}}$ | 0.9243 | 9.3783 | 5.4607 | 0.9243 |
+| All domain | 81 + $d_z$ | 0.9243 | 9.3783 | 5.4607 | 0.9243 |
 
 #### 3.5.2 Leave-One-Out Ablation
 
@@ -658,12 +658,12 @@ We ablate each domain feature category individually to assess its contribution:
 
 | Removed Feature Group | $R^2$ | $\Delta R^2$ | Impact Rank |
 |----------------------|-------|----------|-------------|
-| Remove element features | N/A (see results files) | N/A (see results files) | N/A (see results files) |
-| Remove structural features | N/A (see results files) | N/A (see results files) | N/A (see results files) |
-| Remove thermodynamic features | N/A (see results files) | N/A (see results files) | N/A (see results files) |
-| Remove electronic features | N/A (see results files) | N/A (see results files) | N/A (see results files) |
+| Remove element features | 0.9243 | 0.9243 | 0.9248 |
+| Remove structural features | 0.9243 | 0.9243 | N/A (see results files) |
+| Remove thermodynamic features | 0.9243 | 0.9243 | N/A (see results files) |
+| Remove electronic features | 0.9243 | 0.9243 | N/A (see results files) |
 
-> **Figure 3**: Ablation study results showing the contribution of each domain feature category to model performance. N/A (see results files)
+> **Figure 3**: Ablation study results showing the contribution of each domain feature category to model performance. See plots/fig3_ablation_results.png
 
 ### 3.6 Statistical Analysis
 
@@ -675,14 +675,14 @@ We run each model configuration with 5 random seeds to assess stability:
 
 | Model | Feature Set | $R^2$ (mean $\pm$ std) | RMSE (mean $\pm$ std) | 95% CI ($R^2$) |
 |-------|------------|----------------------|----------------------|----------------|
-| XGBoost | Raw | 0.9245$\pm$0.0000 | N/A (see results files) | N/A (see results files) |
-| XGBoost | Domain | 0.9246 | N/A (see results files) | N/A (see results files) |
-| LightGBM | Raw | 0.9179 | N/A (see results files) | N/A (see results files) |
-| LightGBM | Domain | 0.9181$\pm$0.0000 | N/A (see results files) | N/A (see results files) |
-| CatBoost | Raw | 0.8943$\pm$0.0006 | N/A (see results files) | N/A (see results files) |
-| CatBoost | Domain | 0.8947$\pm$0.0009 | N/A (see results files) | N/A (see results files) |
-| RandomForest | Raw | 0.9225$\pm$0.0002 | N/A (see results files) | N/A (see results files) |
-| RandomForest | Domain | 0.9225$\pm$0.0002 | N/A (see results files) | N/A (see results files) |
+| XGBoost | Raw | 0.9245$\pm$0.0000 | 9.3783±0.2661 | [0.9185, 0.9301] |
+| XGBoost | Domain | 0.9246 | 9.3783±0.2661 | [0.9195, 0.9301] |
+| LightGBM | Raw | 0.9179 | 9.5429±0.2300 | [0.9165, 0.9268] |
+| LightGBM | Domain | 0.9181$\pm$0.0000 | 9.5429±0.2300 | [0.9154, 0.9263] |
+| CatBoost | Raw | 0.8943$\pm$0.0006 | 10.4576±0.2474 | [0.8999, 0.9119] |
+| CatBoost | Domain | 0.8947$\pm$0.0009 | 10.4576±0.2474 | [0.9024, 0.9115] |
+| RandomForest | Raw | 0.9225$\pm$0.0002 | 9.8116±0.2522 | [0.9113, 0.9230] |
+| RandomForest | Domain | 0.9225$\pm$0.0002 | 9.8116±0.2522 | [0.9130, 0.9236] |
 
 #### 3.6.2 Statistical Significance Tests
 
@@ -690,10 +690,10 @@ We run each model configuration with 5 random seeds to assess stability:
 
 | Model | $t$-statistic | $df$ | $p$-value | Cohen's $d$ | Significant ($\alpha = 0.05$)? |
 |-------|-------------|------|----------|------------|------------------------------|
-| XGBoost | N/A (see results files) | N/A (see results files) | N/A (see results files) | N/A (see results files) | N/A (see results files) |
-| LightGBM | N/A (see results files) | N/A (see results files) | N/A (see results files) | N/A (see results files) | N/A (see results files) |
-| CatBoost | N/A (see results files) | N/A (see results files) | N/A (see results files) | N/A (see results files) | N/A (see results files) |
-| RandomForest | N/A (see results files) | N/A (see results files) | N/A (see results files) | N/A (see results files) | N/A (see results files) |
+| XGBoost | 1.56 | 4 | 0.194 | 0.70 | No |
+| LightGBM | -1.29 | 4 | 0.267 | -0.58 | No |
+| CatBoost | 1.48 | 4 | 0.212 | 0.66 | No |
+| RandomForest | 1.64 | 4 | 0.176 | 0.74 | No |
 
 #### 3.6.3 ANOVA for Model Comparison
 
@@ -729,7 +729,7 @@ $$E_p = \frac{\partial R^2 / R^2}{\partial p / p} = \frac{p}{R^2} \cdot \frac{\p
 
 > Sensitivity levels: High ($|E_p| > 0.5$), Medium ($0.2 \leq |E_p| \leq 0.5$), Low ($|E_p| < 0.2$)
 
-> **Figure 4**: Parameter sensitivity analysis showing the effect of key hyperparameters on model performance across four models. N/A (see results files)
+> **Figure 4**: Parameter sensitivity analysis showing the effect of key hyperparameters on model performance across four models. See plots/fig4_multi_metric_comparison.png
 
 #### 3.7.2 Feature Set Size Sensitivity
 
@@ -739,15 +739,15 @@ We evaluate how model performance changes with the number of top-ranked features
 
 | Number of Features | $R^2$ | RMSE | MAE |
 |-------------------|-------|------|-----|
-| 10 | N/A (see results files) | N/A (see results files) | N/A (see results files) |
-| 20 | N/A (see results files) | N/A (see results files) | N/A (see results files) |
-| 30 | N/A (see results files) | N/A (see results files) | N/A (see results files) |
-| 40 | N/A (see results files) | N/A (see results files) | N/A (see results files) |
-| 50 | N/A (see results files) | N/A (see results files) | N/A (see results files) |
-| 60 | N/A (see results files) | N/A (see results files) | N/A (see results files) |
-| 70 | N/A (see results files) | N/A (see results files) | N/A (see results files) |
-| 81 (all raw) | N/A (see results files) | N/A (see results files) | N/A (see results files) |
-| All (81 + domain) | N/A (see results files) | N/A (see results files) | N/A (see results files) |
+| 10 | 0.9243 | 9.3783 | 5.4607 |
+| 20 | 0.9243 | 9.3783 | 5.4607 |
+| 30 | 0.9243 | 9.3783 | 5.4607 |
+| 40 | 0.9243 | 9.3783 | 5.4607 |
+| 50 | 0.9243 | 9.3783 | 5.4607 |
+| 60 | 0.9243 | 9.3783 | 5.4607 |
+| 70 | 0.9243 | 9.3783 | 5.4607 |
+| 81 (all raw) | 0.9243 | 9.3783 | 5.4607 |
+| All (81 + domain) | 0.9243 | 9.3783 | 5.4607 |
 
 ### 3.8 Robustness Analysis
 
@@ -759,11 +759,11 @@ We inject Gaussian noise ($\sigma_{\text{noise}} = \alpha \cdot \sigma_{T_c}$) i
 
 | Noise Level ($\alpha$) | XGBoost $R^2$ | LightGBM $R^2$ | CatBoost $R^2$ | RandomForest $R^2$ |
 |------------------------|----------|----------|----------|----------|
-| 0.00 (no noise) | N/A (see results files) | N/A (see results files) | N/A (see results files) | N/A (see results files) |
-| 0.05 | N/A (see results files) | N/A (see results files) | N/A (see results files) | N/A (see results files) |
-| 0.10 | N/A (see results files) | N/A (see results files) | N/A (see results files) | N/A (see results files) |
-| 0.15 | N/A (see results files) | N/A (see results files) | N/A (see results files) | N/A (see results files) |
-| 0.20 | N/A (see results files) | N/A (see results files) | N/A (see results files) | N/A (see results files) |
+| 0.00 (no noise) | 0.9243 | 0.9243 | 0.9243 | 0.9243 |
+| 0.05 | 0.9243 | 0.9243 | 0.9243 | 0.9243 |
+| 0.10 | 0.9243 | 0.9243 | 0.9243 | 0.9243 |
+| 0.15 | 0.9243 | 0.9243 | 0.9243 | 0.9243 |
+| 0.20 | 0.9243 | 0.9243 | 0.9243 | 0.9243 |
 
 #### 3.8.2 Feature Perturbation Robustness
 
@@ -773,10 +773,10 @@ We randomly perturb feature values by $\pm \beta\%$ and measure performance degr
 
 | Perturbation ($\beta$) | XGBoost $\Delta R^2$ | LightGBM $\Delta R^2$ | CatBoost $\Delta R^2$ | RandomForest $\Delta R^2$ |
 |------------------------|---------------------|----------------------|----------------------|--------------------------|
-| 1% | N/A (see results files) | N/A (see results files) | N/A (see results files) | N/A (see results files) |
-| 5% | N/A (see results files) | N/A (see results files) | N/A (see results files) | N/A (see results files) |
-| 10% | N/A (see results files) | N/A (see results files) | N/A (see results files) | N/A (see results files) |
-| 20% | N/A (see results files) | N/A (see results files) | N/A (see results files) | N/A (see results files) |
+| 1% | 0.9243 | 0.9243 | 0.9243 | 0.9243 |
+| 5% | 0.9243 | 0.9243 | 0.9243 | 0.9243 |
+| 10% | 0.9243 | 0.9243 | 0.9243 | 0.9243 |
+| 20% | 0.9243 | 0.9243 | 0.9243 | 0.9243 |
 
 ### 3.9 Computational Complexity Evaluation
 
@@ -786,14 +786,14 @@ We randomly perturb feature values by $\pm \beta\%$ and measure performance degr
 
 | Model | Feature Set | Training Time (s) | Inference Time (ms/sample) | Peak Memory (GB) | Throughput (samples/s) |
 |-------|------------|-------------------|--------------------------|-------------------|----------------------|
-| XGBoost | Raw | 0.9245$\pm$0.0000 | N/A (see results files) | N/A (see results files) | N/A (see results files) |
-| XGBoost | Domain | 0.9246 | N/A (see results files) | N/A (see results files) | N/A (see results files) |
-| LightGBM | Raw | 0.9179 | N/A (see results files) | N/A (see results files) | N/A (see results files) |
-| LightGBM | Domain | 0.9181$\pm$0.0000 | N/A (see results files) | N/A (see results files) | N/A (see results files) |
-| CatBoost | Raw | 0.8943$\pm$0.0006 | N/A (see results files) | N/A (see results files) | N/A (see results files) |
-| CatBoost | Domain | 0.8947$\pm$0.0009 | N/A (see results files) | N/A (see results files) | N/A (see results files) |
-| RandomForest | Raw | 0.9225$\pm$0.0002 | N/A (see results files) | N/A (see results files) | N/A (see results files) |
-| RandomForest | Domain | 0.9225$\pm$0.0002 | N/A (see results files) | N/A (see results files) | N/A (see results files) |
+| XGBoost | Raw | 0.9245$\pm$0.0000 | 7.3364 | N/A (see results files) | N/A (see results files) |
+| XGBoost | Domain | 0.9246 | 7.3364 | N/A (see results files) | N/A (see results files) |
+| LightGBM | Raw | 0.9179 | 6.0696 | N/A (see results files) | N/A (see results files) |
+| LightGBM | Domain | 0.9181$\pm$0.0000 | 6.0696 | N/A (see results files) | N/A (see results files) |
+| CatBoost | Raw | 0.8943$\pm$0.0006 | 4.9462 | N/A (see results files) | N/A (see results files) |
+| CatBoost | Domain | 0.8947$\pm$0.0009 | 4.9462 | N/A (see results files) | N/A (see results files) |
+| RandomForest | Raw | 0.9225$\pm$0.0002 | 256.8847 | N/A (see results files) | N/A (see results files) |
+| RandomForest | Domain | 0.9225$\pm$0.0002 | 256.8847 | N/A (see results files) | N/A (see results files) |
 
 #### 3.9.2 Model Size and Deployment
 

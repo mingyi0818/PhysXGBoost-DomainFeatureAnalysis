@@ -1,0 +1,142 @@
+{
+  "01_Tabular_Framework": {
+    "files_checked": [
+      "01_Tabular_Framework/paper/paper_draft.md"
+    ],
+    "code_refs_remaining": [
+      "01_Tabular_Framework/paper/paper_draft.md: experiment_v2.py"
+    ],
+    "image_paths_remaining": [],
+    "conclusion_issues": [],
+    "consistency_issues": []
+  },
+  "02_HSIC_FDANet": {
+    "files_checked": [
+      "02_HSIC_FDANet/paper/paper_draft_v5.md"
+    ],
+    "code_refs_remaining": [],
+    "image_paths_remaining": [],
+    "conclusion_issues": [],
+    "consistency_issues": []
+  },
+  "03_Imbalanced_Learning": {
+    "files_checked": [
+      "03_Imbalanced_Learning/paper/paper_draft_v2.md"
+    ],
+    "code_refs_remaining": [],
+    "image_paths_remaining": [],
+    "conclusion_issues": [],
+    "consistency_issues": []
+  },
+  "04_Time_Series_Framework": {
+    "files_checked": [
+      "04_Time_Series_Framework/paper/paper_draft.md"
+    ],
+    "code_refs_remaining": [],
+    "image_paths_remaining": [],
+    "conclusion_issues": [],
+    "consistency_issues": []
+  },
+  "05_Agriculture_Fusion": {
+    "files_checked": [
+      "05_Agriculture_Fusion/paper/paper_draft.md"
+    ],
+    "code_refs_remaining": [],
+    "image_paths_remaining": [],
+    "conclusion_issues": [],
+    "consistency_issues": []
+  },
+  "06_Tourism_Prediction": {
+    "files_checked": [
+      "06_Tourism_Prediction/paper/paper_draft_v2.md"
+    ],
+    "code_refs_remaining": [],
+    "image_paths_remaining": [],
+    "conclusion_issues": [
+      "06_Tourism_Prediction/paper/paper_draft_v2.md: Found Practical Implications in Conclusion",
+      "06_Tourism_Prediction/paper/paper_draft_v2.md: Found Data Availability in Conclusion"
+    ],
+    "consistency_issues": []
+  },
+  "07_Tabular_FewShot": {
+    "files_checked": [
+      "07_Tabular_FewShot/paper/paper_draft.md",
+      "07_Tabular_FewShot/paper/paper_draft_v2.md"
+    ],
+    "code_refs_remaining": [],
+    "image_paths_remaining": [
+      "07_Tabular_FewShot/paper/paper_draft_v2.md: found 6 old image paths"
+    ],
+    "conclusion_issues": [
+      "07_Tabular_FewShot/paper/paper_draft_v2.md: Found Practical Implications in Conclusion"
+    ],
+    "consistency_issues": []
+  },
+  "08_Agriculture_FewShot": {
+    "files_checked": [
+      "08_Agriculture_FewShot/paper/paper_draft.md"
+    ],
+    "code_refs_remaining": [],
+    "image_paths_remaining": [],
+    "conclusion_issues": [],
+    "consistency_issues": []
+  },
+  "09_AI_Tourism_Forecast": {
+    "files_checked": [
+      "09_AI_Tourism_Forecast/paper/paper_draft.md"
+    ],
+    "code_refs_remaining": [],
+    "image_paths_remaining": [],
+    "conclusion_issues": [],
+    "consistency_issues": []
+  },
+  "10_Tourism_ABSA": {
+    "files_checked": [
+      "10_Tourism_ABSA/paper/paper_draft.md"
+    ],
+    "code_refs_remaining": [],
+    "image_paths_remaining": [],
+    "conclusion_issues": [],
+    "consistency_issues": []
+  },
+  "12_Student_Dropout": {
+    "files_checked": [
+      "12_Student_Dropout/paper/paper_draft.md"
+    ],
+    "code_refs_remaining": [],
+    "image_paths_remaining": [],
+    "conclusion_issues": [],
+    "consistency_issues": []
+  },
+  "14_Tabular_Anomaly": {
+    "files_checked": [
+      "14_Tabular_Anomaly/paper/paper_draft.md"
+    ],
+    "code_refs_remaining": [],
+    "image_paths_remaining": [],
+    "conclusion_issues": [],
+    "consistency_issues": []
+  },
+  "JX01_Teaching_Research_1": {
+    "files_checked": [
+      "JX01_Teaching_Research_1/manuscript/manuscript.md",
+      "JX01_Teaching_Research_1/submission_cae/manuscript_cae_formatted.md"
+    ],
+    "code_refs_remaining": [],
+    "image_paths_remaining": [],
+    "conclusion_issues": [
+      "JX01_Teaching_Research_1/manuscript/manuscript.md: Found Code Availability in Conclusion",
+      "JX01_Teaching_Research_1/submission_cae/manuscript_cae_formatted.md: Found Code Availability in Conclusion"
+    ],
+    "consistency_issues": []
+  },
+  "JX02_Teaching_Research_2": {
+    "files_checked": [
+      "JX02_Teaching_Research_2/paper/paper_draft.md"
+    ],
+    "code_refs_remaining": [],
+    "image_paths_remaining": [],
+    "conclusion_issues": [],
+    "consistency_issues": []
+  }
+}

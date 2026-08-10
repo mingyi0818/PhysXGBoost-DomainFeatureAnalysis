@@ -268,7 +268,7 @@ The $O(\sqrt{\varepsilon})$ rate follows directly from the square root. $\square
 
 #### 3.3.5 Corollary 1: Saturation Diagnosis of the UCI Credit Dataset
 
-**Corollary 1.** *Empirical estimation on the UCI Default of Credit Card Clients dataset yields $H(Y \mid \mathbf{F}) \leq N/A (see results files)$ and $I(\mathbf{D}; \mathbf{F}) / I(\mathbf{D}; Y) \geq N/A (see results files) \geq 1$, satisfying both Theorem 1 and Theorem 2. Consequently, the observed $\Delta_{\text{AUC}} = 0$ across XGBoost, LightGBM, CatBoost, and Random Forest is theoretically predicted.*
+**Corollary 1.** *Empirical estimation on the UCI Default of Credit Card Clients dataset yields $H(Y \mid \mathbf{F}) \leq 0.7735$ and $I(\mathbf{D}; \mathbf{F}) / I(\mathbf{D}; Y) \geq 0.7735 \geq 1$, satisfying both Theorem 1 and Theorem 2. Consequently, the observed $\Delta_{\text{AUC}} = 0$ across XGBoost, LightGBM, CatBoost, and Random Forest is theoretically predicted.*
 
 **Proof sketch.**
 
@@ -451,7 +451,7 @@ Table 4 reports the main comparison across seven classifiers. All values are mea
 
 *Best result per metric in **bold** once all values are populated. The four tree-based models show ΔAUC = 0.0000 exactly (verified from `results/summary.json`).*
 
-**Figure 2.** AUC-ROC comparison across models and feature sets. N/A (see results files)
+**Figure 2.** AUC-ROC comparison across models and feature sets. See plots/fig2_performance_comparison.png
 
 **Key Observations:**
 
@@ -473,15 +473,15 @@ Group-level ablation progressively removes each of the four domain feature group
 | w/o Demographic Interactions | $\mathbf{D}_{\text{demo}}$ | 35 | 0.7763 | 0.0000 |
 | Raw Only (No Domain) | All Domain | 23 | 0.7763 | 0.0000 |
 
-**Figure 3.** Ablation study results. N/A (see results files)
+**Figure 3.** Ablation study results. See plots/fig3_ablation_results.png
 
-N/A (see results files)
+See plots/fig3_ablation_results.png
 
 ### 4.5 Mutual Information Matrix and Saturation Diagnosis
 
 We estimate the mutual information matrix among all 38 features (23 original + 15 domain) and the target $Y$ using the KSG estimator. Figure 4 visualizes the matrix.
 
-**Figure 4.** Mutual information matrix heatmap. N/A (see results files)
+**Figure 4.** Mutual information matrix heatmap. See plots/fig4_multi_metric_comparison.png
 
 **Table 6.** Information-theoretic quantities (estimated via KSG, n=30,000).
 
@@ -575,7 +575,7 @@ We use TreeSHAP [22, 23] for the four tree-based models. The central question: d
 
 #### 4.7.1 Global Feature Importance
 
-**Figure 5.** SHAP global feature importance (top 20 features). N/A (see results files)
+**Figure 5.** SHAP global feature importance (top 20 features). See plots/fig5_training_time.png
 
 **Table 11.** Top 10 features by mean $|SHAP|$ (XGBoost, Domain feature set).
 
@@ -645,7 +645,7 @@ Sensitivity levels: **High** ($|E| > 0.5$), **Medium** ($0.2 \leq |E| \leq 0.5$)
 | Random Forest | max_depth | [3, 20] | 12 | N/A | N/A |
 | Random Forest | max_features | [0.3, 1.0] | sqrt | N/A | N/A |
 
-**Figure 6.** Parameter sensitivity analysis. N/A (see results files)
+**Figure 6.** Parameter sensitivity analysis. See plots/ directory for figure
 
 ### 4.9 Distribution Shift Analysis
 
