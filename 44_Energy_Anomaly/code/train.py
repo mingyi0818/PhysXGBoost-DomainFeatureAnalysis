@@ -27,9 +27,13 @@ def set_seed(seed):
 
 def train_tcrad(model, train_loader, val_loader, device, n_epochs=N_EPOCHS, 
                 lr=LEARNING_RATE, weight_decay=WEIGHT_DECAY, patience=EARLY_STOP_PATIENCE):
-    """Train TCR-AD model."""
+    """Train TCR-AD model with mixed precision for speed."""
     optimizer = optim.AdamW(model.parameters(), lr=lr, weight_decay=weight_decay)
     scheduler = optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=n_epochs)
+    
+    # Mixed precision training for 2x speedup
+    use_amp = device.type == 'cuda'
+    scaler = torch.cuda.amp.GradScaler(enabled=use_amp)
     
     best_val_loss = float('inf')
     best_epoch = 0
@@ -54,14 +58,26 @@ def train_tcrad(model, train_loader, val_loader, device, n_epochs=N_EPOCHS,
             normal_mask = (y == 0)
             
             optimizer.zero_grad()
-            # Classification on ALL samples; reconstruction + contrastive on normal only
-            total_loss, c_loss, r_loss, cls_loss = tcr_ad_loss(
-                model, x, x_aug1, x_aug2, 
-                y_full=y, normal_mask=normal_mask, cls_weight=0.2
-            )
-            total_loss.backward()
-            torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
-            optimizer.step()
+            
+            if use_amp:
+                with torch.cuda.amp.autocast():
+                    total_loss, c_loss, r_loss, cls_loss = tcr_ad_loss(
+                        model, x, x_aug1, x_aug2, 
+                        y_full=y, normal_mask=normal_mask, cls_weight=0.2
+                    )
+                scaler.scale(total_loss).backward()
+                scaler.unscale_(optimizer)
+                torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
+                scaler.step(optimizer)
+                scaler.update()
+            else:
+                total_loss, c_loss, r_loss, cls_loss = tcr_ad_loss(
+                    model, x, x_aug1, x_aug2, 
+                    y_full=y, normal_mask=normal_mask, cls_weight=0.2
+                )
+                total_loss.backward()
+                torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
+                optimizer.step()
             
             train_loss += total_loss.item()
             train_c += c_loss.item()
@@ -80,7 +96,11 @@ def train_tcrad(model, train_loader, val_loader, device, n_epochs=N_EPOCHS,
                 x = x.to(device)
                 x_aug1 = x + torch.randn_like(x) * 0.01
                 x_aug2 = x + torch.randn_like(x) * 0.01
-                total_loss, _, _, _ = tcr_ad_loss(model, x, x_aug1, x_aug2)
+                if use_amp:
+                    with torch.cuda.amp.autocast():
+                        total_loss, _, _, _ = tcr_ad_loss(model, x, x_aug1, x_aug2)
+                else:
+                    total_loss, _, _, _ = tcr_ad_loss(model, x, x_aug1, x_aug2)
                 val_loss += total_loss.item()
                 val_n += 1
         
@@ -94,8 +114,8 @@ def train_tcrad(model, train_loader, val_loader, device, n_epochs=N_EPOCHS,
         history['contrastive_loss'].append(avg_c)
         history['recon_loss'].append(avg_r)
         
-        if (epoch + 1) % 5 == 0 or epoch == 0:
-            print(f"Epoch {epoch+1}/{n_epochs} - Train Loss: {avg_train_loss:.4f} (C: {avg_c:.4f}, R: {avg_r:.4f}), Val Loss: {avg_val_loss:.4f}")
+        if (epoch + 1) % 2 == 0 or epoch == 0:
+            print(f"Epoch {epoch+1}/{n_epochs} - Train Loss: {avg_train_loss:.4f} (C: {avg_c:.4f}, R: {avg_r:.4f}), Val Loss: {avg_val_loss:.4f}", flush=True)
         
         # Early stopping
         if avg_val_loss < best_val_loss:
@@ -106,19 +126,21 @@ def train_tcrad(model, train_loader, val_loader, device, n_epochs=N_EPOCHS,
         else:
             patience_counter += 1
             if patience_counter >= patience:
-                print(f"Early stopping at epoch {epoch+1}")
+                print(f"Early stopping at epoch {epoch+1}", flush=True)
                 break
     
     # Load best model
     model.load_state_dict(torch.load(os.path.join(CKPT_DIR, 'tcrad_best.pth')))
-    print(f"Best model from epoch {best_epoch+1}, val_loss: {best_val_loss:.4f}")
+    print(f"Best model from epoch {best_epoch+1}, val_loss: {best_val_loss:.4f}", flush=True)
     
     return model, history
 
 
-def train_ae(model, train_loader, device, n_epochs=30, lr=1e-3):
+def train_ae(model, train_loader, device, n_epochs=8, lr=1e-3):
     """Train autoencoder baseline."""
     optimizer = optim.Adam(model.parameters(), lr=lr)
+    use_amp = device.type == 'cuda'
+    scaler = torch.cuda.amp.GradScaler(enabled=use_amp)
     
     for epoch in range(n_epochs):
         model.train()
@@ -131,20 +153,30 @@ def train_ae(model, train_loader, device, n_epochs=30, lr=1e-3):
                 continue
             x = x[mask].to(device)
             optimizer.zero_grad()
-            recon = model(x)
-            loss = nn.MSELoss()(recon, x.squeeze(-1))
-            loss.backward()
-            optimizer.step()
+            if use_amp:
+                with torch.cuda.amp.autocast():
+                    recon = model(x)
+                    loss = nn.MSELoss()(recon, x.squeeze(-1))
+                scaler.scale(loss).backward()
+                scaler.step(optimizer)
+                scaler.update()
+            else:
+                recon = model(x)
+                loss = nn.MSELoss()(recon, x.squeeze(-1))
+                loss.backward()
+                optimizer.step()
             train_loss += loss.item()
             n += 1
-        if (epoch+1) % 10 == 0:
-            print(f"AE Epoch {epoch+1}/{n_epochs} - Loss: {train_loss/n:.4f}")
+        if (epoch+1) % 4 == 0:
+            print(f"AE Epoch {epoch+1}/{n_epochs} - Loss: {train_loss/n:.4f}", flush=True)
     return model
 
 
-def train_vae(model, train_loader, device, n_epochs=30, lr=1e-3):
+def train_vae(model, train_loader, device, n_epochs=8, lr=1e-3):
     """Train VAE baseline."""
     optimizer = optim.Adam(model.parameters(), lr=lr)
+    use_amp = device.type == 'cuda'
+    scaler = torch.cuda.amp.GradScaler(enabled=use_amp)
     
     for epoch in range(n_epochs):
         model.train()
@@ -157,22 +189,34 @@ def train_vae(model, train_loader, device, n_epochs=30, lr=1e-3):
                 continue
             x = x[mask].to(device)
             optimizer.zero_grad()
-            recon, mu, logvar = model(x)
-            recon_loss = nn.MSELoss()(recon, x.squeeze(-1))
-            kl_loss = -0.5 * torch.sum(1 + logvar - mu.pow(2) - logvar.exp()) / x.size(0)
-            loss = recon_loss + 0.1 * kl_loss
-            loss.backward()
-            optimizer.step()
+            if use_amp:
+                with torch.cuda.amp.autocast():
+                    recon, mu, logvar = model(x)
+                    recon_loss = nn.MSELoss()(recon, x.squeeze(-1))
+                    kl_loss = -0.5 * torch.sum(1 + logvar - mu.pow(2) - logvar.exp()) / x.size(0)
+                    loss = recon_loss + 0.1 * kl_loss
+                scaler.scale(loss).backward()
+                scaler.step(optimizer)
+                scaler.update()
+            else:
+                recon, mu, logvar = model(x)
+                recon_loss = nn.MSELoss()(recon, x.squeeze(-1))
+                kl_loss = -0.5 * torch.sum(1 + logvar - mu.pow(2) - logvar.exp()) / x.size(0)
+                loss = recon_loss + 0.1 * kl_loss
+                loss.backward()
+                optimizer.step()
             train_loss += loss.item()
             n += 1
-        if (epoch+1) % 10 == 0:
-            print(f"VAE Epoch {epoch+1}/{n_epochs} - Loss: {train_loss/n:.4f}")
+        if (epoch+1) % 4 == 0:
+            print(f"VAE Epoch {epoch+1}/{n_epochs} - Loss: {train_loss/n:.4f}", flush=True)
     return model
 
 
-def train_dagmm(model, train_loader, device, n_epochs=30, lr=1e-3):
+def train_dagmm(model, train_loader, device, n_epochs=8, lr=1e-3):
     """Train DAGMM baseline."""
     optimizer = optim.Adam(model.parameters(), lr=lr)
+    use_amp = device.type == 'cuda'
+    scaler = torch.cuda.amp.GradScaler(enabled=use_amp)
     
     for epoch in range(n_epochs):
         model.train()
@@ -185,15 +229,24 @@ def train_dagmm(model, train_loader, device, n_epochs=30, lr=1e-3):
                 continue
             x = x[mask].to(device)
             optimizer.zero_grad()
-            recon, z, gamma = model(x)
-            recon_loss = nn.MSELoss()(recon, x.squeeze(-1))
-            loss = recon_loss
-            loss.backward()
-            optimizer.step()
+            if use_amp:
+                with torch.cuda.amp.autocast():
+                    recon, z, gamma = model(x)
+                    recon_loss = nn.MSELoss()(recon, x.squeeze(-1))
+                    loss = recon_loss
+                scaler.scale(loss).backward()
+                scaler.step(optimizer)
+                scaler.update()
+            else:
+                recon, z, gamma = model(x)
+                recon_loss = nn.MSELoss()(recon, x.squeeze(-1))
+                loss = recon_loss
+                loss.backward()
+                optimizer.step()
             train_loss += loss.item()
             n += 1
-        if (epoch+1) % 10 == 0:
-            print(f"DAGMM Epoch {epoch+1}/{n_epochs} - Loss: {train_loss/n:.4f}")
+        if (epoch+1) % 4 == 0:
+            print(f"DAGMM Epoch {epoch+1}/{n_epochs} - Loss: {train_loss/n:.4f}", flush=True)
     return model
 
 
@@ -254,27 +307,27 @@ def evaluate_sklearn_baseline(model, X_test, y_test):
 
 
 if __name__ == '__main__':
-    print("="*60)
-    print("TCR-AD Training")
-    print("="*60)
+    print("="*60, flush=True)
+    print("TCR-AD Training", flush=True)
+    print("="*60, flush=True)
     
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-    print(f"Device: {device}")
+    print(f"Device: {device}", flush=True)
     
     # Load data
-    X, y = load_sgcc_data(sample_ratio=0.3)
+    X, y = load_sgcc_data(sample_ratio=SAMPLE_RATIO)
     train_loader, val_loader, test_loader, splits = create_data_loaders(X, y)
     
     # Create model
     model = TCRAD().to(device)
     n_params = sum(p.numel() for p in model.parameters())
-    print(f"TCR-AD parameters: {n_params:,}")
+    print(f"TCR-AD parameters: {n_params:,}", flush=True)
     
     # Train
-    model, history = train_tcrad(model, train_loader, val_loader, device, n_epochs=10)
+    model, history = train_tcrad(model, train_loader, val_loader, device, n_epochs=N_EPOCHS)
     
     # Evaluate
     scores, labels = get_anomaly_scores_tcrad(model, test_loader, device)
     results = evaluate_anomaly_detection(scores, labels)
-    print(f"\nTest results: AUC-ROC={results['auc_roc']:.4f}, F1={results['best_f1']:.4f}")
-    print(f"Precision={results['best_precision']:.4f}, Recall={results['best_recall']:.4f}")
+    print(f"\nTest results: AUC-ROC={results['auc_roc']:.4f}, F1={results['best_f1']:.4f}", flush=True)
+    print(f"Precision={results['best_precision']:.4f}, Recall={results['best_recall']:.4f}", flush=True)

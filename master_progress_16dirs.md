@@ -1,7 +1,7 @@
 # 19个方向论文初稿撰写进度跟踪
 
 > 创建时间: 2026-08-08
-> 最后更新: 2026-08-10 (更新: 综合实验+多指标+统计检验+N/A替换+图表+GitHub上传)
+> 最后更新: 2026-08-11 (更新: 44/56/63/64四个方向实验补全+数据泄露修复+统计检验完善)
 > 任务: 为所有planning状态的方向撰写论文初稿，运行实验获取真实数据，替换PLACEHOLDER，生成图表
 > 每个方向流程: 在线研究最新SOTA → 创新点突破分析报告 → 论文初稿 → 运行实验 → 替换PLACEHOLDER → 生成图表
 > 诚信原则: 所有实验数据来自results/目录，可溯源，绝不编造数据
@@ -10,7 +10,7 @@
 
 | # | 方向 | 研究主题 | 数据集 | 分析报告 | 论文初稿 | 参考资料 | 实验结果 | 状态 |
 |---|------|---------|--------|---------|---------|---------|---------|------|
-| 1 | 44_Energy_Anomaly | 电力窃电检测 | SGCC | ✅ | ✅ | ✅ | ✅ | 完成 |
+| 1 | 44_Energy_Anomaly | 电力窃电检测 | SGCC | ✅ | ✅ | ✅ | ✅ | 完成(负面结果) |
 | 2 | 46_FlightDelay_PhysXGBoost | 银行营销预测 | Bank Marketing | ✅ | ✅ | ✅ | ✅ | 完成 |
 | 3 | 47_OnlineShoppers | 购物意向预测 | Online Shoppers 12,330×18 | ✅ | ✅ | ✅ | ⬜ | 完成 |
 | 4 | 48_CreditDefault | 信用卡违约预测 | Credit Card Default 30,000×25 | ✅ | ✅ | ✅ | ✅ | 完成 |
@@ -21,38 +21,42 @@
 | 9 | 53_BikeSharing | 共享单车需求预测 | Bike-Sharing 17,379×16 | ✅ | ✅ | ✅ | ✅ | 完成 |
 | 10 | 54_NewsPopularity | 新闻热度预测 | Online News 39,644×61 | ✅ | ✅ | ✅ | ✅ | 完成(负面结果) |
 | 11 | 55_CalHousing | 加州房价预测 | California Housing 20,640×9 | ✅ | ✅ | ✅ | ✅ | 完成 |
-| 12 | 56_PowerConsumption | 家庭用电预测 | Individual household ~2.07M×9 | ✅ | ✅ | ✅ | ✅ | 完成(数据泄露) |
+| 12 | 56_PowerConsumption | 家庭用电预测 | Individual household ~2.07M×9 | ✅ | ✅ | ✅ | ✅ | 完成(泄露修复) |
 | 13 | 58_CDNOW | 客户终身价值预测 | CDNOW 69,693交易 | ✅ | ✅ | ✅ | ✅ | 完成 |
 | 14 | 59_NYCProperty | NYC房产预测 | TBD (无数据) | ✅ | ✅ | ✅ | ⬜ | 完成(待数据) |
 | 15 | 60_StudentPerf | 学生表现预测 | Student Performance 649/395 | ✅ | ✅ | ✅ | ⬜ | 完成 |
 | 16 | 61_DryBean | 干豆分类 | Dry Bean 13,611×17 | ✅ | ✅ | ✅ | ⬜ | 完成 |
 | 17 | 63_HotelBooking | 酒店预订取消预测 | Hotel Booking 119,390×32 | ✅ | ✅ | ✅ | ✅ | 完成 |
-| 18 | 64_FlightDelay | 航班延误预测 | Flight Delay | ✅ | ✅ | ✅ | ✅ | 完成(数据泄露) |
+| 18 | 64_FlightDelay | 航班延误预测 | Flight Delay | ✅ | ✅ | ✅ | ✅ | 完成(泄露修复) |
 | 19 | 65_HR | 员工流失预测 | IBM HR 1,470×35 | ✅ | ✅ | ✅ | ✅ | 完成 |
 
 ## 总体统计
 - **已完成初稿**: 19/19 (100%)
 - **已有实验结果**: 19/19 (100%)
-- **综合实验(消融+敏感性)**: 15/19 (79%) ← 新增48,49,50,55,58五个方向
+- **综合实验(消融+敏感性)**: 19/19 (100%) ← 新增44,56,63,64四个方向
 - **多指标计算**: 15/19 (79%) ← Accuracy/F1/RMSE/MAE/特征重要性等
-- **统计检验**: 18/19 (95%) ← t检验/Wilcoxon/Cohen's d/ANOVA/95%CI
+- **统计检验**: 19/19 (100%) ← 新增44,56,63,64统计检验(t检验/Wilcoxon/Cohen's d/95%CI)
 - **已生成图表**: 81幅 (15个方向5/5幅, 3个方向2/5幅, 1个方向0幅)
 - **PLACEHOLDER**: 0 (全部替换完成)
 - **"N/A (see results files)"**: 0 (全部替换: 12个替换为真实ANOVA数据, 1045个替换为—标记未计算)
 - **剩余"N/A"**: 1383个 (均为合法值: TabPFN/MLP/LR等未运行基线的超参数)
 - **README.md + reproduce.md**: 19/19 (100%)
 - **GitHub上传**: ✅ 已完成 (https://github.com/mingyi0818/PhysXGBoost-DomainFeatureAnalysis)
-- **负面结果论文**: 1 (54_NewsPopularity, R²≈0)
-- **数据泄露调查论文**: 2 (56_PowerConsumption, 64_FlightDelay)
+- **负面结果论文**: 2 (54_NewsPopularity R²≈0, 44_Energy_Anomaly AUC≈0.5)
+- **数据泄露修复**: 2 (56_PowerConsumption 移除Global_intensity, 64_FlightDelay 移除起飞后特征)
 
-### 本次实验运行结果汇总
+### 实验运行结果汇总
 
-| 方向 | 任务 | 指标 | 最佳模型(Raw) | 最佳模型(Domain) | Δ改进 | Cohen's d |
-|------|------|------|--------------|-----------------|-------|-----------|
-| 47_OnlineShoppers | 分类 | AUC | RF: 0.9297 | XGB: 0.9244 | -0.005 | 0.15 |
-| 59_NYCProperty | 回归 | R² | XGB: 0.6554 | XGB: 0.6592 | +0.004 | 0.30 |
-| 61_DryBean | 分类 | AUC | Cat: 0.9804 | XGB: 0.9839 | +0.007 | 1.46 |
-| 65_HR | 分类 | AUC | Cat: 0.8081 | Cat: 0.8120 | +0.004 | 0.15 |
+| 方向 | 任务 | 指标 | 最佳模型(Raw) | 最佳模型(Domain) | Δ改进 | Cohen's d | 备注 |
+|------|------|------|--------------|-----------------|-------|-----------|------|
+| 44_Energy_Anomaly | 异常检测 | AUC-ROC | IForest: 0.5256 | TCR-AD: 0.5038 | -0.022 | 0.52 | 负面结果 |
+| 47_OnlineShoppers | 分类 | AUC | RF: 0.9297 | XGB: 0.9244 | -0.005 | 0.15 | |
+| 56_PowerConsumption | 回归 | R² | XGB: 0.8692 | XGB: 0.8711 | +0.002 | 0.51 | 泄露修复 |
+| 59_NYCProperty | 回归 | R² | XGB: 0.6554 | XGB: 0.6592 | +0.004 | 0.30 | |
+| 61_DryBean | 分类 | AUC | Cat: 0.9804 | XGB: 0.9839 | +0.007 | 1.46 | |
+| 63_HotelBooking | 分类 | AUC | XGB: 0.9552 | XGB: 0.9555 | +0.0004 | 0.31 | |
+| 64_FlightDelay | 分类 | AUC | XGB: 0.6991 | XGB: 0.7032 | +0.004 | 1.99 | 泄露修复 |
+| 65_HR | 分类 | AUC | Cat: 0.8081 | Cat: 0.8120 | +0.004 | 0.15 | |
 
 ## 统一方法框架
 所有16个方向均采用"物理衍生特征增强树模型"(PhysXGBoost)模板:
@@ -175,12 +179,12 @@
 3. ~~**所有方向**: 生成图表(≥4幅高清PNG/SVG, ≥300dpi)~~ ✅ 81幅已生成
 4. ~~**剩余PLACEHOLDER**: 替换所有PLACEHOLDER~~ ✅ 0个剩余
 5. ~~**所有方向**: 上传代码到GitHub, 编写README.md和reproduce.md~~ ✅ 已完成
-6. ~~**为缺少comprehensive_results.json的方向重跑实验**~~ ✅ 15/19完成
-7. ~~**计算统计检验(t检验/Wilcoxon/ANOVA/Cohen's d)**~~ ✅ 18/19完成
+6. ~~**为缺少comprehensive_results.json的方向重跑实验**~~ ✅ 19/19完成
+7. ~~**计算统计检验(t检验/Wilcoxon/ANOVA/Cohen's d)**~~ ✅ 19/19完成
 8. ~~**替换所有"N/A (see results files)"**~~ ✅ 0个剩余
-9. **所有方向**: 准备投稿材料(Cover Letter, Highlights等)
-10. **44_Energy_Anomaly**: 需补充实验结果(目前无results/目录)
-11. **56,63_HotelBooking,64_FlightDelay**: 需重跑实验获取多指标和综合实验数据
+9. ~~**44_Energy_Anomaly**: 需补充实验结果~~ ✅ 已完成(完整实验+消融+敏感性+复杂度+统计检验)
+10. ~~**56,63,64**: 需重跑实验获取多指标和综合实验数据~~ ✅ 已完成(泄露修复+5种子+统计检验)
+11. **所有方向**: 准备投稿材料(Cover Letter, Highlights等)
 
 ### 2026-08-10 执行记录: 实验补全+PLACEHOLDER替换+图表生成
 
@@ -257,8 +261,63 @@
 #### 最终诚信声明
 - ✅ 所有实验数据均来自results/目录下的JSON文件, 可溯源
 - ✅ 未编造任何数据
-- ✅ 负面结果(54_NewsPopularity R²≈0)如实报告
-- ✅ 数据泄露(56_PowerConsumption, 64_FlightDelay AUC≈1.0)如实报告
+- ✅ 负面结果(54_NewsPopularity R²≈0, 44_Energy_Anomaly AUC≈0.5)如实报告
+- ✅ 数据泄露已修复(56_PowerConsumption 移除Global_intensity后R²从0.9997降至0.8692, 64_FlightDelay 移除起飞后特征后AUC从0.99999降至0.6991)
 - ✅ 无法计算的数据(SHAP, 鲁棒性, 部署指标等)标记为"—", 未编造
 - ✅ 代码已上传GitHub, 审稿人可复现所有实验
 - ✅ README.md和reproduce.md协助审稿人复现实验
+
+### 2026-08-11 执行记录: 44/56/63/64四个方向实验补全
+
+#### Phase 11: 44_Energy_Anomaly 实验补全
+- 数据集: SGCC电力窃电检测 (20%采样, 1035天序列, 子序列长度128)
+- 模型优化: 混合精度训练(AMP), 嵌入维度降至64, 批量增至1024, 轮次降至8
+- 修复float16溢出: NT-Xent损失掩码值从-1e9改为-1e4
+- 主对比实验(5种子×6模型): TCR-AD AUC=0.5038±0.0249, IForest AUC=0.5256±0.0259
+- **负面结果如实报告**: TCR-AD未超越IForest基线, 所有方法AUC接近随机水平(≈0.5)
+- 消融实验(4变体): 移除时间编码器反而提升AUC(0.5219→0.5522)
+- 敏感性分析: 嵌入维度(32-256)和对比权重(0.0-1.0)对性能影响微小
+- 复杂度分析: TCR-AD参数量412,067, 推理时间2.00ms
+- 统计检验: 5个基线配对t检验, 无统计显著性(p>0.05)
+- 更新论文稿: 摘要报告负面结果, 讨论分析性能不佳的4个原因
+- 更新README.md和reproduce.md: 关键结果表+超参数表+已知问题
+
+#### Phase 12: 56_PowerConsumption 数据泄露修复
+- 原始结果R²≈0.9997 (异常高), 诊断: Global_intensity与目标Global_active_power存在P=V×I物理冗余
+- 修复方案: 移除Global_intensity特征, 重构目标变量
+- 重跑实验(5种子×4模型×2特征方案):
+  - Raw R²: XGB=0.8692, LGB=0.8679, Cat=0.8648, RF=0.8576
+  - Domain R²: XGB=0.8711, LGB=0.8691, Cat=0.8681, RF=0.8659
+  - 域特征一致改进(ΔR²=+0.002~+0.008), Cohen's d=0.31~2.48
+- 统计检验: 配对t检验(XGB p=0.0013, Cat p<0.001, RF p<0.001), Wilcoxon全正
+
+#### Phase 13: 63_HotelBooking 实验补全
+- 数据集: Hotel Booking Demand (119,390×32)
+- 重跑实验(5种子×4模型×2特征方案):
+  - Raw AUC: XGB=0.9552, LGB=0.9544, Cat=0.9511, RF=0.9406
+  - Domain AUC: XGB=0.9555, LGB=0.9548, Cat=0.9521, RF=0.9348
+  - 域特征对XGB改进不显著(p=0.197), 对LGB/Cat显著(p<0.05), 对RF显著降低
+- 统计检验: 配对t检验+Wilcoxon+Cohen's d+95%CI
+
+#### Phase 14: 64_FlightDelay 数据泄露修复
+- 原始结果AUC≈0.99999 (异常高), 诊断: 起飞后特征(实际起飞时间、到达时间等)包含延迟结果
+- 修复方案: 创建clean特征集(仅含起飞前可获取的12个原始特征+37个域特征)
+- 重跑实验(5种子×4模型×2特征方案):
+  - Clean Raw AUC: XGB=0.6991, LGB=0.6971, Cat=0.6919, RF=0.6713
+  - Clean Domain AUC: XGB=0.7032, LGB=0.7003, Cat=0.6986, RF=0.6727
+  - 域特征一致改进(ΔAUC=+0.001~+0.007), Cohen's d=0.85~6.04
+- 统计检验: 配对t检验全部显著(p<0.05), Wilcoxon全正
+- 保留原始(leakage)结果作为对比: summary_raw.json, per_seed_results_raw.json
+
+#### Phase 15: 数据一致性验证
+- 44_Energy_Anomaly: 参数一致性验证(412,067 across all files), per-seed数据可溯源
+- 56/63/64: per_seed_results与summary.json数据一致性验证通过
+- 所有统计检验值(t_stat, p_value, cohens_d, CI)均可溯源到statistical_tests.json
+
+#### 诚信声明 (2026-08-11)
+- ✅ 44_Energy_Anomaly: 负面结果如实报告, TCR-AD未超越IForest基线
+- ✅ 56_PowerConsumption: 数据泄露已修复, R²从0.9997降至0.8692(真实水平)
+- ✅ 64_FlightDelay: 数据泄露已修复, AUC从0.99999降至0.6991(真实水平)
+- ✅ 所有实验数据均可溯源到results/目录下的JSON/CSV文件
+- ✅ 5个随机种子(42,123,456,789,2024)确保统计可靠性
+- ✅ 未编造任何数据, 无法达到的目标如实报告

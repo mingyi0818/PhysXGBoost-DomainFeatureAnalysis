@@ -15,7 +15,7 @@
 
 ## Abstract
 
-Electricity theft detection in smart grids is a critical task for power utilities, as fraudulent consumption causes substantial economic losses and grid instability. Existing deep learning approaches predominantly rely on time-domain features and supervised learning paradigms, neglecting frequency-domain periodicity information and requiring extensive labeled data. In this paper, we propose TCR-AD (Temporal Contrastive Reconstruction for Anomaly Detection), a novel semi-supervised framework that integrates time-frequency dual-domain encoding with contrastive learning and reconstruction-based anomaly scoring. The time-domain encoder employs multi-scale 1D-CNN with residual connections and multi-head self-attention to capture local and global temporal patterns, while the frequency-domain encoder leverages Fast Fourier Transform to extract spectral characteristics. An adaptive gated fusion mechanism learns to balance the contributions of both domains. A joint loss function combining NT-Xent contrastive loss, reconstruction loss, and classification loss enables robust representation learning from both normal and labeled anomalous samples. We provide theoretical guarantees including convergence analysis of the joint loss, a generalization bound based on Rademacher complexity, and a formal proof that the NT-Xent loss maximizes a mutual information lower bound. Experiments on the SGCC dataset (42,372 users, 1,035 days) demonstrate that TCR-AD outperforms six baseline methods. —, —, —, and — are reported with statistical significance tests across five random seeds. Comprehensive ablation studies, parameter sensitivity analysis, and robustness evaluation validate the effectiveness of each component.
+Electricity theft detection in smart grids is a critical task for power utilities, as fraudulent consumption causes substantial economic losses and grid instability. Existing deep learning approaches predominantly rely on time-domain features and supervised learning paradigms, neglecting frequency-domain periodicity information. In this paper, we propose TCR-AD (Temporal Contrastive Reconstruction for Anomaly Detection), a semi-supervised framework that integrates time-frequency dual-domain encoding with contrastive learning and reconstruction-based anomaly scoring. The time-domain encoder employs multi-scale 1D-CNN with residual connections and multi-head self-attention, while the frequency-domain encoder leverages Fast Fourier Transform to extract spectral characteristics. An adaptive gated fusion mechanism balances the contributions of both domains. We provide theoretical guarantees including convergence analysis, a generalization bound based on Rademacher complexity, and a proof that the NT-Xent loss maximizes a mutual information lower bound. Experiments on the SGCC dataset (8,474 sampled consumers, 1,035 days) with five random seeds reveal that TCR-AD achieves an AUC-ROC of 0.5038$\pm$0.0249 and F1-Score of 0.1485$\pm$0.0139, which does not outperform the best baseline IForest (AUC-ROC=0.5256$\pm$0.0259, F1=0.1583$\pm$0.0112). All methods perform near random level (AUC$\approx$0.5). Paired t-tests confirm no statistically significant differences (all $p>0.05$). Ablation studies show that removing the time encoder unexpectedly improves AUC-ROC from 0.5219 to 0.5522. We honestly report these negative results and analyze their causes, providing valuable lessons for future research in electricity theft detection.
 
 **Keywords:** Electricity theft detection; Anomaly detection; Contrastive learning; Time-frequency analysis; Smart grid
 
@@ -49,7 +49,7 @@ Zheng et al. [1] introduced the SGCC dataset and proposed a Wide and Deep CNN ar
 
 Ness [2] proposed a hybrid KNN-LSTM framework, combining traditional machine learning (KNN) with deep learning (LSTM) for electricity theft detection. While achieving an accuracy of 81.32%, the method only reported accuracy without AUC-ROC or F1 scores, and the KNN component introduces significant computational cost during inference. Khalid et al. [3] developed an RNN-BiLSTM-CRF amalgamated deep learning approach for electricity theft detection, employing a sequence labeling paradigm. However, their model architecture is complex, and no theoretical analysis was provided. Zhu et al. [4] proposed a deep active learning approach to reduce the labeling cost for electricity theft detection, demonstrating that active sample selection can achieve comparable performance with fewer labeled instances. Huang et al. [5] introduced a dual-time feature fusion method that combines short-term and long-term temporal features. While their approach improved detection through multi-scale temporal features, it still operated exclusively in the time domain and used fixed-weight fusion.
 
-Chen et al. [6] proposed LoadGuard, an adaptive deep learning framework based on Transformer architecture with Dynamic Weighted Multi-Head Cross-attention (DW-MHC). Although achieving promising results, the method was not evaluated on the SGCC dataset, and the Transformer architecture introduces substantial computational overhead.
+Chen et al. [6] proposed LoadGuard, an adaptive deep learning framework based on Transformer architecture with Dynamic Weighted Multi-Head Cross-attention (DW-MHC). Although achieving promising results, the method was not evaluated on the SGCC dataset, and the Transformer architecture introduces substantial computational overhead. Zhang et al. [24] proposed a Transformer-based electricity theft detection method with attention mechanism, demonstrating the potential of self-attention for capturing temporal dependencies in consumption data. Kim et al. [26] developed an autoencoder ensemble approach to address class imbalance in electricity theft detection. Wang et al. [32] proposed a stacked machine learning and deep learning framework, combining multiple base learners for improved detection accuracy.
 
 #### 1.3.2 Time Series Anomaly Detection Methods
 
@@ -59,11 +59,11 @@ Xu et al. [30] explored whether multimodal Large Language Models can perform tim
 
 #### 1.3.3 Contrastive Learning for Anomaly Detection
 
-Contrastive learning has emerged as a powerful self-supervised representation learning paradigm. Chen et al. [17] introduced SimCLR, establishing the NT-Xent (Normalized Temperature-scaled Cross Entropy) loss as a standard contrastive objective. Oord et al. [18] proposed InfoNCE, establishing the connection between contrastive learning and mutual information maximization. While contrastive learning has been applied to anomaly detection in computer vision and general time series [7, 28], its application to electricity theft detection remains largely unexplored. Li et al. [23] applied self-supervised learning to electricity theft detection on the SGCC dataset, but did not incorporate frequency-domain features or provide theoretical analysis.
+Contrastive learning has emerged as a powerful self-supervised representation learning paradigm. Chen et al. [17] introduced SimCLR, establishing the NT-Xent (Normalized Temperature-scaled Cross Entropy) loss as a standard contrastive objective. Oord et al. [18] proposed InfoNCE, establishing the connection between contrastive learning and mutual information maximization. While contrastive learning has been applied to anomaly detection in computer vision and general time series [7, 28], its application to electricity theft detection remains largely unexplored. Li et al. [23] applied self-supervised learning to electricity theft detection on the SGCC dataset, but did not incorporate frequency-domain features or provide theoretical analysis. Wang et al. [25] applied contrastive learning to power consumption anomaly detection, demonstrating its potential for energy-related tasks.
 
 #### 1.3.4 Classical Anomaly Detection Baselines
 
-Several classical methods serve as standard baselines. One-Class SVM (OCSVM) [13] learns a tight boundary around normal data. Isolation Forest (IForest) [12] isolates anomalies through random partitioning. Autoencoders (AE) [14] detect anomalies through reconstruction error. Variational Autoencoders (VAE) [15] add probabilistic regularization. DAGMM [9] combines deep autoencoding with Gaussian Mixture Models. AnoGAN [10] uses Generative Adversarial Networks for anomaly detection. These methods, while foundational, often struggle with the complex temporal patterns in electricity consumption data.
+Several classical methods serve as standard baselines. One-Class SVM (OCSVM) [13] learns a tight boundary around normal data using kernel methods [31]. Isolation Forest (IForest) [12] isolates anomalies through random partitioning. Autoencoders (AE) [14] detect anomalies through reconstruction error. Variational Autoencoders (VAE) [15] add probabilistic regularization. DAGMM [9] combines deep autoencoding with Gaussian Mixture Models. Generative adversarial network-based approaches [16] have also been explored for anomaly detection [10], though they require significant computational resources for training. Zhao et al. [27] applied GAN-based adversarial training specifically to electricity theft detection. These methods, while foundational, often struggle with the complex temporal patterns in electricity consumption data.
 
 ### 1.4 Contributions
 
@@ -75,7 +75,7 @@ This paper proposes TCR-AD, addressing the aforementioned challenges through the
 
 3. **Theoretical guarantees.** We provide rigorous theoretical analysis: (i) **Theorem 1** proves the convergence of the joint loss function under appropriate learning rate conditions; (ii) **Theorem 2** establishes a generalization bound based on Rademacher complexity; (iii) **Proposition 1** proves that the NT-Xent loss maximizes a mutual information lower bound, providing an information-theoretic foundation for the contrastive component.
 
-4. **Comprehensive experimental evaluation.** We conduct extensive experiments on the SGCC dataset with six baselines, component-level ablation studies, parameter sensitivity analysis with elasticity coefficients, multi-seed statistical significance testing, computational complexity analysis, and robustness evaluation under noise and occlusion.
+4. **Comprehensive experimental evaluation.** We conduct extensive experiments on the SGCC dataset with five baselines, component-level ablation studies, parameter sensitivity analysis with elasticity coefficients, multi-seed statistical significance testing, and computational complexity analysis. All results are honestly reported, including negative findings where TCR-AD does not outperform baselines.
 
 The remainder of this paper is organized as follows. Section 2 presents the methodology with theoretical analysis. Section 3 describes the experimental setup and results. Section 4 discusses the findings and limitations. Section 5 concludes the paper.
 
@@ -106,7 +106,7 @@ The contrastive and reconstruction objectives operate on $\mathcal{D}_n$ (learni
 TCR-AD consists of five components: (1) a **time-domain encoder** $g_t$ that captures local and global temporal patterns through multi-scale CNN and self-attention; (2) a **frequency-domain encoder** $g_f$ that extracts spectral features via FFT; (3) an **adaptive gated fusion** module $g_{\text{fuse}}$ that learns to balance the two domains; (4) a **contrastive projection head** $h_{\text{con}}$ and **reconstruction decoder** $h_{\text{rec}}$ that jointly constrain the embedding space; and (5) a **classification head** $h_{\text{cls}}$ that leverages labeled data. Figure 1 illustrates the overall architecture.
 
 The forward pass proceeds as follows:
-1. Input $\mathbf{x} \in \mathbb{R}^{L_s \times 1}$ is encoded by both encoders: $\mathbf{e}_t = g_t(\mathbf{x}) \in \mathbb{R}^d$, $\mathbf{e}_f = g_f(\mathbf{x}) \in \mathbb{R}^d$, where $d = 128$ is the embedding dimension.
+1. Input $\mathbf{x} \in \mathbb{R}^{L_s \times 1}$ is encoded by both encoders: $\mathbf{e}_t = g_t(\mathbf{x}) \in \mathbb{R}^d$, $\mathbf{e}_f = g_f(\mathbf{x}) \in \mathbb{R}^d$, where $d = 64$ is the embedding dimension.
 2. The fusion module computes adaptive weights and produces a unified embedding: $\mathbf{e} = g_{\text{fuse}}(\mathbf{e}_t, \mathbf{e}_f) \in \mathbb{R}^d$.
 3. The contrastive head projects the embedding: $\mathbf{z} = h_{\text{con}}(\mathbf{e}) \in \mathbb{R}^d$.
 4. The reconstruction decoder reconstructs the input: $\hat{\mathbf{x}} = h_{\text{rec}}(\mathbf{e}) \in \mathbb{R}^{L_s}$.
@@ -121,21 +121,20 @@ The time-domain encoder processes the raw consumption sub-sequence to capture bo
 
 #### 2.3.1 Multi-Scale 1D Convolution
 
-Given input $\mathbf{x} \in \mathbb{R}^{1 \times L_s}$ (single channel), we apply parallel 1D convolutions with kernel sizes $k \in \{3, 5, 7\}$ to capture patterns at different temporal scales. For each kernel size $k$, a stack of convolutional blocks processes the input:
+Given input $\mathbf{x} \in \mathbb{R}^{1 \times L_s}$ (single channel), we apply parallel 1D convolutions with kernel sizes $k \in \{3, 5\}$ to capture patterns at different temporal scales. For each kernel size $k$, a stack of convolutional blocks processes the input:
 
 $$\mathbf{h}^{(k)}_1 = \text{Dropout}\left(\text{LeakyReLU}\left(\text{BN}\left(\text{Conv1D}_k(\mathbf{x}; W^{(k)}_1)\right)\right)\right)$$
 $$\mathbf{h}^{(k)}_2 = \text{Dropout}\left(\text{LeakyReLU}\left(\text{BN}\left(\text{Conv1D}_k(\mathbf{h}^{(k)}_1; W^{(k)}_2)\right)\right)\right)$$
-$$\mathbf{h}^{(k)}_3 = \text{Dropout}\left(\text{LeakyReLU}\left(\text{BN}\left(\text{Conv1D}_k(\mathbf{h}^{(k)}_2; W^{(k)}_3)\right)\right)\right)$$
 
-where the hidden channel dimensions are $[128, 256, 128]$, $\text{BN}$ denotes Batch Normalization, and each convolution uses padding $k // 2$ to preserve the sequence length. The multi-scale outputs are fused via a $1 \times 1$ convolution:
+where the hidden channel dimensions are $[64, 128]$, $\text{BN}$ denotes Batch Normalization, and each convolution uses padding $k // 2$ to preserve the sequence length. The multi-scale outputs are fused via a $1 \times 1$ convolution:
 
-$$\mathbf{h}_{\text{conv}} = \text{LeakyReLU}\left(\text{BN}\left(\text{Conv1D}_1\left([\mathbf{h}^{(3)}; \mathbf{h}^{(5)}; \mathbf{h}^{(7)}]; W_{\text{fuse}}\right)\right)\right) \in \mathbb{R}^{128 \times L_s}$$
+$$\mathbf{h}_{\text{conv}} = \text{LeakyReLU}\left(\text{BN}\left(\text{Conv1D}_1\left([\mathbf{h}^{(3)}; \mathbf{h}^{(5)}]; W_{\text{fuse}}\right)\right)\right) \in \mathbb{R}^{128 \times L_s}$$
 
-where $[\cdot;\cdot;\cdot]$ denotes channel-wise concatenation.
+where $[\cdot;\cdot]$ denotes channel-wise concatenation.
 
 #### 2.3.2 Multi-Head Self-Attention
 
-To capture long-range temporal dependencies, we apply multi-head self-attention with $H = 4$ heads over the convolutional features. The attention mechanism is defined as:
+To capture long-range temporal dependencies, we apply multi-head self-attention [20] with $H = 4$ heads over the convolutional features. The attention mechanism is defined as:
 
 $$\text{Attn}(\mathbf{Q}, \mathbf{K}, \mathbf{V}) = \text{softmax}\left(\frac{\mathbf{Q}\mathbf{K}^\top}{\sqrt{d_k}}\right)\mathbf{V}$$
 
@@ -155,7 +154,7 @@ $$\mathbf{h}_{\text{pool}} = \frac{1}{L_s} \sum_{t=1}^{L_s} \mathbf{h}_{\text{re
 
 The pooled vector is projected to the embedding space:
 
-$$\mathbf{e}_t = \text{LeakyReLU}\left(\text{BN}\left(W_{\text{proj}} \mathbf{h}_{\text{pool}} + \mathbf{b}_{\text{proj}}\right)\right) \in \mathbb{R}^{128}$$
+$$\mathbf{e}_t = \text{LeakyReLU}\left(\text{BN}\left(W_{\text{proj}} \mathbf{h}_{\text{pool}} + \mathbf{b}_{\text{proj}}\right)\right) \in \mathbb{R}^{64}$$
 
 ### 2.4 Frequency-Domain Encoder
 
@@ -171,7 +170,7 @@ The spectral magnitude is extracted as:
 
 $$|\mathbf{X}_f| = \sqrt{\text{Re}(\mathbf{X}_f)^2 + \text{Im}(\mathbf{X}_f)^2} \in \mathbb{R}^{\lfloor L_s/2 \rfloor + 1}$$
 
-We retain the first $n_{\text{bins}} = 128$ frequency bins, corresponding to the lower-frequency components that capture daily, weekly, and seasonal periodicities.
+We retain the first $n_{\text{bins}} = 64$ frequency bins, corresponding to the lower-frequency components that capture daily, weekly, and seasonal periodicities.
 
 #### 2.4.2 L2 Normalization
 
@@ -183,23 +182,23 @@ where $\epsilon = 10^{-8}$ prevents division by zero.
 
 #### 2.4.3 MLP Encoding
 
-The normalized spectral features are encoded through a multi-layer perceptron with hidden dimensions $[128, 64]$:
+The normalized spectral features are encoded through a multi-layer perceptron with hidden dimensions $[64, 32]$:
 
-$$\mathbf{h}_1^f = \text{Dropout}\left(\text{LeakyReLU}\left(\text{BN}\left(W_1^f \tilde{\mathbf{X}}_f + \mathbf{b}_1^f\right)\right)\right) \in \mathbb{R}^{128}$$
-$$\mathbf{h}_2^f = \text{Dropout}\left(\text{LeakyReLU}\left(\text{BN}\left(W_2^f \mathbf{h}_1^f + \mathbf{b}_2^f\right)\right)\right) \in \mathbb{R}^{64}$$
-$$\mathbf{e}_f = W_3^f \mathbf{h}_2^f + \mathbf{b}_3^f \in \mathbb{R}^{128}$$
+$$\mathbf{h}_1^f = \text{Dropout}\left(\text{LeakyReLU}\left(\text{BN}\left(W_1^f \tilde{\mathbf{X}}_f + \mathbf{b}_1^f\right)\right)\right) \in \mathbb{R}^{64}$$
+$$\mathbf{h}_2^f = \text{Dropout}\left(\text{LeakyReLU}\left(\text{BN}\left(W_2^f \mathbf{h}_1^f + \mathbf{b}_2^f\right)\right)\right) \in \mathbb{R}^{32}$$
+$$\mathbf{e}_f = W_3^f \mathbf{h}_2^f + \mathbf{b}_3^f \in \mathbb{R}^{64}$$
 
 ### 2.5 Adaptive Gated Fusion
 
 Rather than using fixed weights or simple concatenation, we employ a learnable gating mechanism that adaptively balances the time-domain and frequency-domain embeddings based on the input characteristics.
 
-Given $\mathbf{e}_t, \mathbf{e}_f \in \mathbb{R}^{128}$, the gate weights are computed as:
+Given $\mathbf{e}_t, \mathbf{e}_f \in \mathbb{R}^{64}$, the gate weights are computed as:
 
 $$\mathbf{g} = \text{Softmax}\left(W_g [\mathbf{e}_t; \mathbf{e}_f] + \mathbf{b}_g\right) \in \mathbb{R}^2$$
 
-where $W_g \in \mathbb{R}^{2 \times 256}$ and $[\mathbf{e}_t; \mathbf{e}_f] \in \mathbb{R}^{256}$ is the concatenation. The fused embedding is:
+where $W_g \in \mathbb{R}^{2 \times 128}$ and $[\mathbf{e}_t; \mathbf{e}_f] \in \mathbb{R}^{128}$ is the concatenation. The fused embedding is:
 
-$$\mathbf{e} = g_1 \cdot \mathbf{e}_t + g_2 \cdot \mathbf{e}_f \in \mathbb{R}^{128}$$
+$$\mathbf{e} = g_1 \cdot \mathbf{e}_t + g_2 \cdot \mathbf{e}_f \in \mathbb{R}^{64}$$
 
 where $g_1, g_2$ are the two components of $\mathbf{g}$ with $g_1 + g_2 = 1$. This design allows the model to dynamically emphasize the time domain for sequences with strong temporal dynamics and the frequency domain for sequences with pronounced periodicity disruptions.
 
@@ -207,9 +206,9 @@ where $g_1, g_2$ are the two components of $\mathbf{g}$ with $g_1 + g_2 = 1$. Th
 
 Following the SimCLR framework [17], we project the fused embedding through a non-linear projection head before computing the contrastive loss:
 
-$$\mathbf{z} = W_2 \text{ReLU}(\text{BN}(W_1 \mathbf{e} + \mathbf{b}_1)) + \mathbf{b}_2 \in \mathbb{R}^{128}$$
+$$\mathbf{z} = W_2 \text{ReLU}(\text{BN}(W_1 \mathbf{e} + \mathbf{b}_1)) + \mathbf{b}_2 \in \mathbb{R}^{64}$$
 
-where $W_1 \in \mathbb{R}^{128 \times 128}$ and $W_2 \in \mathbb{R}^{128 \times 128}$. The projection head maps the representation to a space where contrastive loss is applied, following the finding that contrastive learning benefits from a separate projection space [17].
+where $W_1 \in \mathbb{R}^{64 \times 64}$ and $W_2 \in \mathbb{R}^{64 \times 64}$. The projection head maps the representation to a space where contrastive loss is applied, following the finding that contrastive learning benefits from a separate projection space [17].
 
 ### 2.7 Reconstruction Decoder
 
@@ -219,7 +218,7 @@ $$\mathbf{h}_1^d = \text{LeakyReLU}(\text{BN}(W_1^d \mathbf{e} + \mathbf{b}_1^d)
 $$\mathbf{h}_2^d = \text{LeakyReLU}(\text{BN}(W_2^d \mathbf{h}_1^d + \mathbf{b}_2^d)) \in \mathbb{R}^{512}$$
 $$\hat{\mathbf{x}} = W_3^d \mathbf{h}_2^d + \mathbf{b}_3^d \in \mathbb{R}^{L_s}$$
 
-The expanding architecture (128 $\to$ 256 $\to$ 512 $\to$ $L_s$) ensures sufficient capacity for accurate reconstruction of normal patterns while maintaining a bottleneck in the embedding that prevents trivial identity mapping.
+The expanding architecture (64 $\to$ 256 $\to$ 512 $\to$ $L_s$) ensures sufficient capacity for accurate reconstruction of normal patterns while maintaining a bottleneck in the embedding that prevents trivial identity mapping.
 
 ### 2.8 Classification Head
 
@@ -343,7 +342,7 @@ $$R(f_\theta) \leq \hat{R}(f_\theta) + O\left(\frac{B \cdot M^D \cdot \sqrt{d \c
 
 **Proof.**
 
-*Step 1: Standard Rademacher bound.* By the standard Rademacher complexity generalization bound [22], for any hypothesis class $\mathcal{F}$ and loss function $\ell$ bounded in $[0, 1]$, with probability at least $1 - \delta$:
+*Step 1: Standard Rademacher bound.* By the standard Rademacher complexity generalization bound [21, 22], for any hypothesis class $\mathcal{F}$ and loss function $\ell$ bounded in $[0, 1]$, with probability at least $1 - \delta$:
 
 $$R(f) \leq \hat{R}(f) + 2\mathfrak{R}_n(\mathcal{F}) + \sqrt{\frac{\log(1/\delta)}{2n}}$$
 
@@ -403,7 +402,7 @@ $$I(\mathbf{z}; \mathbf{z}^+) \geq \log K - \mathcal{L}_{\text{NT-Xent}}$$
 
 *Step 4: Interpretation.* Minimizing $\mathcal{L}_{\text{NT-Xent}}$ is equivalent to maximizing the lower bound $\log K - \mathcal{L}_{\text{NT-Xent}}$ on the mutual information $I(\mathbf{z}; \mathbf{z}^+)$. Higher mutual information means that the projections of augmented views retain more shared information, leading to more informative and stable embeddings. For anomaly detection, this ensures that the embedding space captures the essential characteristics of normal consumption patterns, making anomalous patterns more distinguishable. $\square$
 
-**Remark 5.** The number of negative samples $K$ directly affects the tightness of the bound: larger $K$ provides a tighter lower bound on mutual information. In our implementation with batch size $B = 256$, each sample has $K = 2B - 2 = 510$ negatives, providing a tight bound.
+**Remark 5.** The number of negative samples $K$ directly affects the tightness of the bound: larger $K$ provides a tighter lower bound on mutual information. In our implementation with batch size $B = 1024$, each sample has $K = 2B - 2 = 2046$ negatives, providing a tight bound.
 
 ### 2.11 Complexity Analysis
 
@@ -413,13 +412,13 @@ $$I(\mathbf{z}; \mathbf{z}^+) \geq \log K - \mathcal{L}_{\text{NT-Xent}}$$
 
 $$T(n, L) = O(n \cdot L \cdot k \cdot d^2)$$
 
-*where $k$ is the number of convolutional kernel sizes ($k = 3$) and $d$ is the embedding dimension ($d = 128$).*
+*where $k$ is the number of convolutional kernel sizes ($k = 2$) and $d$ is the embedding dimension ($d = 64$).*
 
 **Breakdown:**
 
-1. **Multi-scale CNN:** For each of $k$ kernel sizes, we apply 3 convolutional layers with channel dimensions $[128, 256, 128]$. The time for each convolution is $O(n \cdot L \cdot d_{\text{in}} \cdot d_{\text{out}} \cdot k_i)$. Total: $O(n \cdot L \cdot k \cdot d^2)$.
+1. **Multi-scale CNN:** For each of $k$ kernel sizes, we apply 2 convolutional layers with channel dimensions $[64, 128]$. The time for each convolution is $O(n \cdot L \cdot d_{\text{in}} \cdot d_{\text{out}} \cdot k_i)$. Total: $O(n \cdot L \cdot k \cdot d^2)$.
 
-2. **Multi-head self-attention:** The attention computation involves $O(n \cdot L^2 \cdot d)$ operations for computing attention weights and $O(n \cdot L^2 \cdot d)$ for the value multiplication. Since $L \leq d$ in our setting ($L_s = 256, d = 128$, but the attention is applied over the sequence dimension with $d$-dimensional features), the attention cost is $O(n \cdot L^2 \cdot d) \subseteq O(n \cdot L \cdot k \cdot d^2)$.
+2. **Multi-head self-attention:** The attention computation involves $O(n \cdot L^2 \cdot d)$ operations for computing attention weights and $O(n \cdot L^2 \cdot d)$ for the value multiplication. Since $L \leq d$ in our setting ($L_s = 128, d = 128$ for the attention input dimension, but the attention is applied over the sequence dimension with $d$-dimensional features), the attention cost is $O(n \cdot L^2 \cdot d) \subseteq O(n \cdot L \cdot k \cdot d^2)$.
 
 3. **Frequency encoder:** FFT requires $O(n \cdot L \log L)$ operations, and the MLP requires $O(n \cdot d^2)$. The FFT cost is dominated by the CNN cost.
 
@@ -451,7 +450,7 @@ Total: $S(n, d) = O(n \cdot d + d^2)$ (with gradient checkpointing).
 
 #### 2.11.3 Practical Computational Cost
 
-The model has — parameters. The inference time per sample is — ms. The peak GPU memory during training is — MB. The FLOPs per forward pass are —. These values are measured on an NVIDIA RTX 2000 Pro (16 GB) GPU with batch size 256.
+The model has 412,067 parameters. The inference time per sample is 1.8889 ms. These values are measured on an NVIDIA RTX 2000 Pro (16 GB) GPU with batch size 1024.
 
 ### 2.12 Training Algorithm
 
@@ -462,7 +461,7 @@ The complete training procedure is described in Algorithm 1.
 ```
 Input: Normal set D_n, Labeled set D_l, 
        Hyperparameters: α=0.5, β=0.5, γ=0.2, τ=0.5, 
-       lr=1e-3, wd=1e-5, epochs=50, patience=10, L_s=256
+       lr=1e-3, wd=1e-5, epochs=8, patience=5, L_s=128
 Output: Trained model parameters θ
 
 1:  Initialize model parameters θ randomly
@@ -523,7 +522,7 @@ Output: Trained model parameters θ
 
 ## 3. Experiments
 
-This section presents a comprehensive experimental evaluation of TCR-AD on the SGCC dataset. We compare TCR-AD against six baseline methods, conduct ablation studies to assess component contributions, perform parameter sensitivity analysis with elasticity coefficients, carry out statistical significance testing, analyze computational complexity, and evaluate robustness under noise and occlusion. All experimental results reported in this section use placeholders that will be filled with actual experimental data from the `results/` directory.
+This section presents a comprehensive experimental evaluation of TCR-AD on the SGCC dataset. We compare TCR-AD against five baseline methods, conduct ablation studies to assess component contributions, perform parameter sensitivity analysis with elasticity coefficients, carry out statistical significance testing, and analyze computational complexity.
 
 ### 3.1 Dataset
 
@@ -538,11 +537,11 @@ This section presents a comprehensive experimental evaluation of TCR-AD on the S
 | Normal samples | 38,511 |
 | Anomalous samples (theft) | 3,861 |
 | Anomaly ratio | 9.11% |
-| Sampling ratio (for experiments) | 30% |
-| Sampled consumers | — |
-| Sub-sequence length | 256 |
+| Sampling ratio (for experiments) | 20% |
+| Sampled consumers | 8,474 |
+| Sub-sequence length | 128 |
 
-**Data Preprocessing.** The raw consumption data contains missing values and infinite values, which are handled by column-mean imputation. Global min-max normalization is applied to preserve overall consumption level differences. From each consumer's 1,035-day sequence, a sub-sequence of length 256 is randomly sampled for training. A 30% sampling ratio is used to select consumers, balancing computational efficiency with statistical representativeness.
+**Data Preprocessing.** The raw consumption data contains missing values and infinite values, which are handled by column-mean imputation. Global min-max normalization is applied to preserve overall consumption level differences. From each consumer's 1,035-day sequence, a sub-sequence of length 128 is randomly sampled for training. A 20% sampling ratio is used to select consumers (8,474 out of 42,372), balancing computational efficiency with statistical representativeness.
 
 **Data Splitting.** The data is split into training (70%), validation (15%), and test (15%) sets with stratified sampling to maintain the anomaly ratio across splits. The contrastive and reconstruction losses are computed only on normal samples ($y = 0$) in the training set, while the classification loss uses all labeled samples.
 
@@ -558,11 +557,11 @@ This section presents a comprehensive experimental evaluation of TCR-AD on the S
 
 | Hyperparameter | Value | Description |
 |---------------|-------|-------------|
-| Embedding dimension $d$ | 128 | Unified embedding space dimension |
-| CNN hidden dims | [128, 256, 128] | Time encoder channel dimensions |
-| CNN kernel sizes | [3, 5, 7] | Multi-scale convolution kernels |
+| Embedding dimension $d$ | 64 | Unified embedding space dimension |
+| CNN hidden dims | [64, 128] | Time encoder channel dimensions |
+| CNN kernel sizes | [3, 5] | Multi-scale convolution kernels |
 | Attention heads $H$ | 4 | Number of self-attention heads |
-| Frequency bins | 128 | Number of FFT bins retained |
+| Frequency bins | 64 | Number of FFT bins retained |
 | Contrastive temperature $\tau$ | 0.5 | NT-Xent temperature |
 | Contrastive weight $\alpha$ | 0.5 | Weight for contrastive loss |
 | Reconstruction weight $\beta$ | 0.5 | Weight for reconstruction loss |
@@ -571,22 +570,21 @@ This section presents a comprehensive experimental evaluation of TCR-AD on the S
 | Optimizer | AdamW | Adaptive moment estimation with decoupled weight decay |
 | Learning rate | 1e-3 | Initial learning rate |
 | Weight decay | 1e-5 | L2 regularization |
-| LR scheduler | CosineAnnealing | Cosine annealing with $T_{\max}=50$ |
-| Batch size | 256 | Training batch size |
-| Maximum epochs | 50 | With early stopping |
-| Early stop patience | 10 | Epochs without improvement before stopping |
+| LR scheduler | CosineAnnealing | Cosine annealing with $T_{\max}=8$ |
+| Batch size | 1024 | Training batch size |
+| Maximum epochs | 8 | With early stopping |
+| Early stop patience | 5 | Epochs without improvement before stopping |
 | Gradient clipping | 1.0 | Max gradient norm |
-| Sub-sequence length $L_s$ | 256 | Input sub-sequence length |
+| Sub-sequence length $L_s$ | 128 | Input sub-sequence length |
 | Anomaly threshold | 95th percentile | Determined on validation set |
 
-**Baselines.** We compare TCR-AD against six representative anomaly detection methods:
+**Baselines.** We compare TCR-AD against five representative anomaly detection methods:
 
 1. **OCSVM** [13]: One-Class Support Vector Machine with RBF kernel ($\nu=0.1$, $\gamma=\text{scale}$), trained on normal data only.
 2. **IForest** [12]: Isolation Forest with 100 estimators and contamination rate 0.1, trained on all data.
-3. **AE** [14]: Autoencoder with encoder (256 $\to$ 128 $\to$ 64) and decoder (64 $\to$ 128 $\to$ 256 $\to$ $L_s$), trained on normal data with MSE loss.
+3. **AE** [14]: Autoencoder with encoder ($L_s$ $\to$ 256 $\to$ 128 $\to$ 64) and decoder (64 $\to$ 128 $\to$ 256 $\to$ $L_s$), trained on normal data with MSE loss.
 4. **VAE** [15]: Variational Autoencoder with latent dimension 64, KL divergence weight 0.1, anomaly score = reconstruction error + 0.1 $\times$ KL divergence.
 5. **DAGMM** [9]: Deep Autoencoding Gaussian Mixture Model with 3 mixture components, latent dimension 64.
-6. **AnoGAN** [10]: Anomaly detection with Generative Adversarial Networks, using a discriminator-based residual scoring.
 
 All deep learning baselines (AE, VAE, DAGMM) are trained for 30 epochs with Adam optimizer (lr=1e-3) on normal samples. All methods use the same data splits and sub-sequence length.
 
@@ -595,27 +593,25 @@ All deep learning baselines (AE, VAE, DAGMM) are trained for 30 epochs with Adam
 - **F1-Score**: Harmonic mean of Precision and Recall at the best threshold
 - **Precision**: Fraction of true anomalies among detected anomalies
 - **Recall**: Fraction of true anomalies successfully detected
-- **PR-AUC**: Area Under the Precision-Recall Curve (more informative than AUC-ROC for imbalanced data)
 
 ### 3.3 Comparison Experiment
 
-Table 3 presents the main comparison results of TCR-AD against six baselines on the SGCC test set, averaged over five random seeds ([42, 123, 456, 789, 2024]).
+Table 3 presents the main comparison results of TCR-AD against five baselines on the SGCC test set, averaged over five random seeds ([42, 123, 456, 789, 2024]).
 
 **Table 3: Main Comparison Results (Mean $\pm$ Std over 5 seeds)**
 
-| Method | AUC-ROC | F1-Score | Precision | Recall | PR-AUC |
-|--------|---------|----------|-----------|--------|--------|
-| OCSVM | — $\pm$ — | — $\pm$ — | — | — | — |
-| IForest | — $\pm$ — | — $\pm$ — | — | — | — |
-| AE | — $\pm$ — | — $\pm$ — | — | — | — |
-| VAE | — $\pm$ — | — $\pm$ — | — | — | — |
-| DAGMM | — $\pm$ — | — $\pm$ — | — | — | — |
-| AnoGAN | — $\pm$ — | — $\pm$ — | — | — | — |
-| **TCR-AD (Ours)** | **—** $\pm$ **—** | **—** $\pm$ **—** | **—** | **—** | **—** |
+| Method | AUC-ROC | F1-Score | Precision | Recall |
+|--------|---------|----------|-----------|--------|
+| OCSVM | 0.5130 $\pm$ 0.0352 | **0.1585** $\pm$ 0.0207 | **0.1110** | 0.3164 |
+| IForest | **0.5256** $\pm$ 0.0259 | 0.1583 $\pm$ 0.0112 | 0.0971 | 0.4400 |
+| AE | 0.4976 $\pm$ 0.0283 | 0.1459 $\pm$ 0.0169 | 0.0925 | 0.3727 |
+| VAE | 0.4755 $\pm$ 0.0217 | 0.1490 $\pm$ 0.0111 | 0.0892 | **0.4582** |
+| DAGMM | 0.4986 $\pm$ 0.0278 | 0.1470 $\pm$ 0.0178 | 0.0957 | 0.3382 |
+| TCR-AD (Ours) | 0.5038 $\pm$ 0.0249 | 0.1485 $\pm$ 0.0139 | 0.0962 | 0.3636 |
 
-*Note: Bold values indicate the best performance. All results are on the test set. Source: `results/tables/main_comparison_summary.csv`*
+*Note: Bold values indicate the best performance in each column. All results are on the test set. All methods perform near random level (AUC$\approx$0.5), indicating that electricity theft detection on the SGCC dataset remains a challenging problem.*
 
-**Figure 2** presents a bar chart comparing the AUC-ROC and F1-Score of all methods, with error bars showing the standard deviation across five seeds. —
+**Figure 2** presents a bar chart comparing the AUC-ROC and F1-Score of all methods, with error bars showing the standard deviation across five seeds. The results show that all methods achieve AUC-ROC values close to 0.5, indicating near-random performance. TCR-AD does not outperform the best baseline (IForest) in AUC-ROC, and its F1-Score is also not the highest among the compared methods.
 
 ### 3.4 Ablation Study
 
@@ -625,22 +621,18 @@ To evaluate the contribution of each component, we conduct a comprehensive ablat
 
 | Variant | AUC-ROC | F1-Score | $\Delta$ AUC | $\Delta$ F1 |
 |---------|---------|----------|-------------|------------|
-| Full TCR-AD | — | — | — | — |
-| w/o Time Encoder | — | — | — | — |
-| w/o Freq Encoder | — | — | — | — |
-| w/o Contrastive Loss | — | — | — | — |
-| w/o Reconstruction Loss | — | — | — | — |
-| w/o Classification Head | — | — | — | — |
-| w/o Adaptive Fusion (concat) | — | — | — | — |
-| w/o Adaptive Fusion (fixed 0.5) | — | — | — | — |
+| Full TCR-AD | 0.5219 | 0.1617 | — | — |
+| w/o Time Encoder | 0.5522 | 0.1818 | +0.0303 | +0.0201 |
+| w/o Freq Encoder | 0.5231 | 0.1657 | +0.0012 | +0.0040 |
+| w/o Contrastive (Recon only) | 0.5241 | 0.1594 | +0.0022 | -0.0023 |
 
-*Source: `results/tables/ablation_results.csv`*
+*Note: All ablation experiments use seed 42. $\Delta$ values are relative to Full TCR-AD. Notably, removing the Time Encoder improves AUC-ROC by 0.0303 and F1-Score by 0.0201, suggesting that the time encoder may introduce noise or overfitting in this setting.*
 
-**Figure 3** shows the ablation study results as a grouped bar chart, illustrating the performance drop when each component is removed. —
+**Figure 3** shows the ablation study results as a grouped bar chart. Contrary to expectations, removing components does not consistently degrade performance. The most striking finding is that removing the Time Encoder yields the highest AUC-ROC (0.5522) and F1-Score (0.1818), outperforming the full model. This unexpected result is discussed in detail in Section 4.
 
 ### 3.5 Parameter Sensitivity Analysis
 
-We analyze the sensitivity of TCR-AD to five key hyperparameters using the elasticity coefficient, defined as:
+We analyze the sensitivity of TCR-AD to two key hyperparameters using the elasticity coefficient, defined as:
 
 $$E = \left|\frac{\Delta \text{AUC} / \text{AUC}_{\text{best}}}{\Delta p / p_{\text{best}}}\right|$$
 
@@ -650,15 +642,12 @@ where $p_{\text{best}}$ is the best-performing parameter value and $\Delta p$ is
 
 | Parameter | Range Tested | Best Value | AUC at Best | AUC Range | Elasticity $E$ | Sensitivity |
 |-----------|--------------|------------|-------------|-----------|----------------|-------------|
-| Learning rate | [1e-4, 1e-3, 5e-3, 1e-2] | 1e-3 | — | — | — | — |
-| Contrastive temp $\tau$ | [0.1, 0.3, 0.5, 0.7, 1.0] | 0.5 | — | — | — | — |
-| Contrastive weight $\alpha$ | [0.0, 0.25, 0.5, 0.75, 1.0] | 0.5 | — | — | — | — |
-| Embedding dim $d$ | [32, 64, 128, 256] | 128 | — | — | — | — |
-| Sub-seq length $L_s$ | [64, 128, 256, 512] | 256 | — | — | — | — |
+| Embedding dim $d$ | [32, 64, 128, 256] | 256 | 0.5212 | [0.5199, 0.5212] | 0.0029 | Low |
+| Contrastive weight $\alpha$ | [0.0, 0.25, 0.75, 1.0] | 0.25 | 0.5217 | [0.5166, 0.5217] | 0.0024 | Low |
 
-*Source: `results/tables/sensitivity_all.csv`*
+*Note: Elasticity $E$ is computed using the full range of parameter values tested. Both parameters show Low sensitivity ($E < 0.2$), indicating that TCR-AD's performance is relatively insensitive to these hyperparameters within the tested ranges. This is consistent with the overall near-random performance observed across all configurations.*
 
-**Figure 4** shows the parameter sensitivity analysis as line plots, with AUC-ROC on the y-axis and each parameter value on the x-axis. —
+**Figure 4** shows the parameter sensitivity analysis as line plots, with AUC-ROC on the y-axis and each parameter value on the x-axis. The AUC-ROC values remain within a narrow band (0.5166-0.5217) across all parameter settings, further confirming the model's insensitivity to these hyperparameters.
 
 ### 3.6 Statistical Analysis
 
@@ -670,15 +659,12 @@ All experiments are repeated with five random seeds: [42, 123, 456, 789, 2024]. 
 
 | Method | Seed 42 | Seed 123 | Seed 456 | Seed 789 | Seed 2024 | Mean $\pm$ Std |
 |--------|---------|----------|----------|----------|-----------|----------------|
-| OCSVM | — | — | — | — | — | — $\pm$ — |
-| IForest | — | — | — | — | — | — $\pm$ — |
-| AE | — | — | — | — | — | — $\pm$ — |
-| VAE | — | — | — | — | — | — $\pm$ — |
-| DAGMM | — | — | — | — | — | — $\pm$ — |
-| AnoGAN | — | — | — | — | — | — $\pm$ — |
-| TCR-AD | — | — | — | — | — | — $\pm$ — |
-
-*Source: `results/tables/main_comparison.csv`*
+| OCSVM | 0.4585 | 0.5419 | 0.5417 | 0.5394 | 0.4833 | 0.5130 $\pm$ 0.0352 |
+| IForest | 0.5227 | 0.5511 | 0.4967 | 0.5592 | 0.4984 | 0.5256 $\pm$ 0.0259 |
+| AE | 0.5240 | 0.4559 | 0.4824 | 0.4922 | 0.5335 | 0.4976 $\pm$ 0.0283 |
+| VAE | 0.4609 | 0.4902 | 0.4813 | 0.4420 | 0.5030 | 0.4755 $\pm$ 0.0217 |
+| DAGMM | 0.5244 | 0.4555 | 0.4848 | 0.4957 | 0.5326 | 0.4986 $\pm$ 0.0278 |
+| TCR-AD | 0.5219 | 0.4731 | 0.4807 | 0.5031 | 0.5399 | 0.5038 $\pm$ 0.0249 |
 
 #### 3.6.2 Paired t-Test
 
@@ -688,116 +674,42 @@ We conduct paired t-tests between TCR-AD and each baseline on the AUC-ROC scores
 
 | Comparison | TCR-AD Mean | Baseline Mean | $t$-statistic | $df$ | $p$-value | Significant ($p < 0.05$)? | Cohen's $d$ |
 |-----------|-------------|---------------|---------------|------|-----------|---------------------------|-------------|
-| TCR-AD vs OCSVM | — | — | — | 4 | — | — | — |
-| TCR-AD vs IForest | — | — | — | 4 | — | — | — |
-| TCR-AD vs AE | — | — | — | 4 | — | — | — |
-| TCR-AD vs VAE | — | — | — | 4 | — | — | — |
-| TCR-AD vs DAGMM | — | — | — | 4 | — | — | — |
-| TCR-AD vs AnoGAN | — | — | — | 4 | — | — | — |
+| TCR-AD vs OCSVM | 0.5038 | 0.5130 | -0.3201 | 4 | 0.7649 | No | 0.1601 |
+| TCR-AD vs IForest | 0.5038 | 0.5256 | -1.0413 | 4 | 0.3565 | No | 0.5206 |
+| TCR-AD vs AE | 0.5038 | 0.4976 | 1.6553 | 4 | 0.1732 | No | 0.8276 |
+| TCR-AD vs VAE | 0.5038 | 0.4755 | 1.7672 | 4 | 0.1519 | No | 0.8836 |
+| TCR-AD vs DAGMM | 0.5038 | 0.4986 | 1.3131 | 4 | 0.2594 | No | 0.6566 |
 
-*Source: `results/tables/statistical_tests.csv`. Cohen's $d$ effect size: small ($d \approx 0.2$), medium ($d \approx 0.5$), large ($d \approx 0.8$).*
+*Note: None of the comparisons reach statistical significance ($p < 0.05$). Cohen's $d$ effect size: small ($d \approx 0.2$), medium ($d \approx 0.5$), large ($d \approx 0.8$). While TCR-AD shows medium-to-large effect sizes compared to AE, VAE, and DAGMM, the small sample size ($n=5$) limits statistical power.*
 
 #### 3.6.3 95% Confidence Intervals
 
-**Table 8: 95% Confidence Intervals for AUC-ROC**
+**Table 8: 95% Confidence Intervals for AUC-ROC Differences (TCR-AD vs Baselines)**
 
-| Method | Mean | Std | 95% CI Lower | 95% CI Upper | CI Width |
-|--------|------|-----|-------------|-------------|----------|
-| OCSVM | — | — | — | — | — |
-| IForest | — | — | — | — | — |
-| AE | — | — | — | — | — |
-| VAE | — | — | — | — | — |
-| DAGMM | — | — | — | — | — |
-| AnoGAN | — | — | — | — | — |
-| TCR-AD | — | — | — | — | — |
+| Comparison | Mean Diff | 95% CI Lower | 95% CI Upper | CI Width | Contains 0? |
+|-----------|-----------|-------------|-------------|----------|-------------|
+| TCR-AD vs OCSVM | -0.0092 | -0.0657 | 0.0472 | 0.1129 | Yes |
+| TCR-AD vs IForest | -0.0219 | -0.0630 | 0.0193 | 0.0823 | Yes |
+| TCR-AD vs AE | 0.0061 | -0.0011 | 0.0134 | 0.0145 | Yes |
+| TCR-AD vs VAE | 0.0283 | -0.0031 | 0.0597 | 0.0628 | Yes |
+| TCR-AD vs DAGMM | 0.0051 | -0.0025 | 0.0128 | 0.0153 | Yes |
 
-*Confidence level: 95%, computed using $t$-distribution with $df = 4$.*
-
-#### 3.6.4 ANOVA for Ablation Study
-
-We perform one-way ANOVA on the ablation study variants to test whether the differences between configurations are statistically significant.
-
-**Table 9: ANOVA Results for Ablation Study**
-
-| Source | SS | $df$ | MS | $F$-statistic | $p$-value |
-|--------|-----|------|-----|---------------|-----------|
-| Between groups | — | — | — | — | — |
-| Within groups | — | — | — | — | — |
-| Total | — | — | — | — | — |
-
-*Source: `results/tables/ablation_anova.csv`. Post-hoc Bonferroni-corrected pairwise comparisons are reported in the supplementary materials.*
+*Note: Mean Diff = TCR-AD mean AUC $-$ Baseline mean AUC. All 95% confidence intervals contain zero, confirming that no statistically significant difference exists between TCR-AD and any baseline at the 0.05 significance level.*
 
 ### 3.7 Computational Complexity Analysis
 
-**Table 10: Computational Complexity Comparison**
+**Table 9: Computational Complexity Comparison**
 
-| Method | Parameters | Training Time (s) | Inference Time (ms/sample) | Peak Memory (MB) | FLOPs/sample |
-|--------|-----------|-------------------|---------------------------|-----------------|-------------|
-| OCSVM | N/A | — | — | — | N/A |
-| IForest | N/A | — | — | — | N/A |
-| AE | — | — | — | — | — |
-| VAE | — | — | — | — | — |
-| DAGMM | — | — | — | — | — |
-| AnoGAN | — | — | — | — | — |
-| TCR-AD | — | — | — | — | — |
+| Method | Parameters | Training Time (s) | Inference Time (ms/sample) |
+|--------|-----------|-------------------|---------------------------|
+| IForest | N/A | 0.168 | N/A |
+| OCSVM | N/A | 2.03 | N/A |
+| AE | 148,416 | 10.20 | 0.1092 |
+| VAE | 156,672 | 11.26 | 0.1385 |
+| DAGMM | 149,119 | 11.62 | 0.1842 |
+| TCR-AD | 412,067 | 44.71 | 1.8889 |
 
-*Source: `results/tables/complexity_analysis.csv`. Training time is for 50 epochs (or convergence). Inference time is averaged over 100 forward passes (excluding warmup).*
-
-**Table 11: Edge Deployment Analysis**
-
-| Metric | TCR-AD | AE | VAE | DAGMM |
-|--------|--------|-----|-----|-------|
-| Model size (MB) | — | — | — | — |
-| Inference time (ms) | — | — | — | — |
-| Throughput (samples/s) | — | — | — | — |
-| Energy estimate (J/sample) | — | — | — | — |
-
-### 3.8 Robustness Analysis
-
-We evaluate the robustness of TCR-AD and baselines under two types of perturbations: (1) additive Gaussian noise injected into the input, and (2) random occlusion (masking) of input segments.
-
-#### 3.8.1 Noise Robustness
-
-**Table 12: Robustness to Additive Gaussian Noise (AUC-ROC)**
-
-| Noise Level ($\sigma$) | OCSVM | IForest | AE | VAE | DAGMM | AnoGAN | TCR-AD |
-|------------------------|-------|---------|-----|-----|-------|--------|--------|
-| 0.00 (clean) | — | — | — | — | — | — | — |
-| 0.01 | — | — | — | — | — | — | — |
-| 0.03 | — | — | — | — | — | — | — |
-| 0.05 | — | — | — | — | — | — | — |
-| 0.10 | — | — | — | — | — | — | — |
-
-*Source: `results/tables/robustness_noise.csv`*
-
-#### 3.8.2 Occlusion Robustness
-
-**Table 13: Robustness to Random Occlusion (AUC-ROC)**
-
-| Occlusion Ratio | OCSVM | IForest | AE | VAE | DAGMM | AnoGAN | TCR-AD |
-|-----------------|-------|---------|-----|-----|-------|--------|--------|
-| 0% | — | — | — | — | — | — | — |
-| 5% | — | — | — | — | — | — | — |
-| 10% | — | — | — | — | — | — | — |
-| 15% | — | — | — | — | — | — | — |
-| 20% | — | — | — | — | — | — | — |
-
-*Source: `results/tables/robustness_occlusion.csv`*
-
-### 3.9 Practical Case Study
-
-To demonstrate the practical applicability of TCR-AD, we present a case study analyzing detected anomalies in the SGCC dataset.
-
-**Case Study: Detection of Periodicity-Disrupting Theft.** We examine a consumer flagged as anomalous by TCR-AD but missed by the AE baseline. The consumer's consumption pattern shows a gradual reduction starting around day 400, which disrupts the weekly periodicity visible in the frequency domain. TCR-AD's frequency encoder captures this periodicity disruption, while the time encoder detects the gradual declining trend. The adaptive fusion assigns a higher weight to the frequency domain for this consumer, demonstrating the benefit of dual-domain encoding. —
-
-**Deployment Cost Analysis:**
-
-| Cost Component | Description | Estimate |
-|---------------|-------------|----------|
-| Hardware cost | GPU server for training + edge device for inference | — |
-| Training time | Full model training on SGCC | — hours |
-| Maintenance cost | Monthly model retraining | — |
-| Inference latency | Per-consumer scoring | — ms |
+*Note: Training time is averaged over 5 seeds. Inference time is per sample, averaged over 100 forward passes. TCR-AD has approximately 2.7x more parameters than the deep learning baselines (AE, VAE, DAGMM) and 17.3x slower inference time than AE, primarily due to the multi-scale CNN, self-attention, and dual-encoder architecture.*
 
 **Ethical and Social Considerations:**
 - **Data privacy**: Consumption data is pseudonymized and aggregated; individual consumer identities are protected.
@@ -810,63 +722,69 @@ To demonstrate the practical applicability of TCR-AD, we present a case study an
 
 ### 4.1 Analysis of Comparison Results
 
-The main comparison results in Table 3 demonstrate that TCR-AD achieves the highest AUC-ROC and F1-Score among all seven methods. —
+The main comparison results in Table 3 reveal a sobering finding: TCR-AD does not outperform the baseline methods. With an AUC-ROC of 0.5038$\pm$0.0249, TCR-AD ranks third among the six methods, behind IForest (0.5256$\pm$0.0259) and OCSVM (0.5130$\pm$0.0352), but ahead of DAGMM (0.4986$\pm$0.0278), AE (0.4976$\pm$0.0283), and VAE (0.4755$\pm$0.0217). More critically, all methods achieve AUC-ROC values close to 0.5, indicating near-random classification performance on this task. The F1-Score of TCR-AD (0.1485$\pm$0.0139) is also not the highest, with OCSVM achieving the best F1-Score (0.1585$\pm$0.0207).
 
-The performance advantage of TCR-AD over classical methods (OCSVM, IForest) can be attributed to its ability to learn complex non-linear representations of consumption patterns. OCSVM and IForest operate on the raw 1035-dimensional input space, where the curse of dimensionality limits their effectiveness. In contrast, TCR-AD projects the input into a 128-dimensional embedding space where normal patterns are tightly clustered due to the contrastive loss, enabling more effective anomaly separation.
+The paired t-tests (Table 7) confirm that none of the differences between TCR-AD and any baseline are statistically significant (all $p > 0.05$). While TCR-AD shows medium-to-large Cohen's $d$ effect sizes compared to AE ($d = 0.8276$), VAE ($d = 0.8836$), and DAGMM ($d = 0.6566$), the small sample size ($n = 5$ seeds) limits statistical power, and all 95% confidence intervals for the AUC-ROC differences contain zero (Table 8).
 
-Among deep learning baselines, TCR-AD outperforms AE and VAE by — and — in AUC-ROC, respectively. This improvement stems from two key factors: (1) the dual-domain encoding captures both temporal dynamics and spectral periodicity, whereas AE and VAE only process the raw time-domain signal; and (2) the contrastive loss regularizes the embedding space to prevent over-reconstruction of anomalous samples, a common failure mode of pure reconstruction-based methods.
+Several factors may explain why all methods perform near random level:
 
-DAGMM, which combines autoencoding with Gaussian Mixture modeling, shows competitive performance but is limited by its assumption that the latent space follows a Gaussian mixture distribution. TCR-AD relaxes this assumption by using the more flexible contrastive learning framework. AnoGAN, while theoretically capable of modeling complex distributions, suffers from training instability inherent in GAN-based methods, resulting in —.
+1. **Fundamental difficulty of the task.** Electricity theft patterns in the SGCC dataset may not be sufficiently distinguishable from normal consumption patterns using single-sequence sub-sequence features. The anomaly ratio of 9.11% and the high variability in normal consumption patterns make discrimination extremely challenging.
+
+2. **Sub-sequence sampling limitation.** Each consumer's 1,035-day sequence is represented by a single random sub-sequence of length 128. This sampling may miss the critical time windows where theft occurs, effectively reducing the signal-to-noise ratio.
+
+3. **Reconstruction-based scoring inadequacy.** TCR-AD, AE, VAE, and DAGMM all rely on reconstruction error as the anomaly score. If theft patterns are subtly embedded within normal-looking consumption sequences, reconstruction-based methods cannot distinguish them. IForest, which uses isolation-based scoring rather than reconstruction, achieves the best AUC-ROC, suggesting that isolation-based approaches may be more suitable for this task.
+
+4. **Insufficient training.** With only 8 maximum epochs and early stopping (patience = 5), TCR-AD may not have sufficient training to learn discriminative representations. The complex architecture (412,067 parameters) requires more training data and epochs to converge effectively.
 
 ### 4.2 Analysis of Ablation Results
 
-The ablation study (Table 4) reveals the contribution of each component:
+The ablation study (Table 4) yields unexpected and concerning results. Contrary to our hypotheses, removing components does not consistently degrade performance:
 
-- **Frequency encoder**: Removing the frequency encoder causes a AUC-ROC drop of —, confirming that frequency-domain features provide complementary information that is not captured by the time-domain encoder alone. This validates our core hypothesis that electricity consumption periodicity, more naturally represented in the frequency domain, is a strong indicator of normal behavior.
+- **Time Encoder**: Removing the time encoder *improves* AUC-ROC from 0.5219 to 0.5522 (+0.0303) and F1-Score from 0.1617 to 0.1818 (+0.0201). This is the most striking finding, as the time encoder is a core component of the proposed architecture. This suggests that the multi-scale CNN and self-attention may be introducing noise or overfitting, and the frequency encoder alone provides more useful signals for anomaly detection in this setting.
 
-- **Time encoder**: Removing the time encoder results in a AUC-ROC drop of —. While the frequency encoder alone captures periodicity, it loses local temporal dynamics (e.g., sudden consumption spikes or drops) that are critical for detecting certain theft patterns.
+- **Frequency Encoder**: Removing the frequency encoder slightly improves AUC-ROC from 0.5219 to 0.5231 (+0.0012) and F1-Score from 0.1617 to 0.1657 (+0.0040). The minimal change suggests that the frequency encoder contributes little additional information beyond what the time encoder captures, contradicting our hypothesis about the complementary nature of time-frequency dual-domain encoding.
 
-- **Contrastive loss**: Removing the contrastive loss ($\alpha = 0$) leads to a AUC-ROC drop of —, demonstrating that contrastive learning effectively constrains the embedding space and prevents the reconstruction decoder from over-fitting to anomalous patterns. This addresses Challenge 3 (reconstruction over-fitting) identified in Section 1.
+- **Contrastive Loss**: Removing the contrastive loss slightly improves AUC-ROC from 0.5219 to 0.5241 (+0.0022) but slightly decreases F1-Score from 0.1617 to 0.1594 (-0.0023). The contrastive loss does not appear to provide the intended regularization benefit, possibly because the augmentation strategy does not generate sufficiently diverse views, or because the reconstruction objective already provides adequate regularization.
 
-- **Reconstruction loss**: Removing the reconstruction loss ($\beta = 0$) leads to a AUC-ROC drop of —, confirming that the reconstruction objective ensures the embeddings retain sufficient information for anomaly scoring. Without reconstruction, the contrastive loss alone may collapse to a trivial solution where all normal samples map to a single point.
-
-- **Classification head**: Removing the classification head ($\gamma = 0$) results in a AUC-ROC drop of —, showing that leveraging labeled data in a semi-supervised manner provides valuable guidance for feature learning.
-
-- **Adaptive fusion**: Replacing the adaptive gated fusion with concatenation or fixed-weight (0.5/0.5) fusion results in AUC-ROC drops of — and —, respectively. This confirms that the adaptive mechanism is essential for optimally balancing time-domain and frequency-domain features across diverse consumption patterns.
+These ablation results challenge the core design assumptions of TCR-AD. The fact that simpler configurations (particularly frequency-encoder-only) outperform the full model suggests that the architectural complexity may be counterproductive for this specific task and dataset.
 
 ### 4.3 Analysis of Parameter Sensitivity
 
-The parameter sensitivity analysis (Table 5) reveals that TCR-AD is —. The learning rate shows — sensitivity with elasticity $E = $ —, indicating that —. The contrastive temperature $\tau$ exhibits — sensitivity, as it directly controls the sharpness of the similarity distribution in the contrastive loss. The embedding dimension $d$ shows — sensitivity, suggesting that 128 dimensions provide sufficient representational capacity without excessive parameters.
+The parameter sensitivity analysis (Table 5) shows that both tested parameters exhibit Low sensitivity ($E < 0.2$): embedding dimension ($E = 0.0029$) and contrastive weight ($E = 0.0024$). The AUC-ROC values remain within a narrow band (0.5166-0.5217) across all parameter settings. This insensitivity is consistent with the overall near-random performance: when the model cannot effectively discriminate between normal and anomalous samples, varying hyperparameters has minimal impact on the already-low AUC-ROC.
 
-### 4.4 Analysis of Robustness
+### 4.4 Analysis of Computational Complexity
 
-The robustness analysis (Tables 12-13) demonstrates that TCR-AD maintains — performance under both noise and occlusion perturbations. The multi-scale CNN architecture inherently provides robustness to local perturbations through its hierarchical feature extraction, while the frequency encoder is naturally robust to additive noise in the time domain (as noise primarily affects high-frequency components, while the lower-frequency periodicity information is preserved). The adaptive fusion mechanism further enhances robustness by dynamically down-weighting the more corrupted domain.
+The complexity analysis (Table 9) reveals that TCR-AD incurs significant computational overhead compared to baselines. With 412,067 parameters, TCR-AD has approximately 2.7x more parameters than AE (148,416), VAE (156,672), and DAGMM (149,119). The training time of 44.71s is 4.4x longer than AE (10.20s) and 266x longer than IForest (0.168s). The inference time of 1.8889 ms/sample is 17.3x slower than AE (0.1092 ms). Given that TCR-AD does not achieve better performance than these simpler and faster baselines, the additional computational cost is not justified.
 
 ### 4.5 Limitations
 
-Despite the promising results, TCR-AD has several limitations:
+The experimental results reveal several fundamental limitations of TCR-AD:
 
-1. **Sub-sequence sampling bias.** The random sub-sequence sampling strategy may miss anomalous segments that occur outside the sampled window. A more sophisticated sampling strategy (e.g., attention-based or sliding window) could improve detection of localized anomalies.
+1. **Ineffective dual-domain encoding.** The time-frequency dual-domain encoding, a core contribution of this work, does not improve detection performance. The ablation study shows that the time encoder may even be harmful, and the frequency encoder alone performs comparably to the full model. This contradicts our hypothesis that combining time and frequency domains would capture complementary information.
 
-2. **Single-dataset evaluation.** Experiments are conducted only on the SGCC dataset. Evaluation on additional electricity theft datasets (e.g., Irish CER dataset) would strengthen the generalizability claims.
+2. **Ineffective contrastive learning.** The contrastive loss does not provide the expected regularization benefit. Removing it does not degrade performance, suggesting that the NT-Xent contrastive objective may not be suitable for this task, or that the data augmentation strategy is inadequate.
 
-3. **Computational overhead.** The dual-encoder architecture and self-attention mechanism introduce — more parameters than simple AE/VAE baselines. For resource-constrained edge deployment, model compression techniques (quantization, pruning) may be necessary.
+3. **Near-random performance.** All methods, including TCR-AD, achieve AUC-ROC values close to 0.5, indicating that the task setup (single sub-sequence per consumer, reconstruction-based scoring) may be fundamentally limited. The SGCC dataset may require different feature representations or multi-sequence aggregation to achieve meaningful detection.
 
-4. **Static threshold.** The anomaly threshold is determined as a fixed percentile of validation scores. An adaptive thresholding mechanism that accounts for temporal drift in consumption patterns could improve long-term deployment performance.
+4. **Sub-sequence sampling bias.** The random sub-sequence sampling strategy (length 128 from 1,035 days) may miss anomalous segments. A sliding-window or multi-sequence approach could provide more comprehensive coverage.
 
-5. **Semi-supervised assumption.** The classification head assumes access to some labeled anomalous samples. In fully unsupervised settings (zero labeled anomalies), the classification loss cannot be applied, potentially reducing performance.
+5. **Insufficient training.** With only 8 epochs and early stopping (patience = 5), the model may be undertrained. The complex architecture requires more training to learn effective representations.
 
-6. **Scalability.** The current implementation processes one sub-sequence per consumer. For very large-scale deployment (millions of consumers), distributed computing or approximate nearest neighbor methods for the contrastive loss would be needed.
+6. **Single-dataset evaluation.** Experiments are conducted only on the SGCC dataset. The negative results may be specific to this dataset's characteristics and may not generalize to other electricity theft detection scenarios.
+
+7. **Scalability concerns.** TCR-AD's 412,067 parameters and 44.71s training time per seed make it significantly more expensive than simpler baselines that achieve comparable or better performance.
 
 ---
 
 ## 5. Conclusion
 
-This paper proposed TCR-AD (Temporal Contrastive Reconstruction for Anomaly Detection), a novel semi-supervised framework for electricity theft detection that addresses the limitations of existing single-domain, supervised approaches. The key innovations include: (1) a time-frequency dual-domain encoder with multi-scale CNN, self-attention, and FFT-based spectral extraction, coupled through an adaptive gated fusion mechanism; (2) a joint optimization framework combining NT-Xent contrastive loss, reconstruction loss, and classification loss that prevents reconstruction over-fitting while leveraging limited labeled data; and (3) rigorous theoretical analysis including convergence guarantees (Theorem 1), Rademacher complexity-based generalization bounds (Theorem 2), and an information-theoretic proof that NT-Xent maximizes a mutual information lower bound (Proposition 1).
+This paper proposed TCR-AD (Temporal Contrastive Reconstruction for Anomaly Detection), a semi-supervised framework for electricity theft detection that integrates time-frequency dual-domain encoding, contrastive learning, and reconstruction-based anomaly scoring. The framework features a multi-scale CNN time encoder with self-attention, an FFT-based frequency encoder, an adaptive gated fusion mechanism, and a joint loss function combining NT-Xent contrastive loss, reconstruction loss, and classification loss. We also provided theoretical analysis including convergence guarantees, Rademacher complexity-based generalization bounds, and an information-theoretic proof that NT-Xent maximizes a mutual information lower bound.
 
-Experiments on the SGCC dataset (42,372 consumers, 1,035 days) demonstrate that TCR-AD outperforms six baseline methods (OCSVM, IForest, AE, VAE, DAGMM, AnoGAN) with an AUC-ROC of — and F1-Score of —, achieving statistically significant improvements ($p < $ —) across five random seeds. Comprehensive ablation studies confirm the contribution of each component, parameter sensitivity analysis with elasticity coefficients identifies the most critical hyperparameters, and robustness evaluation under noise and occlusion demonstrates the model's resilience to input perturbations.
+However, experiments on the SGCC dataset (8,474 sampled consumers, 1,035 days) with five random seeds yield negative results. TCR-AD achieves an AUC-ROC of 0.5038$\pm$0.0249 and F1-Score of 0.1485$\pm$0.0139, which does not outperform the best baseline IForest (AUC-ROC = 0.5256$\pm$0.0259). All methods perform near random level (AUC $\approx$ 0.5), and paired t-tests confirm no statistically significant differences (all $p > 0.05$). The ablation study reveals that removing the time encoder unexpectedly improves AUC-ROC from 0.5219 to 0.5522, challenging the core architectural assumptions. TCR-AD also incurs significant computational overhead (412,067 parameters, 44.71s training time, 1.8889 ms inference time) without performance benefits.
 
-**Future work** includes: (1) extending the framework to multivariate time series by incorporating cross-consumer correlation through graph neural networks; (2) developing adaptive thresholding mechanisms that account for temporal concept drift in consumption patterns; (3) exploring federated learning variants for privacy-preserving cross-utility anomaly detection; (4) investigating lightweight architectures (e.g., knowledge distillation, neural architecture search) for edge deployment on smart meters; and (5) applying the TCR-AD framework to other domains with periodic time series, such as water consumption monitoring and gas distribution networks.
+We honestly report these negative results as they provide valuable lessons for the research community: (1) architectural complexity does not necessarily translate to better performance on electricity theft detection; (2) reconstruction-based anomaly scoring may be fundamentally limited for this task, as suggested by IForest's superior performance; (3) contrastive learning with standard data augmentation may not provide useful regularization for consumption time series; and (4) single sub-sequence sampling may be insufficient to capture theft patterns embedded in long consumption sequences.
+
+**Future work** includes: (1) exploring multi-sequence or sliding-window approaches to provide more comprehensive temporal coverage; (2) investigating alternative anomaly scoring mechanisms beyond reconstruction error, such as isolation-based or density-based methods; (3) developing domain-specific data augmentation strategies for electricity consumption time series; (4) evaluating on additional datasets to assess whether the negative results are SGCC-specific; (5) exploring supervised approaches that leverage the available labels more effectively; and (6) investigating whether graph-based methods capturing cross-consumer correlations can improve detection performance.
 
 ---
 

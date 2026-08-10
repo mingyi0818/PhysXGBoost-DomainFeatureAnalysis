@@ -286,15 +286,15 @@ def nt_xent_loss(z1, z2, temperature=CONTRASTIVE_TEMPERATURE):
     # Compute similarity matrix
     sim = torch.mm(z, z.t()) / temperature  # (2*batch, 2*batch)
     
-    # Mask out self-similarity
+    # Mask out self-similarity (use float16-safe value for mixed precision)
     mask = torch.eye(2 * batch_size, device=z.device).bool()
-    sim = sim.masked_fill(mask, -1e9)
+    sim = sim.masked_fill(mask, -1e4)
     
-    # Positive pairs: (i, i+batch) and (i+batch, i)
+    # Positive pairs: (i, i+batch) and (i+batch, i) — vectorized
     pos_mask = torch.zeros(2 * batch_size, 2 * batch_size, device=z.device)
-    for i in range(batch_size):
-        pos_mask[i, i + batch_size] = 1
-        pos_mask[i + batch_size, i] = 1
+    idx = torch.arange(batch_size, device=z.device)
+    pos_mask[idx, idx + batch_size] = 1
+    pos_mask[idx + batch_size, idx] = 1
     
     # Compute loss
     exp_sim = torch.exp(sim)

@@ -1,0 +1,72 @@
+{
+  "Raw": {
+    "XGB": {
+      "AUC": 0.9992264575416083,
+      "std": 3.444248371943004e-05,
+      "n_seeds": 5
+    },
+    "LGB": {
+      "AUC": 0.9993320252740265,
+      "std": 3.763160029286408e-05,
+      "n_seeds": 5
+    },
+    "Cat": {
+      "AUC": 0.9988841184265803,
+      "std": 7.828236309991554e-05,
+      "n_seeds": 5
+    },
+    "RF": {
+      "AUC": 0.9863625400741297,
+      "std": 0.000449430453013441,
+      "n_seeds": 5
+    }
+  },
+  "Domain": {
+    "XGB": {
+      "AUC": 0.9991783545727223,
+      "std": 2.0846997415941967e-05,
+      "n_seeds": 5
+    },
+    "LGB": {
+      "AUC": 0.9992927539553291,
+      "std": 3.670715323163848e-05,
+      "n_seeds": 5
+    },
+    "Cat": {
+      "AUC": 0.9988273263954188,
+      "std": 6.90611016923776e-05,
+      "n_seeds": 5
+    },
+    "RF": {
+      "AUC": 0.9845958701784093,
+      "std": 0.00044656511744861204,
+      "n_seeds": 5
+    }
+  },
+  "wilcoxon": {
+    "XGB": {
+      "n_pairs": 5,
+      "statistic": 0.0,
+      "p_value": 0.0625,
+      "all_positive": false
+    },
+    "LGB": {
+      "n_pairs": 5,
+      "statistic": 0.0,
+      "p_value": 0.0625,
+      "all_positive": false
+    },
+    "Cat": {
+      "n_pairs": 5,
+      "statistic": 0.0,
+      "p_value": 0.0625,
+      "all_positive": false
+    },
+    "RF": {
+      "n_pairs": 5,
+      "statistic": 0.0,
+      "p_value": 0.0625,
+      "all_positive": false
+    }
+  }
+}

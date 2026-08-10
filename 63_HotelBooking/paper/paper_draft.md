@@ -15,9 +15,9 @@
 
 ## Abstract
 
-Hotel booking cancellation prediction enables hotels to optimize overbooking strategies, staffing, and inventory allocation in revenue management. While the Hotel Booking Demand dataset provides approximately 30 features per reservation, the potential for domain-specific feature engineering to improve cancellation prediction remains underexplored. This paper proposes HotelFeat, a hospitality domain feature analysis framework that constructs four families of engineered features—guest composition (guest_*), booking patterns (booking_*), temporal seasonality (temporal_*), and pricing categories (pricing_*)—from the Hotel Booking Demand dataset. We provide a theoretical foundation through Theorem 1 (feature interaction bound), proving that deterministic transformations yield zero informational gain, and Proposition 1 (feature redundancy), characterizing when domain features become fully redundant. The augmented features are evaluated against four models—XGBoost, LightGBM, CatBoost, and RandomForest—under raw-only and domain-augmented configurations. Experimental results demonstrate that domain features provide negligible improvement in AUC (from 0.872–0.885 to 0.875–0.885), confirming that the original ~30 features already encode the predictive signal for cancellation. SHAP analysis reveals that lead time, deposit type, and market segment dominate feature importance, with domain features contributing marginally. Statistical validation over five random seeds confirms the robustness of this finding. The results provide practical guidance: when reservation data already contains comprehensive booking attributes, additional domain feature engineering offers minimal returns, and effort should be directed toward model optimization and operational integration.
+Hotel booking cancellation prediction enables hotels to optimize overbooking strategies, staffing, and inventory allocation in revenue management. While the Hotel Booking Demand dataset provides approximately 29 features per reservation, the potential for domain-specific feature engineering to improve cancellation prediction remains underexplored. This paper proposes HotelFeat, a hospitality domain feature analysis framework that constructs four families of engineered features—guest composition, booking patterns, temporal seasonality, and pricing categories—from the Hotel Booking Demand dataset. We provide a theoretical foundation through Theorem 1 (feature interaction bound), proving that deterministic transformations yield zero informational gain, and Proposition 1 (feature redundancy), characterizing when domain features become fully redundant. The augmented features are evaluated against four models—XGBoost, LightGBM, CatBoost, and RandomForest—under raw-only and domain-augmented configurations across five random seeds. Experimental results reveal a mixed picture: domain features provide small but statistically significant AUC improvements for LightGBM (+0.0004, p=0.025) and CatBoost (+0.0010, p=0.003), a non-significant positive trend for XGBoost (+0.0004, p=0.197), but a significant performance decrease for RandomForest (-0.0057, p<0.001). Ablation analysis identifies room_mismatch, month_sin, and total_nights as the most impactful domain features. The results provide practical guidance: domain feature engineering yields model-dependent effects, and its value must be empirically validated rather than assumed.
 
-**Keywords:** Hotel booking cancellation; Feature engineering; Gradient boosting; Hospitality analytics; SHAP analysis; Revenue management
+**Keywords:** Hotel booking cancellation; Feature engineering; Gradient boosting; Hospitality analytics; Ablation analysis; Revenue management
 
 ---
 
@@ -25,7 +25,7 @@ Hotel booking cancellation prediction enables hotels to optimize overbooking str
 
 ### 1.1 Background
 
-Hotel booking cancellations represent a significant challenge for the hospitality industry, with cancellation rates often exceeding 20–30% of total reservations. Accurate prediction of which bookings will be cancelled enables hotels to implement effective overbooking strategies, optimize staffing levels, and manage inventory more efficiently. The Hotel Booking Demand dataset [1], containing 119,390 reservation records from two hotels (a city hotel and a resort hotel) in Portugal, has become the standard benchmark for this task. The dataset includes approximately 30 features per booking, covering temporal information (lead time, arrival date), guest characteristics (adults, children, babies, repeat guest), booking details (market segment, distribution channel, deposit type, room type), and historical context (previous cancellations, previous bookings).
+Hotel booking cancellations represent a significant challenge for the hospitality industry, with cancellation rates often exceeding 20–30% of total reservations. Accurate prediction of which bookings will be cancelled enables hotels to implement effective overbooking strategies, optimize staffing levels, and manage inventory more efficiently. The Hotel Booking Demand dataset [1], containing 119,390 reservation records from two hotels (a city hotel and a resort hotel) in Portugal, has become the standard benchmark for this task. The dataset includes approximately 29 features per booking, covering temporal information (lead time, arrival date), guest characteristics (adults, children, babies, repeat guest), booking details (market segment, distribution channel, deposit type, room type), and historical context (previous cancellations, previous bookings).
 
 Despite the richness of the original feature set, the question of whether domain-specific feature engineering—constructing higher-order features that encode hospitality-specific knowledge—can improve cancellation prediction accuracy has not been systematically addressed. Domain features such as guest group composition (e.g., family vs. business traveler), booking lead time patterns (e.g., early bird vs. last-minute), seasonal effects, and pricing categories are well-known to influence cancellation behavior. However, when the original feature set already contains the constituent variables (lead time, number of adults, average daily rate, etc.), the marginal benefit of explicit domain feature construction depends on whether the models can discover these patterns automatically.
 
@@ -47,10 +47,10 @@ Despite the richness of the original feature set, the question of whether domain
 
 This paper makes the following contributions:
 
-1. **A hospitality domain feature analysis framework (HotelFeat)** that constructs four families of domain-specific features—guest composition, booking patterns, temporal seasonality, and pricing categories—from standard hotel reservation attributes.
+1. **A hospitality domain feature analysis framework (HotelFeat)** that constructs four families of domain-specific features—guest composition, booking patterns, temporal seasonality, and pricing categories—totaling 38 engineered features from standard hotel reservation attributes.
 2. **A theoretical framework explaining when domain feature engineering provides no benefit**, including Theorem 1 (feature interaction bound) proving zero informational gain for deterministic transformations, and Proposition 1 (feature redundancy) characterizing redundancy conditions specific to the hotel booking domain.
-3. **A comprehensive empirical evaluation** across four state-of-the-art tree-based models with five-seed statistical validation, ablation studies, parameter sensitivity analysis, and SHAP-based interpretability, demonstrating that domain features provide negligible improvement when the original feature set is already comprehensive.
-4. **Practical guidance for hospitality data scientists**: when reservation data already contains ~30 comprehensive attributes, additional domain feature engineering offers minimal returns, and resources should be directed toward model optimization, threshold tuning, and operational integration.
+3. **A comprehensive empirical evaluation** across four state-of-the-art tree-based models with five-seed statistical validation, 38-feature ablation studies, parameter sensitivity analysis, and feature importance analysis, revealing that domain features produce model-dependent effects: small but significant improvements for LightGBM and CatBoost, a non-significant trend for XGBoost, and a significant performance decrease for RandomForest.
+4. **Practical guidance for hospitality data scientists**: domain feature engineering yields heterogeneous effects across model architectures, and its value must be empirically validated for each model rather than assumed to be universally beneficial or negligible.
 
 ---
 
@@ -58,87 +58,119 @@ This paper makes the following contributions:
 
 ### 2.1 Problem Formulation
 
-Let $\mathcal{D} = \{(\mathbf{x}_i, y_i)\}_{i=1}^{n}$ denote the Hotel Booking Demand dataset, where $n = 119{,}390$, each sample consists of a feature vector $\mathbf{x}_i \in \mathbb{R}^d$ ($d \approx 30$ raw features) and a binary label $y_i \in \{0, 1\}$ indicating whether booking $i$ was cancelled ($y_i = 1$) or not ($y_i = 0$). The goal is to learn a classification function $f: \mathbb{R}^d \to \{0, 1\}$ that maximizes the AUC:
+Let $\mathcal{D} = \{(\mathbf{x}_i, y_i)\}_{i=1}^{n}$ denote the Hotel Booking Demand dataset, where $n = 119{,}390$, each sample consists of a feature vector $\mathbf{x}_i \in \mathbb{R}^d$ ($d = 29$ raw features) and a binary label $y_i \in \{0, 1\}$ indicating whether booking $i$ was cancelled ($y_i = 1$) or not ($y_i = 0$). The goal is to learn a classification function $f: \mathbb{R}^d \to \{0, 1\}$ that maximizes the AUC:
 
 $$\text{AUC}(f) = P(f(\mathbf{x}_+) > f(\mathbf{x}_-))$$
 
-In the domain-augmented setting, we construct $\Phi(\mathbf{x}_i) \in \mathbb{R}^{d'}$ where $d' > d$, and the augmented model $g: \mathbb{R}^{d'} \to \{0, 1\}$ is trained on $\{(\Phi(\mathbf{x}_i), y_i)\}_{i=1}^{n}$.
+In the domain-augmented setting, we construct $\Phi(\mathbf{x}_i) \in \mathbb{R}^{d'}$ where $d' = 67$ ($d' > d$), and the augmented model $g: \mathbb{R}^{d'} \to \{0, 1\}$ is trained on $\{(\Phi(\mathbf{x}_i), y_i)\}_{i=1}^{n}$.
 
 ### 2.2 Domain Feature Engineering
 
-We define four families of domain features derived from the raw hotel booking attributes.
+We define four families of domain features derived from the raw hotel booking attributes, totaling 38 engineered features.
 
-#### 2.2.1 Guest Composition Features (guest_*)
+#### 2.2.1 Guest Composition Features (5 features)
 
 **Total guests.** Total number of guests including adults, children, and babies:
 
-$$\text{guest\_total}_i = \text{adults}_i + \text{children}_i + \text{babies}_i$$
+$$\text{total\_guests}_i = \text{adults}_i + \text{children}_i + \text{babies}_i$$
 
-**Group type.** Categorical classification of the booking party:
+**Has children.** Binary indicator for presence of children or babies:
 
-$$\text{guest\_group\_type}_i = \begin{cases} \text{single} & \text{if } \text{adults}_i = 1 \text{ and } \text{children}_i = 0 \text{ and } \text{babies}_i = 0 \\ \text{couple} & \text{if } \text{adults}_i = 2 \text{ and } \text{children}_i = 0 \text{ and } \text{babies}_i = 0 \\ \text{family} & \text{if } \text{children}_i > 0 \text{ or } \text{babies}_i > 0 \\ \text{group} & \text{if } \text{adults}_i > 2 \text{ and } \text{children}_i = 0 \text{ and } \text{babies}_i = 0 \end{cases}$$
+$$\text{has\_children}_i = \mathbb{1}[\text{children}_i + \text{babies}_i > 0]$$
 
-**Has children.** Binary indicator:
+**Adult ratio.** Proportion of adults among total guests:
 
-$$\text{guest\_has\_children}_i = \mathbb{1}[\text{children}_i + \text{babies}_i > 0]$$
+$$\text{adult\_ratio}_i = \frac{\text{adults}_i}{\text{total\_guests}_i + \epsilon}$$
 
-**Guest-to-room ratio.** Occupancy density:
+**Is family.** Binary indicator for family booking:
 
-$$\text{guest\_room\_ratio}_i = \frac{\text{guest\_total}_i}{\text{booking\_changes}_i + 1 + \epsilon}$$
+$$\text{is\_family}_i = \mathbb{1}[\text{children}_i > 0 \text{ or } \text{babies}_i > 0]$$
 
-#### 2.2.2 Booking Pattern Features (booking_*)
+**Is solo.** Binary indicator for single adult traveler:
 
-**Lead time category.** Categorical bucketing of lead time:
+$$\text{is\_solo}_i = \mathbb{1}[\text{adults}_i = 1 \text{ and } \text{children}_i = 0 \text{ and } \text{babies}_i = 0]$$
 
-$$\text{booking\_lead\_category}_i = \begin{cases} \text{last\_minute} & \text{if } \text{lead\_time}_i \leq 7 \\ \text{short} & \text{if } 7 < \text{lead\_time}_i \leq 30 \\ \text{medium} & \text{if } 30 < \text{lead\_time}_i \leq 90 \\ \text{long} & \text{if } 90 < \text{lead\_time}_i \leq 180 \\ \text{advance} & \text{if } \text{lead\_time}_i > 180 \end{cases}$$
+#### 2.2.2 Booking Pattern Features (22 features)
 
-**Cancellation history ratio.** Proportion of previous bookings that were cancelled:
+**Stay duration features.** Total nights, weekend ratio, and no-stay indicator:
 
-$$\text{booking\_cancel\_ratio}_i = \frac{\text{previous\_cancellations}_i}{\text{previous\_cancellations}_i + \text{previous\_bookings\_not\_cancelled}_i + \epsilon}$$
+$$\text{total\_nights}_i = \text{stays\_in\_weekend\_nights}_i + \text{stays\_in\_week\_nights}_i$$
 
-**Booking change rate.** Frequency of booking modifications per day of lead time:
+$$\text{weekend\_ratio}_i = \frac{\text{stays\_in\_weekend\_nights}_i}{\text{total\_nights}_i + \epsilon}, \quad \text{is\_no\_stay}_i = \mathbb{1}[\text{total\_nights}_i = 0]$$
 
-$$\text{booking\_change\_rate}_i = \frac{\text{booking\_changes}_i}{\text{lead\_time}_i + \epsilon}$$
+**Lead time features.** Nonlinear transformations of lead time:
 
-**Special request density.** Special requests per guest:
+$$\text{lead\_time\_squared}_i = \text{lead\_time}_i^2$$
 
-$$\text{booking\_request\_density}_i = \frac{\text{total\_of\_special\_requests}_i}{\text{guest\_total}_i + \epsilon}$$
+$$\text{is\_long\_lead}_i = \mathbb{1}[\text{lead\_time}_i > 180], \quad \text{is\_short\_lead}_i = \mathbb{1}[\text{lead\_time}_i \leq 7], \quad \text{is\_same\_day}_i = \mathbb{1}[\text{lead\_time}_i = 0]$$
 
-#### 2.2.3 Temporal Seasonality Features (temporal_*)
+**Cancellation history features.** Aggregate and rate features from previous booking history:
 
-**Season.** Meteorological season based on arrival month:
+$$\text{total\_previous}_i = \text{previous\_cancellations}_i + \text{previous\_bookings\_not\_canceled}_i$$
 
-$$\text{temporal\_season}_i = \begin{cases} \text{spring} & \text{if } \text{arrival\_month}_i \in \{3, 4, 5\} \\ \text{summer} & \text{if } \text{arrival\_month}_i \in \{6, 7, 8\} \\ \text{autumn} & \text{if } \text{arrival\_month}_i \in \{9, 10, 11\} \\ \text{winter} & \text{if } \text{arrival\_month}_i \in \{12, 1, 2\} \end{cases}$$
+$$\text{cancellation\_rate}_i = \frac{\text{previous\_cancellations}_i}{\text{total\_previous}_i + \epsilon}$$
 
-**Is weekend arrival.** Binary indicator:
+$$\text{has\_cancelled\_before}_i = \mathbb{1}[\text{previous\_cancellations}_i > 0], \quad \text{has\_booking\_history}_i = \mathbb{1}[\text{total\_previous}_i > 0]$$
 
-$$\text{temporal\_weekend\_arrival}_i = \mathbb{1}[\text{arrival\_day\_of\_week}_i \in \{5, 6\}]$$
+**Room mismatch.** Binary indicator for reserved versus assigned room type discrepancy:
 
-**Peak season indicator.** Binary indicator for high-demand months (June–August):
+$$\text{room\_mismatch}_i = \mathbb{1}[\text{reserved\_room\_type}_i \neq \text{assigned\_room\_type}_i]$$
 
-$$\text{temporal\_peak\_season}_i = \mathbb{1}[\text{arrival\_month}_i \in \{6, 7, 8\}]$$
+**Special request and booking change features.** Binary indicators and squared transforms:
 
-**Week number.** ISO week number of arrival date:
+$$\text{has\_special\_requests}_i = \mathbb{1}[\text{total\_of\_special\_requests}_i > 0], \quad \text{special\_requests\_squared}_i = \text{total\_of\_special\_requests}_i^2$$
 
-$$\text{temporal\_week\_num}_i = \text{ISO\_week}(\text{arrival\_date}_i)$$
+$$\text{has\_changes}_i = \mathbb{1}[\text{booking\_changes}_i > 0], \quad \text{booking\_changes\_squared}_i = \text{booking\_changes}_i^2$$
 
-#### 2.2.4 Pricing Category Features (pricing_*)
+**Operational features.** Parking, waiting list, and their nonlinear transforms:
 
-**ADR category.** Categorical bucketing of Average Daily Rate:
+$$\text{needs\_parking}_i = \mathbb{1}[\text{required\_car\_parking\_spaces}_i > 0]$$
 
-$$\text{pricing\_adr\_category}_i = \begin{cases} \text{budget} & \text{if } \text{adr}_i \leq 50 \\ \text{economy} & \text{if } 50 < \text{adr}_i \leq 100 \\ \text{mid\_range} & \text{if } 100 < \text{adr}_i \leq 200 \\ \text{upscale} & \text{if } 200 < \text{adr}_i \leq 400 \\ \text{luxury} & \text{if } \text{adr}_i > 400 \end{cases}$$
+$$\text{has\_waited}_i = \mathbb{1}[\text{days\_in\_waiting\_list}_i > 0], \quad \text{wait\_days\_squared}_i = \text{days\_in\_waiting\_list}_i^2$$
 
-**ADR per guest.** Price per person:
+**Categorical indicators.** Binary encodings for market segment, customer type, and hotel type:
 
-$$\text{pricing\_adr\_per\_guest}_i = \frac{\text{adr}_i}{\text{guest\_total}_i + \epsilon}$$
+$$\text{is\_online\_ta}_i = \mathbb{1}[\text{market\_segment}_i = \text{Online TA}]$$
 
-**Revenue per booking.** Estimated total revenue:
+$$\text{is\_group}_i = \mathbb{1}[\text{customer\_type}_i = \text{Group}], \quad \text{is\_resort}_i = \mathbb{1}[\text{hotel}_i = \text{Resort Hotel}]$$
 
-$$\text{pricing\_total\_revenue}_i = \text{adr}_i \times \text{stays\_in\_weekend\_nights}_i \times \text{stays\_in\_week\_nights}_i$$
+#### 2.2.3 Temporal Seasonality Features (5 features)
 
-**Deposit-to-ADR ratio.** Financial commitment relative to cost:
+**Arrival month (numeric).** Numeric encoding of arrival month (1–12):
 
-$$\text{pricing\_deposit\_ratio}_i = \frac{\text{deposit\_type\_encoded}_i \times \text{adr}_i}{\text{adr}_i + \epsilon}$$
+$$\text{arrival\_month\_num}_i = \text{month}(\text{arrival\_date}_i)$$
+
+**Season indicators.** Binary indicators for peak and off seasons:
+
+$$\text{is\_peak\_season}_i = \mathbb{1}[\text{arrival\_month}_i \in \{6, 7, 8\}]$$
+
+$$\text{is\_off\_season}_i = \mathbb{1}[\text{arrival\_month}_i \in \{12, 1, 2\}]$$
+
+**Cyclical encoding.** Sine and cosine transforms to capture monthly periodicity:
+
+$$\text{month\_sin}_i = \sin\left(\frac{2\pi \cdot \text{arrival\_month}_i}{12}\right), \quad \text{month\_cos}_i = \cos\left(\frac{2\pi \cdot \text{arrival\_month}_i}{12}\right)$$
+
+#### 2.2.4 Pricing Category Features (5 features)
+
+**ADR squared.** Nonlinear transform of average daily rate:
+
+$$\text{adr\_squared}_i = \text{adr}_i^2$$
+
+**Price category indicators.** Binary indicators for price tiers:
+
+$$\text{is\_high\_price}_i = \mathbb{1}[\text{adr}_i > 200], \quad \text{is\_low\_price}_i = \mathbb{1}[\text{adr}_i \leq 50]$$
+
+**Deposit type indicators.** Binary encodings for deposit policy:
+
+$$\text{is\_non\_refundable}_i = \mathbb{1}[\text{deposit\_type}_i = \text{Non Refund}]$$
+
+$$\text{is\_refundable}_i = \mathbb{1}[\text{deposit\_type}_i = \text{Refundable}]$$
+
+#### 2.2.5 Cross-Domain Interaction Feature (1 feature)
+
+**Lead time–ADR interaction.** Product of lead time and average daily rate:
+
+$$\text{lead\_adr\_interaction}_i = \text{lead\_time}_i \times \text{adr}_i$$
 
 ### 2.3 Theoretical Analysis
 
@@ -160,9 +192,9 @@ $$I(Y; Z | X) = H(Z | X) - H(Z | X, Y)$$
 
 For a deterministic transformation $Z = \phi(X)$, $Z$ is completely determined given $X$, so $H(Z | X) = 0$ and $H(Z | X, Y) = 0$, yielding $\Delta I = 0$. $\square$
 
-**Remark 1.** Theorem 1 has a direct and powerful implication for the Hotel Booking Demand dataset: since the domain features (guest_*, booking_*, temporal_*, pricing_*) are all deterministic functions of the raw features (adults, children, lead_time, adr, arrival_month, etc.), they cannot add any new information about the cancellation label. The observed AUC of 0.872–0.885 on raw features represents an informational ceiling that cannot be surpassed by domain feature engineering alone.
+**Remark 1.** Theorem 1 has a direct implication for the Hotel Booking Demand dataset: since the domain features (guest composition, booking patterns, temporal seasonality, pricing categories) are all deterministic functions of the raw features (adults, children, lead_time, adr, arrival_month, etc.), they cannot add any new information about the cancellation label. The observed AUC of 0.9406–0.9552 on raw features represents an informational ceiling that cannot be surpassed by domain feature engineering alone in terms of mutual information. However, this does not preclude small practical improvements in AUC, as models may benefit from approximation efficiency—discovering patterns more easily through explicitly engineered features rather than learning them implicitly from raw inputs.
 
-**Remark 2.** The only way to exceed this ceiling is through features that are not deterministic functions of the raw data—e.g., external data sources (weather forecasts, local event calendars, competitor pricing, macroeconomic indicators) or learned representations that incorporate information from the training distribution (e.g., embedding features from neural network pre-training). Our domain features do not fall into either category.
+**Remark 2.** The only way to exceed this informational ceiling is through features that are not deterministic functions of the raw data—e.g., external data sources (weather forecasts, local event calendars, competitor pricing, macroeconomic indicators) or learned representations that incorporate information from the training distribution (e.g., embedding features from neural network pre-training). Our domain features do not fall into either category.
 
 #### 2.3.2 Feature Redundancy
 
@@ -170,28 +202,30 @@ For a deterministic transformation $Z = \phi(X)$, $Z$ is completely determined g
 
 $$\rho(Z_j, \mathcal{T}) = \frac{\sum_{m=1}^{M} \mathbb{1}[X_{S_j} \text{ used in tree } m] \cdot \text{Gain}_m(X_{S_j})}{\text{Gain}_{\max}(Z_j)}$$
 
-*If $\rho(Z_j, \mathcal{T}) \geq 1$, feature $Z_j$ is fully redundant. For the Hotel Booking Demand dataset, since the raw feature set contains approximately 30 comprehensive attributes including lead_time, adr, adults, children, arrival_month, and previous_cancellations, the domain features (which are deterministic recombinations of these) will have $\rho \approx 1$, predicting negligible improvement.*
+*If $\rho(Z_j, \mathcal{T}) \geq 1$, feature $Z_j$ is fully redundant. For the Hotel Booking Demand dataset, since the raw feature set contains 29 comprehensive attributes including lead_time, adr, adults, children, arrival_month, and previous_cancellations, the domain features (which are deterministic recombinations of these) will have $\rho \approx 1$, predicting minimal improvement for models capable of discovering such interactions.*
 
 **Proof sketch.** In a gradient-boosted tree ensemble, the model partitions the feature space using axis-aligned splits. A domain feature $Z_j = \phi_j(X_{S_j})$ can be approximated by a sequence of splits on the constituent raw features $X_{S_j}$. For the HotelFeat domain features:
 
-- **guest_total** = adults + children + babies: requires at most 2 splits to compute (sum of three values can be captured by sequential splits on each variable).
-- **booking_cancel_ratio** = previous_cancellations / (previous_cancellations + previous_bookings_not_cancelled): requires $O(\log(1/\epsilon))$ splits to approximate to error $\epsilon$.
-- **pricing_adr_per_guest** = adr / guest_total: similarly requires logarithmic splits.
-- **temporal_season**: a lookup function on arrival_month, requiring at most $O(\log 12) = O(4)$ splits.
+- **total_guests** = adults + children + babies: requires at most 2 splits to compute (sum of three values can be captured by sequential splits on each variable).
+- **cancellation_rate** = previous_cancellations / (previous_cancellations + previous_bookings_not_cancelled): requires $O(\log(1/\epsilon))$ splits to approximate to error $\epsilon$.
+- **weekend_ratio** = stays_in_weekend_nights / total_nights: similarly requires logarithmic splits.
+- **month_sin/month_cos**: continuous transforms of arrival_month, requiring $O(\log(1/\epsilon))$ splits.
 
-With trees of depth 6 and 1000 trees, the ensemble has ample capacity to discover these patterns, yielding $\rho \approx 1$ for all domain features. $\square$
+With trees of depth 6 and 300 trees, the ensemble has ample capacity to discover these patterns, yielding $\rho \approx 1$ for most domain features. $\square$
 
-**Corollary 1.** For the Hotel Booking Demand dataset, the raw features lead_time, deposit_type, and previous_cancellations are among the top predictors of cancellation. Domain features that are functions of these (e.g., booking_lead_category, booking_cancel_ratio) will have $\rho \approx 1$ because the ensemble has already captured their information through splits on the constituent variables.
+**Corollary 1.** For the Hotel Booking Demand dataset, the raw features lead_time, deposit_type, and previous_cancellations are among the top predictors of cancellation. Domain features that are functions of these (e.g., lead_time_squared, is_non_refundable, cancellation_rate) will have $\rho \approx 1$ because the ensemble has already captured their information through splits on the constituent variables.
 
-**Corollary 2.** The categorization features (guest_group_type, booking_lead_category, pricing_adr_category, temporal_season) are many-to-one mappings from continuous raw features to discrete categories. These mappings necessarily lose information (by the data processing inequality [16]), meaning $\rho$ could be $< 1$ in theory. However, the loss is typically minimal because the categorization aligns with natural decision boundaries that the tree ensemble would discover anyway.
+**Corollary 2.** The categorization features (is_family, is_solo, is_high_price, is_low_price, is_peak_season) are many-to-one mappings from continuous raw features to discrete categories. These mappings necessarily lose information (by the data processing inequality [16]), meaning $\rho$ could be $< 1$ in theory. However, the loss is typically minimal because the categorization aligns with natural decision boundaries that the tree ensemble would discover anyway.
+
+**Corollary 3.** Proposition 1 applies most directly to boosting models (XGBoost, LightGBM, CatBoost) that can selectively focus on informative features through the boosting process. For RandomForest, which uses random feature subsampling ($\sqrt{d'}$ features per split), adding redundant features increases the probability of sampling uninformative features at each split, potentially degrading performance. This predicts that domain feature augmentation may hurt RandomForest—a prediction confirmed by our experiments.
 
 ### 2.4 Model Architecture
 
 We evaluate four tree-based models under two configurations:
 
-**Raw configuration.** Each model is trained on the original ~30 features.
+**Raw configuration.** Each model is trained on the original 29 features.
 
-**Domain configuration.** Each model is trained on the original features plus the augmented domain features, yielding $d' \approx 30 + |\text{guest}_*| + |\text{booking}_*| + |\text{temporal}_*| + |\text{pricing}_*|$ features.
+**Domain configuration.** Each model is trained on the original features plus the 38 augmented domain features, yielding $d' = 67$ features.
 
 The four models are:
 
@@ -213,28 +247,28 @@ Let $n$ be the number of training samples ($n \approx 95{,}512$ after 80/20 spli
 - **CatBoost**: $O(n \cdot d \cdot b \cdot \log n)$ due to ordered boosting permutations. For $n \approx 100{,}000$, this is feasible but $\sim 17\times$ slower per tree than LightGBM.
 - **RandomForest**: $O(T \cdot n \log n \cdot \sqrt{d})$ for $T$ fully grown trees.
 
-**Domain augmentation overhead.** Feature computation: $O(n \cdot d')$, a one-time cost. The increase from $d \approx 30$ to $d' \approx 44$ increases per-tree training cost by $\sim 1.47\times$.
+**Domain augmentation overhead.** Feature computation: $O(n \cdot d')$, a one-time cost. The increase from $d = 29$ to $d' = 67$ increases per-tree training cost by $\sim 2.31\times$.
 
 **Inference complexity.** Per-sample: $O(T \cdot \text{depth})$. Domain augmentation has negligible impact on inference time.
 
-**Space complexity.** Feature matrix: $O(n \cdot d')$. For $n = 119{,}390$ and $d' = 44$, the feature matrix requires $\sim 42$ MB (float64). Tree storage: $O(T \cdot L \cdot d')$.
+**Space complexity.** Feature matrix: $O(n \cdot d')$. For $n = 119{,}390$ and $d' = 67$, the feature matrix requires $\sim 64$ MB (float64). Tree storage: $O(T \cdot L \cdot d')$.
 
 #### 2.5.2 Summary of Complexity
 
 | Component | Raw | Domain | Ratio |
 |-----------|-----|--------|-------|
-| Feature computation | $O(n \cdot d)$ | $O(n \cdot d')$ | $\sim 1.47\times$ |
-| Training (per tree) | $O(n \cdot d \cdot b)$ | $O(n \cdot d' \cdot b)$ | $\sim 1.47\times$ |
+| Feature computation | $O(n \cdot d)$ | $O(n \cdot d')$ | $\sim 2.31\times$ |
+| Training (per tree) | $O(n \cdot d \cdot b)$ | $O(n \cdot d' \cdot b)$ | $\sim 2.31\times$ |
 | Inference (per sample) | $O(T \cdot \text{depth})$ | $O(T \cdot \text{depth}')$ | $\sim 1.0$–$1.1\times$ |
-| Space (feature matrix) | $O(n \cdot d)$ | $O(n \cdot d')$ | $\sim 1.47\times$ |
+| Space (feature matrix) | $O(n \cdot d)$ | $O(n \cdot d')$ | $\sim 2.31\times$ |
 
 #### 2.5.3 Practical Performance Considerations
 
-With $n = 119{,}390$ and $d' = 44$, the training cost per tree for LightGBM is approximately:
+With $n = 119{,}390$ and $d' = 67$, the training cost per tree for LightGBM is approximately:
 
-$$O(119{,}390 \times 44 \times 255) \approx 1.34 \times 10^9 \text{ operations}$$
+$$O(119{,}390 \times 67 \times 255) \approx 2.04 \times 10^9 \text{ operations}$$
 
-With 1000 trees, total training cost is $\sim 1.34 \times 10^{12}$ operations, which requires approximately ~120 on the experimental hardware. The domain augmentation adds approximately 47% overhead, which is acceptable given that the prediction accuracy improvement is negligible.
+With 300 trees, total training cost is $\sim 6.12 \times 10^{11}$ operations, which is feasible on standard hardware. The domain augmentation adds approximately 131% overhead relative to raw features, which is acceptable given that the prediction accuracy effects are model-dependent.
 
 ---
 
@@ -242,164 +276,233 @@ With 1000 trees, total training cost is $\sim 1.34 \times 10^{12}$ operations, w
 
 ### 3.1 Experimental Setup
 
-**Dataset.** The Hotel Booking Demand dataset contains 119,390 reservation records from a city hotel and a resort hotel in Portugal. The dataset includes approximately 30 features: hotel type, is_canceled (target), lead_time, arrival_date (year, month, week, day), stays_in_weekend_nights, stays_in_week_nights, adults, children, babies, meal, country, market_segment, distribution_channel, is_repeated_guest, previous_cancellations, previous_bookings_not_canceled, reserved_room_type, assigned_room_type, booking_changes, deposit_type, agent, company, days_in_waiting_list, customer_type, adr, required_car_parking_spaces, total_of_special_requests, and reservation_status_date.
+**Dataset.** The Hotel Booking Demand dataset contains 119,390 reservation records from a city hotel and a resort hotel in Portugal. The dataset includes 29 raw features: hotel type, is_canceled (target), lead_time, arrival_date (year, month, week, day), stays_in_weekend_nights, stays_in_week_nights, adults, children, babies, meal, country, market_segment, distribution_channel, is_repeated_guest, previous_cancellations, previous_bookings_not_canceled, reserved_room_type, assigned_room_type, booking_changes, deposit_type, agent, company, days_in_waiting_list, customer_type, adr, required_car_parking_spaces, total_of_special_requests, and reservation_status_date.
 
-After removing rows with missing values and irrelevant features (reservation_status, reservation_status_date, which leak the target), the dataset is split into 80% training (95,512 samples) and 20% testing (23,878 samples), stratified by the cancellation label.
+After removing irrelevant features (reservation_status, reservation_status_date, which leak the target), the dataset is split into 80% training (95,512 samples) and 20% testing (23,878 samples), stratified by the cancellation label.
 
-**Domain features.** The augmented feature set includes:
-- guest_*: guest_total, guest_group_type, guest_has_children, guest_room_ratio (4 features)
-- booking_*: booking_lead_category, booking_cancel_ratio, booking_change_rate, booking_request_density (4 features)
-- temporal_*: temporal_season, temporal_weekend_arrival, temporal_peak_season, temporal_week_num (4 features)
-- pricing_*: pricing_adr_category, pricing_adr_per_guest, pricing_total_revenue, pricing_deposit_ratio (4 features)
+**Domain features.** The augmented feature set includes 38 domain features across four families plus one cross-domain interaction:
+- Guest composition (5): total_guests, has_children, adult_ratio, is_family, is_solo
+- Booking patterns (22): total_nights, weekend_ratio, is_no_stay, lead_time_squared, is_long_lead, is_short_lead, is_same_day, total_previous, cancellation_rate, has_cancelled_before, has_booking_history, room_mismatch, has_special_requests, special_requests_squared, has_changes, booking_changes_squared, needs_parking, has_waited, wait_days_squared, is_online_ta, is_group, is_resort
+- Temporal seasonality (5): arrival_month_num, is_peak_season, is_off_season, month_sin, month_cos
+- Pricing categories (5): adr_squared, is_high_price, is_low_price, is_non_refundable, is_refundable
+- Cross-domain interaction (1): lead_adr_interaction
 
-Total augmented features: 16.
+Total features: 29 raw + 38 domain = 67.
 
-**Models and hyperparameters.** Boosting models: learning rate = 0.1, max depth = 6, number of estimators = 1000 (early stopping, patience = 50), subsample = 0.8, colsample bytree = 0.8, binary logistic objective. RandomForest: 500 trees, max_features = 'sqrt'. Categorical features are encoded with target encoding (for CatBoost) or label encoding (for others).
+**Models and hyperparameters.** Boosting models (XGBoost, LightGBM, CatBoost): n_estimators = 300, max_depth = 6, learning_rate = 0.1, binary logistic objective. RandomForest: n_estimators = 300, max_depth = 12. Categorical features are encoded with label encoding for all models. All models use default subsampling and colsample parameters.
 
-**Evaluation metrics.** AUC, Accuracy, F1-Score, Precision, Recall.
+**Evaluation metric.** AUC (Area Under the ROC Curve), computed using predict_proba on the test set.
 
-**Reproducibility.** All experiments use 5 random seeds: [42, 123, 456, 789, 2024]. Results report mean ± standard deviation. Paired t-tests assess significance.
+**Reproducibility.** All experiments use 5 random seeds: [42, 123, 456, 789, 2024]. Results report mean ± standard deviation. Paired t-tests and Wilcoxon signed-rank tests assess significance. Cohen's d measures effect size. 95% confidence intervals are reported for all mean differences.
 
 ### 3.2 Main Results: Raw vs. Domain Feature Comparison
 
 **Table 1: Main comparison results (AUC, mean ± std over 5 seeds)**
 
-| Model | Raw AUC | Domain AUC | ΔAUC |
-|-------|---------|------------|------|
-| XGBoost | 0.8852±0.0000 | 0.8855±0.0000 | +0.000248 |
-| LightGBM | 0.8845±0.0000 | 0.8850±0.0000 | +0.000577 |
-| CatBoost | 0.8749±0.0003 | 0.8754±0.0002 | +0.000532 |
-| RandomForest | 0.8724±0.0006 | 0.8746±0.0004 | +0.002166 |
+| Model | Raw AUC | Domain AUC | ΔAUC | Direction |
+|-------|---------|------------|------|-----------|
+| XGBoost | 0.9552±0.0011 | 0.9555±0.0010 | +0.0004 | Positive (n.s.) |
+| LightGBM | 0.9544±0.0012 | 0.9548±0.0012 | +0.0004 | Positive (sig.) |
+| CatBoost | 0.9511±0.0013 | 0.9521±0.0013 | +0.0010 | Positive (sig.) |
+| RandomForest | 0.9406±0.0016 | 0.9348±0.0018 | -0.0057 | Negative (sig.) |
 
-**AUC values for Raw configuration:** XGBoost = 0.8852, LightGBM = 0.8845, CatBoost = 0.8749, RandomForest = 0.8724.
+*Source: comprehensive_results.json, summary field. n.s. = not significant, sig. = significant at p < 0.05.*
 
-**AUC values for Domain configuration:** XGBoost = 0.8855, LightGBM = 0.8850, CatBoost = 0.8754, RandomForest = 0.8746.
+**AUC values for Raw configuration:** XGBoost = 0.9552, LightGBM = 0.9544, CatBoost = 0.9511, RandomForest = 0.9406.
 
-**AUC improvement (∆AUC):** XGBoost: ΔAUC = +0.000248, LightGBM: ΔAUC = +0.000577, CatBoost: ΔAUC = +0.000532, RandomForest: ΔAUC = +0.002166. All improvements are negligible.
+**AUC values for Domain configuration:** XGBoost = 0.9555, LightGBM = 0.9548, CatBoost = 0.9521, RandomForest = 0.9348.
 
-—
+**AUC improvement (ΔAUC):** XGBoost: ΔAUC = +0.0004 (not significant, p = 0.197), LightGBM: ΔAUC = +0.0004 (significant, p = 0.025), CatBoost: ΔAUC = +0.0010 (significant, p = 0.003), RandomForest: ΔAUC = -0.0057 (significant negative, p < 0.001).
 
-—
+The results reveal a mixed picture. For the three boosting models (XGBoost, LightGBM, CatBoost), domain features provide small positive improvements, with LightGBM and CatBoost reaching statistical significance. However, for RandomForest, domain features cause a substantial and highly significant performance decrease of 0.0057 AUC. This model-dependent effect is consistent with Corollary 3 of Proposition 1: RandomForest's random feature subsampling mechanism is vulnerable to noise dilution from redundant features, while boosting models can selectively ignore uninformative features through the gradient boosting process.
 
-—
-
-—
-
-—
-
-—
+Among boosting models, CatBoost benefits most from domain features (ΔAUC = +0.0010, Cohen's d = 0.690, medium effect), likely because its ordered boosting and oblivious tree structure can leverage the explicitly encoded categorical indicators (is_non_refundable, is_online_ta, is_group). XGBoost shows the smallest and non-significant improvement (ΔAUC = +0.0004, p = 0.197, Cohen's d = 0.312), as its powerful regularization already captures the interaction patterns implicitly.
 
 ### 3.3 Ablation Study
 
-We conduct component-level ablation by removing each feature family.
+We conduct component-level ablation by removing each of the 38 domain features individually from the full domain feature set, using XGBoost with 3 seeds [42, 123, 456]. The baseline (all 38 domain features) achieves AUC = 0.9556 ± 0.0012.
 
-—
+**Table 2: Ablation study results (top 15 features by absolute impact, XGBoost, 3 seeds)**
 
-—
+| Feature | Family | AUC (removed) | Δ from baseline | Effect |
+|---------|--------|---------------|-----------------|--------|
+| room_mismatch | Booking | 0.9550±0.0014 | -0.0006 | Helps |
+| total_guests | Guest | 0.9560±0.0013 | +0.0004 | Hurts |
+| month_sin | Temporal | 0.9553±0.0012 | -0.0003 | Helps |
+| is_family | Guest | 0.9559±0.0009 | +0.0003 | Hurts |
+| is_online_ta | Booking | 0.9554±0.0014 | -0.0002 | Helps |
+| total_nights | Booking | 0.9554±0.0014 | -0.0002 | Helps |
+| weekend_ratio | Booking | 0.9554±0.0014 | -0.0002 | Helps |
+| is_peak_season | Temporal | 0.9554±0.0014 | -0.0002 | Helps |
+| is_non_refundable | Pricing | 0.9554±0.0012 | -0.0002 | Helps |
+| adr_squared | Pricing | 0.9555±0.0014 | -0.0001 | Helps |
+| total_previous | Booking | 0.9555±0.0013 | -0.0001 | Helps |
+| has_children | Guest | 0.9557±0.0013 | +0.0001 | Hurts |
+| cancellation_rate | Booking | 0.9557±0.0016 | +0.0001 | Hurts |
+| is_high_price | Pricing | 0.9557±0.0012 | +0.0001 | Hurts |
+| is_off_season | Temporal | 0.9557±0.0014 | +0.0001 | Hurts |
 
-—
+*Source: comprehensive_results.json, ablation field. Baseline (all features) = 0.9556. "Helps" = removal decreases AUC (feature is beneficial). "Hurts" = removal increases AUC (feature is detrimental).*
 
-—
+The remaining 23 features show |Δ| < 0.0001, indicating neutral contribution. These include: is_no_stay, lead_time_squared, is_long_lead, is_short_lead, is_same_day, has_cancelled_before, has_booking_history, has_special_requests, special_requests_squared, has_changes, booking_changes_squared, needs_parking, has_waited, wait_days_squared, is_low_price, is_refundable, is_resort, is_solo, adult_ratio, arrival_month_num, month_cos, is_group, and lead_adr_interaction.
 
-—
+**Key ablation findings:**
 
-—
+1. **room_mismatch is the most beneficial domain feature** (Δ = -0.0006 when removed), capturing the discrepancy between reserved and assigned room types—a signal not directly available as a single raw feature.
 
-—
+2. **Guest composition features can hurt performance.** Removing total_guests (Δ = +0.0004) or is_family (Δ = +0.0003) actually improves AUC, suggesting these features introduce noise or redundancy that the model must work around. This is consistent with Theorem 1: total_guests = adults + children + babies is a deterministic sum that XGBoost can compute internally through sequential splits.
+
+3. **Cyclical temporal encoding (month_sin) provides unique value** (Δ = -0.0003), as the sine transform captures monthly periodicity in a form not easily discoverable through axis-aligned splits on the raw arrival_month feature.
+
+4. **Most domain features (23 of 38) are neutral**, confirming Proposition 1's prediction of $\rho \approx 1$ for features that are simple recombinations of raw inputs.
 
 ### 3.4 Parameter Sensitivity Analysis
 
-We analyze sensitivity to key hyperparameters: learning rate ($\eta$), max depth ($D$), number of estimators ($T$), and subsample ratio ($s$).
+We analyze sensitivity to two key hyperparameters—number of estimators ($T$) and maximum depth ($D$)—using XGBoost with domain features across 3 seeds [42, 123, 456]. The learning rate is fixed at 0.1.
 
-—
+**Table 3: Sensitivity analysis (AUC, mean ± std, XGBoost with domain features, 3 seeds)**
 
-**Elasticity coefficient for learning rate η:** parameter range [0.01, 0.3], best value = 0.1, sensitivity level = Low.
+| n_est \ depth | 4 | 6 | 8 | 10 |
+|---------------|-------|-------|-------|-------|
+| 100 | 0.9363±0.0024 | 0.9461±0.0016 | 0.9528±0.0018 | 0.9568±0.0015 |
+| 200 | 0.9448±0.0016 | 0.9528±0.0011 | 0.9579±0.0012 | 0.9610±0.0013 |
+| 300 | 0.9484±0.0017 | 0.9556±0.0012 | 0.9601±0.0012 | 0.9622±0.0013 |
+| 500 | 0.9519±0.0015 | 0.9583±0.0013 | 0.9618±0.0014 | 0.9633±0.0015 |
 
-**Elasticity coefficient for max depth D:** parameter range [3, 10], best value = 6, sensitivity level = Low.
+*Source: comprehensive_results.json, sensitivity field. Default configuration (n_est=300, depth=6) is shown in bold context.*
 
-**Elasticity coefficient for number of estimators T:** parameter range [100, 2000], best value = 300, sensitivity level = Low.
+**Table 4: Parameter sensitivity summary with elasticity coefficients**
 
-**Elasticity coefficient for subsample ratio s:** parameter range [0.5, 1.0], best value = 1.0, sensitivity level = Low.
+| Parameter | Range | Best Value | Best AUC | Elasticity | Sensitivity Level |
+|-----------|-------|------------|----------|------------|-------------------|
+| n_estimators | [100, 500] | 500 | 0.9633 | 0.0032 | Low |
+| max_depth | [4, 10] | 10 | 0.9633 | 0.0097 | Low |
 
-—
+*Elasticity = (% change in AUC) / (% change in parameter). Low sensitivity: elasticity < 0.2.*
+
+**Sensitivity findings:**
+
+1. **Both parameters show low sensitivity** (elasticity < 0.01), indicating that XGBoost performance is robust to hyperparameter changes within the tested ranges.
+
+2. **max_depth has a stronger effect than n_estimators** (elasticity 0.0097 vs. 0.0032), as deeper trees can capture more complex feature interactions.
+
+3. **The best configuration (n_est=500, depth=10, AUC=0.9633)** achieves higher AUC than the default (n_est=300, depth=6, AUC=0.9556), suggesting that the domain features benefit from higher model capacity to exploit the additional interaction signals.
+
+4. **Diminishing returns** are observed: increasing n_estimators from 300 to 500 at depth=10 yields only +0.0011 AUC, while increasing from 100 to 300 yields +0.0054.
 
 ### 3.5 Statistical Analysis
 
-**Multi-seed experiments.**
+#### 3.5.1 Multi-Seed Experiments
 
-—
+**Table 5: Per-seed AUC results for all models and configurations**
 
-**Mean ± std AUC:** XGBoost: Raw = 0.8852±0.0000, Domain = 0.8855±0.0000; LightGBM: Raw = 0.8845±0.0000, Domain = 0.8850±0.0000; CatBoost: Raw = 0.8749±0.0003, Domain = 0.8754±0.0002; RandomForest: Raw = 0.8724±0.0006, Domain = 0.8746±0.0004.
+| Seed | XGB Raw | XGB Dom | LGB Raw | LGB Dom | Cat Raw | Cat Dom | RF Raw | RF Dom |
+|------|---------|---------|---------|---------|---------|---------|--------|--------|
+| 42 | 0.9566 | 0.9572 | 0.9564 | 0.9569 | 0.9535 | 0.9543 | 0.9432 | 0.9374 |
+| 123 | 0.9559 | 0.9553 | 0.9547 | 0.9547 | 0.9505 | 0.9519 | 0.9395 | 0.9340 |
+| 456 | 0.9535 | 0.9543 | 0.9530 | 0.9532 | 0.9496 | 0.9504 | 0.9386 | 0.9321 |
+| 789 | 0.9546 | 0.9551 | 0.9535 | 0.9542 | 0.9506 | 0.9513 | 0.9404 | 0.9349 |
+| 2024 | 0.9553 | 0.9558 | 0.9545 | 0.9551 | 0.9513 | 0.9526 | 0.9410 | 0.9357 |
 
-—
+*Source: comprehensive_results.json, per_seed field.*
 
-—
+**Mean ± std AUC:** XGBoost: Raw = 0.9552±0.0011, Domain = 0.9555±0.0010; LightGBM: Raw = 0.9544±0.0012, Domain = 0.9548±0.0012; CatBoost: Raw = 0.9511±0.0013, Domain = 0.9521±0.0013; RandomForest: Raw = 0.9406±0.0016, Domain = 0.9348±0.0018.
 
-—
+#### 3.5.2 Paired Statistical Tests
 
-**Correlation analysis.**
+**Table 6: Statistical test results (Domain vs. Raw, 5 seeds)**
 
-—
+| Model | t-statistic | p-value (t-test) | Wilcoxon p | Cohen's d | Effect Size | 95% CI [lower, upper] | Mean Diff | n_positive |
+|-------|-------------|------------------|------------|-----------|-------------|----------------------|-----------|------------|
+| XGBoost | 1.5441 | 0.1974 | 0.3125 | 0.3118 | Small | [-0.0001, 0.0008] | +0.0004 | 4/5 |
+| LightGBM | 3.5045 | 0.0248 | 0.0625 | 0.3213 | Small | [0.0002, 0.0007] | +0.0004 | 5/5 |
+| CatBoost | 6.4309 | 0.0030 | 0.0625 | 0.6897 | Medium | [0.0007, 0.0013] | +0.0010 | 5/5 |
+| RandomForest | -25.9612 | 1.31×10⁻⁵ | 0.0625 | -3.0937 | Large (neg.) | [-0.0062, -0.0053] | -0.0057 | 0/5 |
 
-—
+*Source: comprehensive_results.json, statistical_tests field; statistical_tests.json. Degrees of freedom = 4 for all t-tests. n_positive = number of seeds where Domain > Raw.*
 
-—
+**Statistical findings:**
 
-—
+1. **XGBoost (t = 1.5441, p = 0.1974, d = 0.3118):** The improvement is not statistically significant at α = 0.05. Although 4 out of 5 seeds show positive improvement, the 95% CI [-0.0001, 0.0008] includes zero. The small effect size (d = 0.31) suggests a trend toward improvement that lacks sufficient statistical power with 5 seeds.
 
-### 3.6 SHAP Interpretability Analysis
+2. **LightGBM (t = 3.5045, p = 0.0248, d = 0.3213):** The improvement is statistically significant at α = 0.05. All 5 seeds show positive improvement (n_positive = 5/5), and the 95% CI [0.0002, 0.0007] excludes zero. However, the effect size is small (d = 0.32), indicating that the improvement, while consistent, is modest in magnitude.
 
-—
+3. **CatBoost (t = 6.4309, p = 0.0030, d = 0.6897):** The improvement is statistically significant at α = 0.01. All 5 seeds show positive improvement, and the 95% CI [0.0007, 0.0013] excludes zero. The medium effect size (d = 0.69) represents the largest positive benefit among all models, consistent with CatBoost's ability to leverage categorical indicator features through its ordered boosting mechanism.
 
-—
+4. **RandomForest (t = -25.9612, p = 1.31×10⁻⁵, d = -3.0937):** The decrease is highly significant (p < 0.001). Zero out of 5 seeds show positive improvement (n_positive = 0/5), and the 95% CI [-0.0062, -0.0053] is entirely negative. The large negative effect size (d = -3.09) indicates a substantial and consistent degradation. This result confirms Corollary 3: RandomForest's random feature subsampling is vulnerable to noise dilution from the 38 additional features, as $\sqrt{67} \approx 8.2$ features are sampled per split compared to $\sqrt{29} \approx 5.4$ for raw features, increasing the probability of selecting uninformative redundant features.
 
-—
+**Note on Wilcoxon tests:** The Wilcoxon signed-rank test yields p = 0.3125 for XGBoost and p = 0.0625 for the other three models. With only 5 paired observations, the Wilcoxon test has limited statistical power and cannot achieve p < 0.05 unless all differences have the same sign (which occurs for LGB, Cat, and RF, yielding p = 0.0625). The paired t-test, which uses the magnitude of differences, provides greater power and is preferred for this analysis.
 
-—
+### 3.6 Feature Importance Analysis
 
-—
+Based on the ablation study results (Section 3.3), we derive feature importance by ranking domain features according to their impact on AUC when removed.
 
-—
+**Table 7: Feature importance ranking (top 10 most impactful domain features)**
 
-—
+| Rank | Feature | Family | ΔAUC when removed | Importance |
+|------|---------|--------|-------------------|------------|
+| 1 | room_mismatch | Booking | -0.0006 | High |
+| 2 | month_sin | Temporal | -0.0003 | Medium |
+| 3 | is_online_ta | Booking | -0.0002 | Medium |
+| 4 | total_nights | Booking | -0.0002 | Medium |
+| 5 | weekend_ratio | Booking | -0.0002 | Medium |
+| 6 | is_peak_season | Temporal | -0.0002 | Medium |
+| 7 | is_non_refundable | Pricing | -0.0002 | Medium |
+| 8 | adr_squared | Pricing | -0.0001 | Low |
+| 9 | total_previous | Booking | -0.0001 | Low |
+| 10 | adult_ratio | Guest | -0.0000 | Low |
 
-—
+*Source: comprehensive_results.json, ablation field. Importance based on |ΔAUC| when feature is removed from the full domain set.*
 
-—
+**Key observations:**
+
+1. **room_mismatch** is the single most important domain feature, capturing the discrepancy between reserved and assigned room types. This feature encodes a relational pattern (inequality between two categorical variables) that is not trivially discoverable through axis-aligned tree splits on the individual room type features.
+
+2. **Temporal features (month_sin, is_peak_season)** rank highly, suggesting that cyclical encoding of arrival month provides value beyond what the raw month number offers. The sine transform captures periodicity that axis-aligned splits cannot easily approximate.
+
+3. **Booking pattern features (is_online_ta, total_nights, weekend_ratio)** provide moderate value, encoding market segment and stay duration information in forms that simplify the model's decision boundaries.
+
+4. **Pricing features (is_non_refundable, adr_squared)** contribute modestly, with the deposit type indicator and nonlinear ADR transform offering small but consistent benefits.
+
+5. **Guest composition features (total_guests, is_family) can hurt performance**, as their removal increases AUC. These features are simple deterministic sums and categorizations that the model can discover independently, and their explicit inclusion may introduce unnecessary splitting candidates.
 
 ### 3.7 Robustness Analysis
 
-—
+**Multi-seed stability.** The low standard deviations across 5 seeds (0.0010–0.0018 for all models and configurations) demonstrate high stability of the results. The coefficient of variation (std/mean) ranges from 0.10% to 0.19%, indicating that the AUC measurements are highly reproducible.
 
-—
+**Directional consistency.** The direction of domain feature effects is consistent across seeds:
+- XGBoost: 4/5 seeds positive (80% consistency)
+- LightGBM: 5/5 seeds positive (100% consistency)
+- CatBoost: 5/5 seeds positive (100% consistency)
+- RandomForest: 0/5 seeds positive (100% consistent negative)
 
-—
+This near-perfect directional consistency, particularly for CatBoost (all positive) and RandomForest (all negative), indicates that the observed effects are robust and not artifacts of specific random splits.
 
-—
-
-—
+**Sensitivity to hyperparameters.** As shown in Section 3.4, both n_estimators and max_depth show low elasticity (< 0.01), confirming that the results are robust to hyperparameter variations within practical ranges.
 
 ### 3.8 Computational Performance
 
-—
+**Theoretical complexity.** As analyzed in Section 2.5, domain augmentation increases per-tree training cost by approximately 2.31× (from $d = 29$ to $d' = 67$). With 300 trees, the total training cost for XGBoost with domain features is approximately $6.12 \times 10^{11}$ operations.
 
-—
+**Practical considerations.** All experiments were conducted on a Windows 11 Professional system with an Intel Xeon W7-2595X CPU (24 cores, 2.5–4.8 GHz) and 48 GB DDR5 RDIMM memory. The full experimental pipeline (4 models × 5 seeds × 2 configurations = 40 runs, plus 38 ablation runs and 16 sensitivity runs) completed within practical timeframes. The 38 domain features add modest computational overhead for feature computation (one-time $O(n \cdot 38)$ cost) and increase memory usage by approximately 36 MB for the feature matrix.
 
-—
-
-—
-
-—
+**Inference performance.** Domain augmentation has negligible impact on inference time, as the tree depth and number of trees remain unchanged. Per-sample inference complexity is $O(T \cdot \text{depth})$ regardless of feature count.
 
 ### 3.9 Real-World Case Study
 
-—
+The Hotel Booking Demand dataset itself represents a real-world scenario: two actual hotels (a city hotel and a resort hotel) in Portugal with 119,390 genuine reservation records spanning July 2015 to August 2017.
 
-—
+**Practical scenario.** A revenue manager at a mid-size hotel wishes to predict which bookings are likely to be cancelled to optimize overbooking strategies. Using the raw booking attributes available in the property management system (PMS), they can achieve AUC = 0.9552 with XGBoost. Adding 38 domain-engineered features provides a marginal improvement to AUC = 0.9555—an increase of 0.0004 that is not statistically significant.
 
-—
+**Model selection matters more than feature engineering.** The choice of model has a larger impact on AUC than domain feature engineering: XGBoost (0.9552) outperforms RandomForest (0.9406) by 0.0146 AUC with raw features, while domain features provide at most 0.0010 AUC improvement (CatBoost). For RandomForest, domain features actually decrease performance by 0.0057 AUC.
 
-—
+**Deployment considerations.**
+- **Data quality:** Domain features require accurate recording of all constituent raw features. Missing or erroneous values in adults, children, lead_time, or adr will propagate into domain features.
+- **Computational resources:** The 38 domain features add modest overhead but require additional storage and preprocessing pipelines.
+- **Maintenance cost:** Domain feature definitions must be updated if the underlying PMS schema changes, adding ongoing maintenance burden.
+- **User acceptance:** The marginal improvements (≤ 0.001 AUC for boosting models) may not justify the added complexity in production systems.
+
+**Ethical implications.** Cancellation prediction models may be used to implement differential overbooking policies. The use of domain features like is_online_ta (market segment indicator) and is_group (customer type) could introduce or amplify bias against certain customer segments. Fairness audits should be conducted before deployment.
 
 ---
 
@@ -407,55 +510,61 @@ We analyze sensitivity to key hyperparameters: learning rate ($\eta$), max depth
 
 ### 4.1 Key Findings
 
-The experimental results reveal that domain feature augmentation provides negligible improvement for hotel booking cancellation prediction.
+The experimental results reveal that domain feature augmentation produces model-dependent effects on hotel booking cancellation prediction, contradicting both the naive expectation of universal improvement and the theoretical prediction of zero effect.
 
-**Negligible improvement.** Across all four models, the AUC difference between Raw and Domain configurations is approximately +0.000 to +0.003 (Raw: 0.872–0.885, Domain: 0.875–0.885). This confirms the prediction of Theorem 1: since the domain features are deterministic transformations of the ~30 raw features, the informational gain $\Delta I = 0$. The paired t-tests confirm that the differences are not statistically significant (p > 0.05 for most models), and effect sizes are negligible (Cohen's d N/A).
+**Mixed improvement for boosting models.** Across the three boosting models, domain features provide small positive improvements: XGBoost (+0.0004, not significant), LightGBM (+0.0004, significant, p = 0.025), and CatBoost (+0.0010, significant, p = 0.003). The effect sizes range from small (Cohen's d = 0.312 for XGBoost, d = 0.321 for LightGBM) to medium (d = 0.690 for CatBoost). These improvements, while statistically significant for LightGBM and CatBoost, are small in absolute magnitude (ΔAUC ≤ 0.001).
 
-**Original features are comprehensive.** The Hotel Booking Demand dataset's ~30 raw features already comprehensively capture the factors relevant to cancellation prediction. The key predictors—lead_time, deposit_type, previous_cancellations, market_segment, and adr—are directly available as raw features. Domain features that recompose these variables (e.g., booking_lead_category, booking_cancel_ratio, pricing_adr_per_guest) cannot add information beyond what the raw features provide.
+**Significant degradation for RandomForest.** Domain features cause a substantial and highly significant performance decrease for RandomForest (-0.0057, p < 0.001, d = -3.094). All 5 seeds show negative effects (0/5 positive), confirming that this is a robust finding, not an artifact. The 95% CI [-0.0062, -0.0053] is entirely negative, ruling out any possibility of positive effect.
 
-**Feature redundancy confirmed.** Proposition 1 predicts $\rho \approx 1$ for all domain features, given the comprehensive raw feature set. The SHAP analysis confirms this: domain features receive minimal SHAP values, and the ablation study shows that removing any domain feature family has no measurable impact on AUC. The inter-feature correlation analysis reveals high multicollinearity between domain features and their raw antecedents.
+**Theoretical reconciliation.** Theorem 1 predicts zero informational gain from deterministic transformations, which might suggest zero AUC improvement. However, the theorem addresses mutual information, not practical model performance. Small AUC improvements can arise from approximation efficiency: explicitly engineered features help models discover patterns with fewer splits, even though no new information is added. Conversely, for RandomForest, the additional features introduce noise through the random subsampling mechanism, degrading performance—a practical effect that the information-theoretic analysis does not directly predict but that Corollary 3 of Proposition 1 anticipates.
 
-### 4.2 Why Domain Features Fail Here
+### 4.2 Why Domain Features Show Mixed Effects
 
-The negligible improvement can be explained by three converging factors:
+The model-dependent effects can be explained by three converging factors:
 
-1. **Information-theoretic ceiling (Theorem 1).** Deterministic transformations of existing features cannot increase mutual information with the target. The domain features are all functions of raw features, so $\Delta I = 0$.
+1. **Information-theoretic ceiling (Theorem 1).** Deterministic transformations of existing features cannot increase mutual information with the target. The domain features are all functions of raw features, so $\Delta I = 0$. This constrains the maximum possible improvement to what approximation efficiency can provide—typically very small for models with sufficient capacity.
 
-2. **Model capacity sufficiency.** With ~30 raw features, depth-6 trees, and 1000 estimators, the boosting models have ample capacity to discover the interactions that domain features encode explicitly. For example, the effect of booking_lead_category (last_minute, short, medium, long, advance) can be discovered by the model through threshold splits on lead_time at approximately 7, 30, 90, and 180 days—exactly the boundaries used in the domain feature.
+2. **Model-specific interaction with feature redundancy.**
+   - **Boosting models** (XGBoost, LightGBM, CatBoost) can selectively ignore uninformative features through the gradient boosting process. When a domain feature is redundant with raw features, the boosting algorithm simply assigns it low importance and rarely splits on it. This explains why domain features do not hurt boosting models—the redundant features are effectively ignored.
+   - **RandomForest** uses random feature subsampling ($\sqrt{d'}$ features per split). Adding 38 features increases the feature pool from 29 to 67, increasing $\sqrt{d'}$ from 5.4 to 8.2. This means that each split considers more features, but many of the additional features are redundant or uninformative. The probability of selecting an informative feature at each split decreases, leading to weaker individual trees and degraded ensemble performance.
 
-3. **Feature richness of the original dataset.** Unlike datasets where raw features are sparse or unstructured (e.g., the California Housing dataset with only 8 features), the Hotel Booking Demand dataset contains approximately 30 features spanning temporal, demographic, economic, and historical dimensions. This comprehensiveness leaves little room for improvement through recomposition.
+3. **CatBoost's unique advantage.** CatBoost benefits most from domain features (d = 0.690, medium effect) because its ordered boosting with oblivious trees can leverage the explicitly encoded categorical indicators (is_non_refundable, is_online_ta, is_group). While CatBoost has native categorical handling, the binary indicator features simplify the split decisions and reduce the need for complex target statistics computation.
 
 ### 4.3 Comparison with Related Work
 
-—, Chen et al. [8], Nair et al. [9], Jiang et al. [26]]
+Our results are consistent with the literature, where tree-based models typically achieve AUC in the range of 0.85–0.95 on Hotel Booking Demand. The AUC values we observe (0.9348–0.9555) are at the upper end of this range, reflecting the comprehensive 29-feature raw set and well-tuned models. The mixed effects of domain features align with the observation that the dataset's original features are already well-suited for tree-based models, but our findings add nuance: the effect is not universally negligible but depends on the model architecture.
 
-Our results are consistent with the literature, where tree-based models typically achieve AUC in the range of 0.85–0.90 on Hotel Booking Demand. The negligible improvement from domain features aligns with the observation that the dataset's original features are already well-suited for tree-based models.
+The RandomForest degradation we observe (-0.0057 AUC) is a finding not previously reported in the hospitality analytics literature, to our knowledge. This highlights the importance of evaluating domain features across multiple model architectures rather than a single model.
 
 ### 4.4 Practical Implications
 
-For hospitality data scientists and revenue managers, our findings provide clear guidance:
+For hospitality data scientists and revenue managers, our findings provide nuanced guidance:
 
-1. **Do not over-invest in domain feature engineering for hotel cancellation prediction.** When the reservation data already contains comprehensive attributes (lead time, deposit type, guest composition, market segment, ADR, etc.), additional feature engineering offers minimal returns.
+1. **Evaluate domain features per model, not universally.** Domain features are not universally beneficial or negligible—their effect depends on the model architecture. A feature set that helps CatBoost may hurt RandomForest. Empirical validation for each target model is essential.
 
-2. **Focus on model selection and hyperparameter optimization.** The choice of model (XGBoost vs. LightGBM vs. CatBoost vs. RandomForest) and hyperparameter tuning have a larger impact on AUC than domain feature engineering.
+2. **Boosting models are preferred for domain-augmented features.** XGBoost, LightGBM, and CatBoost can safely incorporate domain features without performance degradation, with CatBoost showing the largest benefit. RandomForest should be used with raw features only.
 
-3. **Consider external data for improvement.** Since domain features derived from the existing data cannot improve performance, meaningful gains require external information: weather forecasts, local event calendars, competitor pricing, airline booking data, or macroeconomic indicators.
+3. **Prioritize model selection over feature engineering.** The choice of model (XGBoost at 0.9552 vs. RandomForest at 0.9406) has a 4× larger impact on AUC than domain feature engineering (at most +0.0010 for CatBoost).
 
-4. **Operational integration matters more than marginal AUC gains.** The practical value of a cancellation prediction model depends on how it is integrated into the revenue management workflow—overbooking policies, staffing decisions, and dynamic pricing strategies—rather than on small AUC improvements.
+4. **Select domain features judiciously.** The ablation study shows that only a few domain features (room_mismatch, month_sin, is_online_ta, total_nights) provide measurable benefits, while others (total_guests, is_family) can hurt performance. A curated subset of high-impact features may be more effective than the full set.
+
+5. **Consider external data for meaningful improvement.** Since domain features derived from existing data provide at most +0.001 AUC improvement, meaningful gains require external information: weather forecasts, local event calendars, competitor pricing, or macroeconomic indicators.
 
 ### 4.5 Limitations
 
 1. **Single dataset.** Results are based on the Hotel Booking Demand dataset from two Portuguese hotels. Generalization to other hotels, regions, and market segments requires validation.
-2. **Binary classification.** The task is binary (cancelled vs. not cancelled). More granular prediction (e.g., cancellation timing, partial cancellation) might benefit from domain features.
+2. **Binary classification.** The task is binary (cancelled vs. not cancelled). More granular prediction (e.g., cancellation timing, partial cancellation) might benefit differently from domain features.
 3. **Temporal scope.** The data covers July 2015 to August 2017. Cancellation patterns may have shifted post-COVID-19, as noted by Almeida et al. [29].
 4. **Feature design scope.** Our domain features are designed to be derivable from the raw data alone. Features incorporating external data could provide genuine informational gain ($\Delta I > 0$).
 5. **Model scope.** We evaluate only tree-based models. Neural network architectures (e.g., TabNet, FT-Transformer) might interact differently with domain features, potentially benefiting more from explicit interaction encoding.
+6. **Limited seed count.** With 5 seeds, the statistical power is limited. The XGBoost result (p = 0.197) might reach significance with more seeds, given that 4/5 seeds show positive improvement.
+7. **Ablation scope.** The ablation study uses only XGBoost with 3 seeds. Feature importance may differ for other models, particularly RandomForest where domain features hurt overall performance.
 
 ### 4.6 Ethical and Social Implications
 
 Hotel cancellation prediction has ethical dimensions that warrant discussion:
 
-1. **Consumer fairness.** Cancellation prediction models may be used to implement differential overbooking policies that disproportionately affect certain customer segments (e.g., guests from specific countries, booking through certain channels). Fairness audits should be conducted to ensure equitable treatment.
+1. **Consumer fairness.** Cancellation prediction models may be used to implement differential overbooking policies that disproportionately affect certain customer segments (e.g., guests from specific countries, booking through certain channels). Domain features like is_online_ta and is_group explicitly encode market segment and customer type, which could amplify such biases. Fairness audits should be conducted to ensure equitable treatment.
 
 2. **Transparency.** Hotels should be transparent about their cancellation prediction practices, particularly when these influence deposit requirements or booking acceptance decisions.
 
@@ -467,11 +576,13 @@ Hotel cancellation prediction has ethical dimensions that warrant discussion:
 
 ## 5. Conclusion
 
-This paper presented HotelFeat, a hospitality domain feature analysis framework for hotel booking cancellation prediction on the Hotel Booking Demand dataset. We constructed four families of domain features—guest composition, booking patterns, temporal seasonality, and pricing categories—and evaluated them across four tree-based models. The theoretical analysis (Theorem 1 and Proposition 1) established that deterministic transformations of existing features yield zero informational gain, and that domain features become fully redundant when the original feature set is already comprehensive.
+This paper presented HotelFeat, a hospitality domain feature analysis framework for hotel booking cancellation prediction on the Hotel Booking Demand dataset. We constructed four families of domain features—guest composition, booking patterns, temporal seasonality, and pricing categories—totaling 38 engineered features, and evaluated them across four tree-based models with rigorous statistical validation.
 
-The experimental results confirmed these predictions: domain features provided negligible AUC improvement (from 0.872–0.885 to 0.875–0.885) across all models. SHAP analysis confirmed that lead time, deposit type, and previous cancellations dominated the importance rankings, while domain features received minimal attribution. The ablation study showed that removing any domain feature family had no measurable effect on AUC.
+The theoretical analysis (Theorem 1 and Proposition 1) established that deterministic transformations of existing features yield zero informational gain, and that domain features become fully redundant when the original feature set is already comprehensive. Corollary 3 predicted that domain features may hurt RandomForest due to noise dilution in random feature subsampling.
 
-These findings provide a clear conclusion: when reservation data already contains approximately 30 comprehensive features, additional domain feature engineering offers no meaningful benefit. Future research should focus on: (1) incorporating external data sources (weather, events, competitor pricing) that can provide genuine informational gain; (2) evaluating domain features with neural network architectures that may be less capable of automatic interaction discovery; (3) extending the analysis to multi-hotel and cross-cultural settings; (4) developing fairness-aware cancellation prediction models that mitigate discrimination; and (5) investigating the interaction between domain features and operational decision-making in real-time revenue management systems.
+The experimental results revealed a nuanced picture that partially confirms and partially extends these theoretical predictions. Domain features provided small but statistically significant AUC improvements for LightGBM (+0.0004, p = 0.025, d = 0.321) and CatBoost (+0.0010, p = 0.003, d = 0.690), a non-significant positive trend for XGBoost (+0.0004, p = 0.197, d = 0.312), and a significant performance decrease for RandomForest (-0.0057, p < 0.001, d = -3.094). The ablation study identified room_mismatch, month_sin, and total_nights as the most beneficial domain features, while total_guests and is_family were found to hurt performance. Parameter sensitivity analysis confirmed low sensitivity to n_estimators and max_depth (elasticity < 0.01).
+
+These findings provide a clear conclusion: domain feature engineering produces model-dependent effects that must be empirically validated rather than assumed. Boosting models can safely benefit from domain features, while RandomForest is harmed by them. Future research should focus on: (1) incorporating external data sources (weather, events, competitor pricing) that can provide genuine informational gain; (2) evaluating domain features with neural network architectures that may be less capable of automatic interaction discovery; (3) extending the analysis to multi-hotel and cross-cultural settings; (4) developing fairness-aware cancellation prediction models that mitigate discrimination; and (5) investigating the interaction between domain features and operational decision-making in real-time revenue management systems.
 
 ---
 

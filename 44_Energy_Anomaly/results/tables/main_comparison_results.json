@@ -1,0 +1,402 @@
+{
+  "per_seed": [
+    {
+      "auc_roc": 0.521948163808629,
+      "best_f1": 0.16170212765957448,
+      "best_threshold": 0.022944112806910232,
+      "best_precision": 0.10555555555555556,
+      "best_recall": 0.34545454545454546,
+      "model": "TCR-AD",
+      "seed": 42,
+      "train_time": 69.36,
+      "params": 412067
+    },
+    {
+      "auc_roc": 0.4585310469031399,
+      "best_f1": 0.12719891745602166,
+      "best_threshold": -12.14913179775579,
+      "best_precision": 0.07472178060413355,
+      "best_recall": 0.42727272727272725,
+      "model": "OCSVM",
+      "seed": 42,
+      "train_time": 2.66,
+      "params": 0
+    },
+    {
+      "auc_roc": 0.5226607156839715,
+      "best_f1": 0.15841584158415842,
+      "best_threshold": 0.44954953361750377,
+      "best_precision": 0.09380234505862646,
+      "best_recall": 0.509090909090909,
+      "model": "IForest",
+      "seed": 42,
+      "train_time": 0.17,
+      "params": 0
+    },
+    {
+      "auc_roc": 0.5240466682327147,
+      "best_f1": 0.15966386554621848,
+      "best_threshold": 0.018094510855999862,
+      "best_precision": 0.10382513661202186,
+      "best_recall": 0.34545454545454546,
+      "model": "AE",
+      "seed": 42,
+      "train_time": 16.62,
+      "params": 148416
+    },
+    {
+      "auc_roc": 0.4608566282984887,
+      "best_f1": 0.13802435723951287,
+      "best_threshold": 0.04074607909929873,
+      "best_precision": 0.08108108108108109,
+      "best_recall": 0.4636363636363636,
+      "model": "VAE",
+      "seed": 42,
+      "train_time": 15.15,
+      "params": 156672
+    },
+    {
+      "auc_roc": 0.5243990290501919,
+      "best_f1": 0.16170212765957448,
+      "best_threshold": 0.018291636661748704,
+      "best_precision": 0.10555555555555556,
+      "best_recall": 0.34545454545454546,
+      "model": "DAGMM",
+      "seed": 42,
+      "train_time": 13.31,
+      "params": 149119
+    },
+    {
+      "auc_roc": 0.47311878474669167,
+      "best_f1": 0.1340941512125535,
+      "best_threshold": 0.015265252365909442,
+      "best_precision": 0.07952622673434856,
+      "best_recall": 0.42727272727272725,
+      "model": "TCR-AD",
+      "seed": 123,
+      "train_time": 50.18,
+      "params": 412067
+    },
+    {
+      "auc_roc": 0.541942682640357,
+      "best_f1": 0.16716417910447762,
+      "best_threshold": -4.442360921653717,
+      "best_precision": 0.12444444444444444,
+      "best_recall": 0.2545454545454545,
+      "model": "OCSVM",
+      "seed": 123,
+      "train_time": 2.34,
+      "params": 0
+    },
+    {
+      "auc_roc": 0.5511079790149557,
+      "best_f1": 0.16977225672877846,
+      "best_threshold": 0.47602028093223187,
+      "best_precision": 0.10991957104557641,
+      "best_recall": 0.37272727272727274,
+      "model": "IForest",
+      "seed": 123,
+      "train_time": 0.15,
+      "params": 0
+    },
+    {
+      "auc_roc": 0.4558844256518675,
+      "best_f1": 0.1220472440944882,
+      "best_threshold": 0.015983127734877856,
+      "best_precision": 0.07788944723618091,
+      "best_recall": 0.2818181818181818,
+      "model": "AE",
+      "seed": 123,
+      "train_time": 12.98,
+      "params": 148416
+    },
+    {
+      "auc_roc": 0.49022785999530183,
+      "best_f1": 0.16,
+      "best_threshold": 0.04434709292319086,
+      "best_precision": 0.09557522123893805,
+      "best_recall": 0.4909090909090909,
+      "model": "VAE",
+      "seed": 123,
+      "train_time": 12.88,
+      "params": 156672
+    },
+    {
+      "auc_roc": 0.45553989507477877,
+      "best_f1": 0.12144212523719165,
+      "best_threshold": 0.015276811226750866,
+      "best_precision": 0.07673860911270983,
+      "best_recall": 0.2909090909090909,
+      "model": "DAGMM",
+      "seed": 123,
+      "train_time": 15.02,
+      "params": 149119
+    },
+    {
+      "auc_roc": 0.4806788818416725,
+      "best_f1": 0.13055555555555556,
+      "best_threshold": 0.013665528507018933,
+      "best_precision": 0.07704918032786885,
+      "best_recall": 0.42727272727272725,
+      "model": "TCR-AD",
+      "seed": 456,
+      "train_time": 48.01,
+      "params": 412067
+    },
+    {
+      "auc_roc": 0.5417273510296766,
+      "best_f1": 0.174573055028463,
+      "best_threshold": -9.631053746109652,
+      "best_precision": 0.11031175059952038,
+      "best_recall": 0.41818181818181815,
+      "model": "OCSVM",
+      "seed": 456,
+      "train_time": 2.37,
+      "params": 0
+    },
+    {
+      "auc_roc": 0.49668780831571524,
+      "best_f1": 0.14465408805031446,
+      "best_threshold": 0.45955523217356337,
+      "best_precision": 0.08745247148288973,
+      "best_recall": 0.41818181818181815,
+      "model": "IForest",
+      "seed": 456,
+      "train_time": 0.15,
+      "params": 0
+    },
+    {
+      "auc_roc": 0.48238587424633933,
+      "best_f1": 0.1322314049586777,
+      "best_threshold": 0.008488743368423346,
+      "best_precision": 0.07792207792207792,
+      "best_recall": 0.43636363636363634,
+      "model": "AE",
+      "seed": 456,
+      "train_time": 13.01,
+      "params": 148416
+    },
+    {
+      "auc_roc": 0.48129355571216037,
+      "best_f1": 0.15198618307426598,
+      "best_threshold": 0.04942673418407489,
+      "best_precision": 0.09381663113006397,
+      "best_recall": 0.4,
+      "model": "VAE",
+      "seed": 456,
+      "train_time": 12.73,
+      "params": 156672
+    },
+    {
+      "auc_roc": 0.4847740975647953,
+      "best_f1": 0.13176470588235295,
+      "best_threshold": 0.021291098002382002,
+      "best_precision": 0.08888888888888889,
+      "best_recall": 0.2545454545454545,
+      "model": "DAGMM",
+      "seed": 456,
+      "train_time": 14.87,
+      "params": 149119
+    },
+    {
+      "auc_roc": 0.5031046903139926,
+      "best_f1": 0.15185185185185185,
+      "best_threshold": 0.019305745309049435,
+      "best_precision": 0.09534883720930233,
+      "best_recall": 0.37272727272727274,
+      "model": "TCR-AD",
+      "seed": 789,
+      "train_time": 47.88,
+      "params": 412067
+    },
+    {
+      "auc_roc": 0.5393626184323859,
+      "best_f1": 0.18181818181818182,
+      "best_threshold": -3.3754511919524117,
+      "best_precision": 0.1443850267379679,
+      "best_recall": 0.24545454545454545,
+      "model": "OCSVM",
+      "seed": 789,
+      "train_time": 2.35,
+      "params": 0
+    },
+    {
+      "auc_roc": 0.5592357685380941,
+      "best_f1": 0.17173524150268335,
+      "best_threshold": 0.4733672880600578,
+      "best_precision": 0.10690423162583519,
+      "best_recall": 0.43636363636363634,
+      "model": "IForest",
+      "seed": 789,
+      "train_time": 0.14,
+      "params": 0
+    },
+    {
+      "auc_roc": 0.4922284864145329,
+      "best_f1": 0.14745308310991956,
+      "best_threshold": 0.007371093146502972,
+      "best_precision": 0.08647798742138364,
+      "best_recall": 0.5,
+      "model": "AE",
+      "seed": 789,
+      "train_time": 12.96,
+      "params": 148416
+    },
+    {
+      "auc_roc": 0.44195442800093965,
+      "best_f1": 0.13414634146341464,
+      "best_threshold": 0.04548329965333746,
+      "best_precision": 0.08058608058608059,
+      "best_recall": 0.4,
+      "model": "VAE",
+      "seed": 789,
+      "train_time": 12.81,
+      "params": 156672
+    },
+    {
+      "auc_roc": 0.495712943387362,
+      "best_f1": 0.15155615696887687,
+      "best_threshold": 0.007723555072314209,
+      "best_precision": 0.0890302066772655,
+      "best_recall": 0.509090909090909,
+      "model": "DAGMM",
+      "seed": 789,
+      "train_time": 14.95,
+      "params": 149119
+    },
+    {
+      "auc_roc": 0.5399146503797666,
+      "best_f1": 0.1641337386018237,
+      "best_threshold": 0.03164448205268744,
+      "best_precision": 0.1232876712328767,
+      "best_recall": 0.24545454545454545,
+      "model": "TCR-AD",
+      "seed": 2024,
+      "train_time": 47.45,
+      "params": 412067
+    },
+    {
+      "auc_roc": 0.4832902670111972,
+      "best_f1": 0.14168937329700274,
+      "best_threshold": -5.241169667944211,
+      "best_precision": 0.10116731517509728,
+      "best_recall": 0.23636363636363636,
+      "model": "OCSVM",
+      "seed": 2024,
+      "train_time": 2.16,
+      "params": 0
+    },
+    {
+      "auc_roc": 0.4984143763213531,
+      "best_f1": 0.14697406340057637,
+      "best_threshold": 0.45426444880418543,
+      "best_precision": 0.08732876712328767,
+      "best_recall": 0.4636363636363636,
+      "model": "IForest",
+      "seed": 2024,
+      "train_time": 0.14,
+      "params": 0
+    },
+    {
+      "auc_roc": 0.5335290893430429,
+      "best_f1": 0.16793893129770993,
+      "best_threshold": 0.02288726882802111,
+      "best_precision": 0.1166077738515901,
+      "best_recall": 0.3,
+      "model": "AE",
+      "seed": 2024,
+      "train_time": 13.12,
+      "params": 148416
+    },
+    {
+      "auc_roc": 0.5029520006264192,
+      "best_f1": 0.16098226466575716,
+      "best_threshold": 0.040026363474552074,
+      "best_precision": 0.09470304975922954,
+      "best_recall": 0.5363636363636364,
+      "model": "VAE",
+      "seed": 2024,
+      "train_time": 12.91,
+      "params": 156672
+    },
+    {
+      "auc_roc": 0.5325972907368256,
+      "best_f1": 0.16842105263157894,
+      "best_threshold": 0.02429268430128241,
+      "best_precision": 0.11851851851851852,
+      "best_recall": 0.2909090909090909,
+      "model": "DAGMM",
+      "seed": 2024,
+      "train_time": 12.93,
+      "params": 149119
+    }
+  ],
+  "summary": [
+    {
+      "model": "IForest",
+      "auc_roc_mean": 0.525621329574818,
+      "auc_roc_std": 0.02594467960448975,
+      "f1_mean": 0.15831029825330223,
+      "f1_std": 0.011194811570380962,
+      "precision_mean": 0.09708147726724309,
+      "recall_mean": 0.44000000000000006,
+      "train_time_mean": 0.15,
+      "params_mean": 0.0
+    },
+    {
+      "model": "TCR-AD",
+      "auc_roc_mean": 0.5037530342181504,
+      "auc_roc_std": 0.024940005303226858,
+      "f1_mean": 0.14846748497627182,
+      "f1_std": 0.013852589272907093,
+      "precision_mean": 0.0961534942119904,
+      "recall_mean": 0.36363636363636365,
+      "train_time_mean": 52.576,
+      "params_mean": 412067.0
+    },
+    {
+      "model": "OCSVM",
+      "auc_roc_mean": 0.5129707932033514,
+      "auc_roc_std": 0.03523480678750292,
+      "f1_mean": 0.15848874134082938,
+      "f1_std": 0.020685758412945315,
+      "precision_mean": 0.1110060635122327,
+      "recall_mean": 0.3163636363636363,
+      "train_time_mean": 2.3760000000000003,
+      "params_mean": 0.0
+    },
+    {
+      "model": "DAGMM",
+      "auc_roc_mean": 0.49860465116279074,
+      "auc_roc_std": 0.02783906923520883,
+      "f1_mean": 0.14697723367591498,
+      "f1_std": 0.017782514881778618,
+      "precision_mean": 0.09574635575058767,
+      "recall_mean": 0.3381818181818182,
+      "train_time_mean": 14.215999999999998,
+      "params_mean": 149119.0
+    },
+    {
+      "model": "AE",
+      "auc_roc_mean": 0.4976149087776995,
+      "auc_roc_std": 0.028251854927119416,
+      "f1_mean": 0.14586690580140277,
+      "f1_std": 0.016931329145861884,
+      "precision_mean": 0.09254448460865088,
+      "recall_mean": 0.3727272727272727,
+      "train_time_mean": 13.738,
+      "params_mean": 148416.0
+    },
+    {
+      "model": "VAE",
+      "auc_roc_mean": 0.47545689452666196,
+      "auc_roc_std": 0.021650921141363213,
+      "f1_mean": 0.14902782928859012,
+      "f1_std": 0.011086784831086756,
+      "precision_mean": 0.08915241275907865,
+      "recall_mean": 0.4581818181818182,
+      "train_time_mean": 13.296000000000001,
+      "params_mean": 156672.0
+    }
+  ]
+}

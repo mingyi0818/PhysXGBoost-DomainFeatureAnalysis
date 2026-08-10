@@ -76,8 +76,16 @@ def run_main_comparison():
         # ===== OCSVM =====
         print("\nTraining OCSVM...")
         t0 = time.time()
+        # Subsample for OCSVM (sklearn SVM doesn't scale well)
+        X_train_normal = X_train_flat[y_train == 0]
+        if X_train_normal.shape[0] > 5000:
+            rng = np.random.RandomState(seed)
+            sub_idx = rng.choice(X_train_normal.shape[0], 5000, replace=False)
+            X_train_normal_sub = X_train_normal[sub_idx]
+        else:
+            X_train_normal_sub = X_train_normal
         ocsvm = OneClassSVM(nu=0.1, kernel='rbf', gamma='scale')
-        ocsvm.fit(X_train_flat[y_train == 0])  # Only normal data
+        ocsvm.fit(X_train_normal_sub)  # Only normal data (subsampled)
         train_time = time.time() - t0
         scores = -ocsvm.decision_function(X_test_flat)
         results = evaluate_anomaly_detection(scores, y_test)
@@ -225,34 +233,44 @@ def run_ablation():
     }
     
     results = []
+    import config as cfg_module
+    import models as models_module
     for name, cfg in variants.items():
-        print(f"\n--- {name} ---")
+        print(f"\n--- {name} ---", flush=True)
+        # Save original values
+        orig_cw = cfg_module.CONTRASTIVE_WEIGHT
+        orig_rw = cfg_module.RECON_WEIGHT
+        
         model = TCRAD().to(device)
         model.use_time_encoder = cfg['use_time']
         model.use_freq_encoder = cfg['use_freq']
         
         # For recon-only variant, set contrastive weight to 0
-        orig_contrastive_weight = CONTRASTIVE_WEIGHT
         if 'Contrastive' in name:
-            import train as train_module
-            # We need to modify the loss function
-            # Actually, we can just train with the standard loss and ignore contrastive
-            # Better: just train normally and evaluate
-            pass
+            cfg_module.CONTRASTIVE_WEIGHT = 0.0
+            cfg_module.RECON_WEIGHT = 1.0
+            models_module.CONTRASTIVE_WEIGHT = 0.0
+            models_module.RECON_WEIGHT = 1.0
         
-        model, _ = train_tcrad(model, train_loader, val_loader, device, n_epochs=30)
+        model, _ = train_tcrad(model, train_loader, val_loader, device, n_epochs=N_EPOCHS)
         scores, labels = get_anomaly_scores_tcrad(model, test_loader, device)
         eval_results = evaluate_anomaly_detection(scores, labels)
         eval_results['variant'] = name
         results.append(eval_results)
-        print(f"{name}: AUC={eval_results['auc_roc']:.4f}, F1={eval_results['best_f1']:.4f}")
+        print(f"{name}: AUC={eval_results['auc_roc']:.4f}, F1={eval_results['best_f1']:.4f}", flush=True)
+        
+        # Restore config
+        cfg_module.CONTRASTIVE_WEIGHT = orig_cw
+        cfg_module.RECON_WEIGHT = orig_rw
+        models_module.CONTRASTIVE_WEIGHT = orig_cw
+        models_module.RECON_WEIGHT = orig_rw
     
     save_results(results, 'ablation_results.csv')
     return results
 
 
 def run_sensitivity():
-    """Run parameter sensitivity analysis."""
+    """Run parameter sensitivity analysis (reduced for efficiency)."""
     print("\n" + "="*60)
     print("SENSITIVITY ANALYSIS")
     print("="*60)
@@ -266,81 +284,72 @@ def run_sensitivity():
     
     results = []
     
+    import config as cfg_module
+    import models as models_module
+    
+    # Save original values
+    orig_embed = EMBED_DIM
+    orig_cw = CONTRASTIVE_WEIGHT
+    orig_rw = RECON_WEIGHT
+    
     # 1. Embedding dimension sensitivity
-    print("\n--- Embedding Dimension Sensitivity ---")
+    print("\n--- Embedding Dimension Sensitivity ---", flush=True)
     for dim in [32, 64, 128, 256]:
-        print(f"  Embedding Dim = {dim}")
-        import config as cfg_module
+        print(f"  Embedding Dim = {dim}", flush=True)
+        # Override in both config and models module (models.py uses its own copy via 'from config import *')
         cfg_module.EMBED_DIM = dim
-        # Recreate model with new dim
-        from models import TCRAD as TCRAD_mod
-        model = TCRAD_mod().to(device)
-        model, _ = train_tcrad(model, train_loader, val_loader, device, n_epochs=20)
+        models_module.EMBED_DIM = dim
+        model = models_module.TCRAD().to(device)
+        model, _ = train_tcrad(model, train_loader, val_loader, device, n_epochs=N_EPOCHS)
         scores, labels = get_anomaly_scores_tcrad(model, test_loader, device)
         eval_results = evaluate_anomaly_detection(scores, labels)
         results.append({
             'param': 'embedding_dim',
             'value': dim,
-            'auc_roc': eval_results['auc_roc'],
-            'f1': eval_results['best_f1']
+            'auc_roc': float(eval_results['auc_roc']),
+            'f1': float(eval_results['best_f1'])
         })
-        print(f"    AUC={eval_results['auc_roc']:.4f}")
+        print(f"    AUC={eval_results['auc_roc']:.4f}", flush=True)
     
-    # 2. Sub-sequence length sensitivity
-    print("\n--- Sub-sequence Length Sensitivity ---")
-    for slen in [64, 128, 256, 512]:
-        print(f"  Seq Len = {slen}")
-        cfg_module.SUB_SEQ_LEN = slen
-        # Reload data with new seq len
-        X, y = load_sgcc_data(sample_ratio=SAMPLE_RATIO)
-        train_loader, val_loader, test_loader, splits = create_data_loaders(X, y)
-        model = TCRAD_mod().to(device)
-        model, _ = train_tcrad(model, train_loader, val_loader, device, n_epochs=20)
-        scores, labels = get_anomaly_scores_tcrad(model, test_loader, device)
-        eval_results = evaluate_anomaly_detection(scores, labels)
-        results.append({
-            'param': 'sub_seq_len',
-            'value': slen,
-            'auc_roc': eval_results['auc_roc'],
-            'f1': eval_results['best_f1']
-        })
-        print(f"    AUC={eval_results['auc_roc']:.4f}")
-    
-    # 3. Learning rate sensitivity
-    print("\n--- Learning Rate Sensitivity ---")
-    for lr in [0.0001, 0.0005, 0.005, 0.01]:
-        print(f"  LR = {lr}")
-        model = TCRAD_mod().to(device)
-        model, _ = train_tcrad(model, train_loader, val_loader, device, n_epochs=20, lr=lr)
-        scores, labels = get_anomaly_scores_tcrad(model, test_loader, device)
-        eval_results = evaluate_anomaly_detection(scores, labels)
-        results.append({
-            'param': 'learning_rate',
-            'value': lr,
-            'auc_roc': eval_results['auc_roc'],
-            'f1': eval_results['best_f1']
-        })
-        print(f"    AUC={eval_results['auc_roc']:.4f}")
-    
-    # 4. Contrastive weight sensitivity
-    print("\n--- Contrastive Weight Sensitivity ---")
+    # 2. Contrastive weight sensitivity
+    print("\n--- Contrastive Weight Sensitivity ---", flush=True)
+    # Reset EMBED_DIM first
+    cfg_module.EMBED_DIM = orig_embed
+    models_module.EMBED_DIM = orig_embed
     for cw in [0.0, 0.25, 0.75, 1.0]:
-        print(f"  Contrastive Weight = {cw}")
+        print(f"  Contrastive Weight = {cw}", flush=True)
         cfg_module.CONTRASTIVE_WEIGHT = cw
         cfg_module.RECON_WEIGHT = 1.0 - cw
-        model = TCRAD_mod().to(device)
-        model, _ = train_tcrad(model, train_loader, val_loader, device, n_epochs=20)
+        models_module.CONTRASTIVE_WEIGHT = cw
+        models_module.RECON_WEIGHT = 1.0 - cw
+        model = models_module.TCRAD().to(device)
+        model, _ = train_tcrad(model, train_loader, val_loader, device, n_epochs=N_EPOCHS)
         scores, labels = get_anomaly_scores_tcrad(model, test_loader, device)
         eval_results = evaluate_anomaly_detection(scores, labels)
         results.append({
             'param': 'contrastive_weight',
             'value': cw,
-            'auc_roc': eval_results['auc_roc'],
-            'f1': eval_results['best_f1']
+            'auc_roc': float(eval_results['auc_roc']),
+            'f1': float(eval_results['best_f1'])
         })
-        print(f"    AUC={eval_results['auc_roc']:.4f}")
+        print(f"    AUC={eval_results['auc_roc']:.4f}", flush=True)
+    
+    # Reset config to original values
+    cfg_module.EMBED_DIM = orig_embed
+    cfg_module.CONTRASTIVE_WEIGHT = orig_cw
+    cfg_module.RECON_WEIGHT = orig_rw
+    models_module.EMBED_DIM = orig_embed
+    models_module.CONTRASTIVE_WEIGHT = orig_cw
+    models_module.RECON_WEIGHT = orig_rw
     
     save_results(results, 'sensitivity_all.csv')
+    
+    # Also save as JSON
+    sens_json_path = os.path.join(RESULTS_DIR, 'sensitivity_results.json')
+    with open(sens_json_path, 'w') as f:
+        json.dump(results, f, indent=2)
+    print(f"Saved JSON to {sens_json_path}")
+    
     return results
 
 
@@ -386,66 +395,111 @@ def run_complexity_analysis():
     return results
 
 
-def run_statistical_tests():
-    """Run statistical significance tests between TCR-AD and baselines."""
+def run_statistical_tests(main_results=None):
+    """Run statistical significance tests between TCR-AD and baselines.
+    Reuses results from main comparison if available to avoid re-training."""
     print("\n" + "="*60)
     print("STATISTICAL TESTS")
     print("="*60)
     
     from scipy import stats as scipy_stats
     
-    # Load main comparison results
-    all_results = []
-    for seed in RANDOM_SEEDS:
-        set_seed(seed)
-        X, y = load_sgcc_data(sample_ratio=SAMPLE_RATIO, random_state=seed)
-        train_loader, val_loader, test_loader, splits = create_data_loaders(X, y, random_state=seed)
-        X_train, y_train, X_val, y_val, X_test, y_test = splits
+    if main_results is not None:
+        # Reuse results from main comparison
+        all_results = []
+        for r in main_results:
+            entry = {}
+            if r['model'] in ['TCR-AD', 'OCSVM', 'IForest', 'AE', 'VAE', 'DAGMM']:
+                entry[r['model']] = r['auc_roc']
+            if entry:
+                all_results.append(entry)
         
-        device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+        # Group by seed
+        seed_results = {}
+        for r in main_results:
+            seed = r['seed']
+            if seed not in seed_results:
+                seed_results[seed] = {}
+            seed_results[seed][r['model']] = r['auc_roc']
         
-        # TCR-AD
-        model = TCRAD().to(device)
-        model, _ = train_tcrad(model, train_loader, val_loader, device, n_epochs=30)
-        scores_tcrad, _ = get_anomaly_scores_tcrad(model, test_loader, device)
-        auc_tcrad = evaluate_anomaly_detection(scores_tcrad, y_test)['auc_roc']
-        all_results.append({'TCR-AD': auc_tcrad})
-        
-        # Baselines
-        X_test_flat = X_test.reshape(X_test.shape[0], -1)
-        X_train_flat = X_train.reshape(X_train.shape[0], -1)
-        
-        # OCSVM
-        ocsvm = OneClassSVM(nu=0.1, kernel='rbf', gamma='scale')
-        ocsvm.fit(X_train_flat[y_train == 0])
-        scores = -ocsvm.decision_function(X_test_flat)
-        all_results[-1]['OCSVM'] = evaluate_anomaly_detection(scores, y_test)['auc_roc']
-        
-        # IForest
-        iforest = IsolationForest(n_estimators=100, contamination=0.1, random_state=seed)
-        iforest.fit(X_train_flat)
-        scores = -iforest.score_samples(X_test_flat)
-        all_results[-1]['IForest'] = evaluate_anomaly_detection(scores, y_test)['auc_roc']
+        all_results = list(seed_results.values())
+        print(f"Reusing results from main comparison ({len(all_results)} seeds)")
+    else:
+        # Fall back to re-training (original behavior)
+        all_results = []
+        for seed in RANDOM_SEEDS:
+            set_seed(seed)
+            X, y = load_sgcc_data(sample_ratio=SAMPLE_RATIO, random_state=seed)
+            train_loader, val_loader, test_loader, splits = create_data_loaders(X, y, random_state=seed)
+            X_train, y_train, X_val, y_val, X_test, y_test = splits
+            
+            device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+            
+            # TCR-AD
+            model = TCRAD().to(device)
+            model, _ = train_tcrad(model, train_loader, val_loader, device, n_epochs=N_EPOCHS)
+            scores_tcrad, _ = get_anomaly_scores_tcrad(model, test_loader, device)
+            auc_tcrad = evaluate_anomaly_detection(scores_tcrad, y_test)['auc_roc']
+            all_results.append({'TCR-AD': auc_tcrad})
+            
+            # Baselines
+            X_test_flat = X_test.reshape(X_test.shape[0], -1)
+            X_train_flat = X_train.reshape(X_train.shape[0], -1)
+            
+            # OCSVM
+            X_train_normal = X_train_flat[y_train == 0]
+            if X_train_normal.shape[0] > 5000:
+                rng = np.random.RandomState(seed)
+                sub_idx = rng.choice(X_train_normal.shape[0], 5000, replace=False)
+                X_train_normal = X_train_normal[sub_idx]
+            ocsvm = OneClassSVM(nu=0.1, kernel='rbf', gamma='scale')
+            ocsvm.fit(X_train_normal)
+            scores = -ocsvm.decision_function(X_test_flat)
+            all_results[-1]['OCSVM'] = evaluate_anomaly_detection(scores, y_test)['auc_roc']
+            
+            # IForest
+            iforest = IsolationForest(n_estimators=100, contamination=0.1, random_state=seed)
+            iforest.fit(X_train_flat)
+            scores = -iforest.score_samples(X_test_flat)
+            all_results[-1]['IForest'] = evaluate_anomaly_detection(scores, y_test)['auc_roc']
     
-    # Compute paired t-tests
-    baselines = ['OCSVM', 'IForest']
+    # Compute paired t-tests against all baselines
+    baselines = ['OCSVM', 'IForest', 'AE', 'VAE', 'DAGMM']
     stat_results = []
     for bl in baselines:
-        tcrad_aucs = [r['TCR-AD'] for r in all_results]
-        bl_aucs = [r[bl] for r in all_results]
+        tcrad_aucs = [r['TCR-AD'] for r in all_results if 'TCR-AD' in r and bl in r]
+        bl_aucs = [r[bl] for r in all_results if 'TCR-AD' in r and bl in r]
+        if len(tcrad_aucs) < 2:
+            continue
         t_stat, p_val = scipy_stats.ttest_rel(tcrad_aucs, bl_aucs)
-        d = (np.mean(tcrad_aucs) - np.mean(bl_aucs)) / np.std(tcrad_aucs - bl_aucs)
+        diff_arr = np.array(tcrad_aucs) - np.array(bl_aucs)
+        d = (np.mean(tcrad_aucs) - np.mean(bl_aucs)) / (np.std(diff_arr) + 1e-10)
+        # 95% CI
+        mean_diff = float(np.mean(diff_arr))
+        se_diff = float(np.std(diff_arr, ddof=1) / np.sqrt(len(diff_arr))) if len(diff_arr) > 1 else 0.0
+        ci_lower = mean_diff - 1.96 * se_diff
+        ci_upper = mean_diff + 1.96 * se_diff
         stat_results.append({
             'baseline': bl,
-            'tcrad_auc_mean': np.mean(tcrad_aucs),
-            'baseline_auc_mean': np.mean(bl_aucs),
-            't_statistic': t_stat,
-            'p_value': p_val,
-            'cohens_d': abs(d)
+            'tcrad_auc_mean': float(np.mean(tcrad_aucs)),
+            'baseline_auc_mean': float(np.mean(bl_aucs)),
+            't_statistic': float(t_stat),
+            'p_value': float(p_val),
+            'cohens_d': float(abs(d)),
+            'ci_95_lower': ci_lower,
+            'ci_95_upper': ci_upper,
+            'n_seeds': len(tcrad_aucs)
         })
         print(f"TCR-AD vs {bl}: t={t_stat:.4f}, p={p_val:.4f}, d={abs(d):.4f}")
     
     save_results(stat_results, 'statistical_tests.csv')
+    
+    # Also save as JSON
+    stat_json_path = os.path.join(RESULTS_DIR, 'statistical_tests.json')
+    with open(stat_json_path, 'w') as f:
+        json.dump(stat_results, f, indent=2)
+    print(f"Saved JSON to {stat_json_path}")
+    
     return stat_results
 
 
@@ -457,18 +511,54 @@ if __name__ == '__main__':
     # Phase 1: Main comparison
     all_results, summary = run_main_comparison()
     
+    # Save main comparison results as JSON
+    main_json_path = os.path.join(RESULTS_DIR, 'main_comparison_results.json')
+    with open(main_json_path, 'w') as f:
+        json.dump({'per_seed': all_results, 'summary': summary}, f, indent=2, default=str)
+    print(f"\nSaved main comparison JSON to {main_json_path}")
+    
     # Phase 2: Ablation
     ablation_results = run_ablation()
     
-    # Phase 3: Sensitivity
+    # Save ablation results as JSON
+    abl_json_path = os.path.join(RESULTS_DIR, 'ablation_results.json')
+    with open(abl_json_path, 'w') as f:
+        json.dump(ablation_results, f, indent=2, default=str)
+    print(f"Saved ablation JSON to {abl_json_path}")
+    
+    # Phase 3: Sensitivity (reduced)
     sensitivity_results = run_sensitivity()
     
     # Phase 4: Complexity
     complexity_results = run_complexity_analysis()
     
-    # Phase 5: Statistical tests
-    stat_results = run_statistical_tests()
+    # Save complexity results as JSON
+    comp_json_path = os.path.join(RESULTS_DIR, 'complexity_analysis.json')
+    with open(comp_json_path, 'w') as f:
+        json.dump(complexity_results, f, indent=2, default=str)
+    print(f"Saved complexity JSON to {comp_json_path}")
     
-    print("\n" + "="*60)
-    print("ALL EXPERIMENTS COMPLETED")
-    print("="*60)
+    # Phase 5: Statistical tests (reuse main comparison results)
+    stat_results = run_statistical_tests(main_results=all_results)
+    
+    # Generate combined summary for paper reference
+    combined_summary = {
+        'direction': '44_Energy_Anomaly',
+        'task': 'anomaly_detection',
+        'dataset': 'SGCC Electricity Theft Detection',
+        'metric': 'AUC-ROC',
+        'seeds': RANDOM_SEEDS,
+        'main_comparison': summary,
+        'ablation': ablation_results,
+        'sensitivity': sensitivity_results,
+        'complexity': complexity_results,
+        'statistical_tests': stat_results,
+    }
+    summary_path = os.path.join(RESULTS_DIR, 'summary.json')
+    with open(summary_path, 'w') as f:
+        json.dump(combined_summary, f, indent=2, default=str)
+    print(f"\nSaved combined summary to {summary_path}", flush=True)
+    
+    print("\n" + "="*60, flush=True)
+    print("ALL EXPERIMENTS COMPLETED", flush=True)
+    print("="*60, flush=True)

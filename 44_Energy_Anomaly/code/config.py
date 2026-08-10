@@ -16,22 +16,22 @@ LABEL_FILE = os.path.join(DATA_DIR, 'label.csv')
 
 # Data preprocessing
 SEQ_LEN = 1035  # Original sequence length (days)
-SUB_SEQ_LEN = 256  # Sub-sequence length for training
-SAMPLE_RATIO = 0.3  # Ratio of customers to sample (for memory)
+SUB_SEQ_LEN = 128  # Reduced from 256 for faster attention (O(n^2) -> O(n^2/4))
+SAMPLE_RATIO = 0.2  # Ratio of customers to sample (for memory)
 VAL_RATIO = 0.15
 TEST_RATIO = 0.15
 NORMALIZE = True
 
 # TCR-AD Model
-EMBED_DIM = 128
-TIME_ENCODER_HIDDEN = [128, 256, 128]
-FREQ_ENCODER_HIDDEN = [128, 64]
-CONV_KERNEL_SIZES = [3, 5, 7]  # Multi-scale kernels
+EMBED_DIM = 64
+TIME_ENCODER_HIDDEN = [64, 128]  # Reduced from [128, 256, 128] for faster training
+FREQ_ENCODER_HIDDEN = [64, 32]
+CONV_KERNEL_SIZES = [3, 5]  # Reduced from [3, 5, 7] for fewer branches
 N_HEADS = 4
 DROPOUT = 0.1
 USE_FREQ_ENCODER = True
 USE_TIME_ENCODER = True
-FREQ_N_BINS = 128  # Number of frequency bins to use
+FREQ_N_BINS = 64  # Reduced from 128 to match SUB_SEQ_LEN
 
 # Contrastive learning
 CONTRASTIVE_TEMPERATURE = 0.5
@@ -44,11 +44,11 @@ ANOMALY_ALPHA = 0.5  # Weight for combining recon error and contrastive score
 ANOMALY_THRESHOLD_PERCENTILE = 95  # Percentile for threshold
 
 # Training
-BATCH_SIZE = 256
-N_EPOCHS = 50
+BATCH_SIZE = 1024  # Increased from 512 for better GPU utilization
+N_EPOCHS = 8  # Reduced from 15 (model converges fast)
 LEARNING_RATE = 1e-3
 WEIGHT_DECAY = 1e-5
-EARLY_STOP_PATIENCE = 10
+EARLY_STOP_PATIENCE = 5  # Reduced from 7
 
 # Random seeds
 RANDOM_SEEDS = [42, 123, 456, 789, 2024]
