@@ -1,0 +1,64 @@
+{
+  "direction": "56_PowerConsumption",
+  "metric": "R2",
+  "seeds": [],
+  "per_model": {
+    "XGB": {
+      "t_stat": null,
+      "t_p": null,
+      "wilcoxon_stat": null,
+      "wilcoxon_p": null,
+      "cohens_d": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "mean_diff": 0.0005159330233266424,
+      "n": 1
+    },
+    "LGB": {
+      "t_stat": null,
+      "t_p": null,
+      "wilcoxon_stat": null,
+      "wilcoxon_p": null,
+      "cohens_d": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "mean_diff": 1.3728905173149286e-05,
+      "n": 1
+    },
+    "Cat": {
+      "t_stat": null,
+      "t_p": null,
+      "wilcoxon_stat": null,
+      "wilcoxon_p": null,
+      "cohens_d": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "mean_diff": 2.2730385893177107e-05,
+      "n": 1
+    },
+    "RF": {
+      "t_stat": null,
+      "t_p": null,
+      "wilcoxon_stat": null,
+      "wilcoxon_p": null,
+      "cohens_d": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "mean_diff": 7.277586571152739e-06,
+      "n": 1
+    }
+  },
+  "anova": {
+    "f_stat": null,
+    "p_value": null,
+    "df_between": 3,
+    "df_within": 0,
+    "df_total": 3,
+    "ss_between": 5.618400200725896e-06,
+    "ss_within": 0.0,
+    "ss_total": 5.618400200725896e-06,
+    "ms_between": 1.872800066908632e-06,
+    "ms_within": 0.0,
+    "eta_squared": 1.0
+  }
+}

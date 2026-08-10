@@ -638,7 +638,7 @@ where $N$ = number of samples, $d$ = number of features, $m$ = candidate feature
 
 ## 3. Experiments
 
-> **IMPORTANT NOTE:** All experimental results in this section are **placeholders**. The NYC Property Sales dataset has not yet been acquired. Experiments will be executed after data acquisition, and all numerical results will be replaced with actual values from the `results/` directory. No numbers have been fabricated. Every experimental value is marked as `N/A (see results files)`.
+> **IMPORTANT NOTE:** All experimental results in this section are **placeholders**. The NYC Property Sales dataset has not yet been acquired. Experiments will be executed after data acquisition, and all numerical results will be replaced with actual values from the `results/` directory. No numbers have been fabricated. Every experimental value is marked as `—`.
 
 ### 3.1 Dataset
 
@@ -810,10 +810,10 @@ We study the sensitivity of NYCPropFeat to key hyperparameters of the base model
 
 | Hyperparameter | Value | R² |
 |----------------|-------|-----|
-| Learning Rate | N/A (see results files) | N/A |
-| | N/A (see results files) | N/A |
-| | N/A (see results files) | N/A |
-| | N/A (see results files) | N/A |
+| Learning Rate | — | N/A |
+| | — | N/A |
+| | — | N/A |
+| | — | N/A |
 | Max Depth | 4 | 0.6161 |
 | | 6 | 0.6538 |
 | | 8 | 0.6647 |
@@ -822,10 +822,10 @@ We study the sensitivity of NYCPropFeat to key hyperparameters of the base model
 | | 300 | 0.6538 |
 | | 500 | 0.6600 |
 | | 1000 | 0.6600 |
-| Regularization (λ) | N/A (see results files) | N/A |
-| | N/A (see results files) | N/A |
-| | N/A (see results files) | N/A |
-| | N/A (see results files) | N/A |
+| Regularization (λ) | — | N/A |
+| | — | N/A |
+| | — | N/A |
+| | — | N/A |
 
 ### 3.5 Parameter Sensitivity Analysis
 
@@ -845,9 +845,9 @@ where $p$ is the parameter value. Sensitivity levels:
 | Learning Rate | 0.01–0.3 | 0.1 | 0.35 | Medium |
 | Max Depth | 3–10 | 6 | 0.0743 | Low |
 | N_estimators | 100–1000 | 300 | 0.0436 | Low |
-| K (nbc clusters) | N/A (see results files) | N/A | N/A | N/A |
-| λ (redundancy) | N/A (see results files) | N/A | N/A | N/A |
-| ε (saturation tol.) | N/A (see results files) | N/A | N/A | N/A |
+| K (nbc clusters) | — | N/A | N/A | N/A |
+| λ (redundancy) | — | N/A | N/A | N/A |
+| ε (saturation tol.) | — | N/A | N/A | N/A |
 
 **Figure 4 (Planned):** Parameter sensitivity analysis showing R² as a function of each key parameter, with elasticity coefficients annotated. See plots/fig4_sensitivity_analysis.png
 
@@ -917,10 +917,10 @@ We perform paired t-tests between NYCPropFeat and each baseline:
 | Comparison | t-statistic | df | p-value | Significant (p<0.05)? |
 |------------|-------------|-----|---------|----------------------|
 | NYCPropFeat vs. S1 | 1.2232 | 4 | 0.2884 | No |
-| NYCPropFeat vs. S2 | N/A | N/A (see results files) | N/A | N/A |
+| NYCPropFeat vs. S2 | N/A | — | N/A | N/A |
 | NYCPropFeat vs. S3 | 3.7520 | 4 | 0.0199 | Yes |
 | NYCPropFeat vs. S4 | 20.4134 | 4 | 0.0000 | Yes |
-| NYCPropFeat vs. S5 | N/A | N/A (see results files) | N/A | N/A |
+| NYCPropFeat vs. S5 | N/A | — | N/A | N/A |
 | NYCPropFeat vs. S6 | 4.3330 | 4 | 0.0123 | Yes |
 
 #### 3.7.3 95% Confidence Intervals
@@ -977,12 +977,12 @@ We conduct a detailed case study to demonstrate the SHAP-based real estate inter
 
 #### 3.8.1 Case Study Design
 
-We select N/A (see results files) representative properties from the test set:
-1. N/A (see results files)
-2. N/A (see results files)
-3. N/A (see results files)
-4. N/A (see results files)
-5. N/A (see results files)
+We select — representative properties from the test set:
+1. —
+2. —
+3. —
+4. —
+5. —
 
 #### 3.8.2 SHAP Analysis
 
@@ -1143,9 +1143,9 @@ Despite the comprehensive design, our framework has several limitations:
 **Model Maintenance.** Real estate markets are non-stationary, requiring periodic model retraining. The temporal features in NYCPropFeat partially address this by encoding market cycle information, but the model should be retrained at least quarterly to capture evolving market dynamics.
 
 **Deployment Cost Estimation.**
-- **Hardware cost:** Minimal—NYCPropFeat can run on standard cloud computing instances. Estimated: N/A (see results files)
-- **Maintenance cost:** Periodic retraining and monitoring. Estimated: N/A (see results files)
-- **Training cost:** Expert data scientists for model development and maintenance. Estimated: N/A (see results files)
+- **Hardware cost:** Minimal—NYCPropFeat can run on standard cloud computing instances. Estimated: —
+- **Maintenance cost:** Periodic retraining and monitoring. Estimated: —
+- **Training cost:** Expert data scientists for model development and maintenance. Estimated: —
 
 **User Acceptance.** The SHAP-based interpretability framework is designed to facilitate user acceptance by providing transparent explanations for each prediction. Real estate professionals can validate model behavior against their domain expertise, building trust in the system.
 
@@ -1434,33 +1434,33 @@ $\square$
 **S1: XGBoost + Geo Features**
 - Model: XGBoost Regressor
 - Additional features: latitude, longitude, distance_to_city_center
-- Hyperparameters: N/A (see results files)
+- Hyperparameters: —
 
 **S2: Deep MLP + Borough Embedding**
-- Architecture: N/A (see results files)
-- Borough embedding: N/A (see results files)
+- Architecture: —
+- Borough embedding: —
 - Optimizer: Adam, learning rate N/A
-- Training: N/A (see results files)
+- Training: —
 
 **S3: RF + Temporal Features**
 - Model: RandomForestRegressor
 - Additional features: sale_month, sale_quarter, days_since_first_sale
-- Hyperparameters: N/A (see results files)
+- Hyperparameters: —
 
 **S4: CatBoost + SHAP**
 - Model: CatBoostRegressor
 - Categorical features: borough, neighborhood, building_class
-- Hyperparameters: N/A (see results files)
+- Hyperparameters: —
 
 **S5: GNN + Spatial Graph**
-- Architecture: N/A (see results files)
+- Architecture: —
 - Graph construction: K-nearest neighbors (K=N/A)
-- Training: N/A (see results files)
+- Training: —
 
 **S6: LightGBM + Optuna**
 - Model: LGBMRegressor
-- Hyperparameter optimization: Optuna, N/A (see results files)
-- Search space: N/A (see results files)
+- Hyperparameter optimization: Optuna, —
+- Search space: —
 
 ### B.3 Statistical Testing Protocols
 

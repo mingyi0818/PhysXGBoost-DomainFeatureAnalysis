@@ -455,7 +455,7 @@ Table 4 reports the main comparison across seven classifiers. All values are mea
 
 **Key Observations:**
 
-N/A (see results files) and the AUC range 0.771–0.909 across cited works.
+— and the AUC range 0.771–0.909 across cited works.
 - Which model achieves the highest absolute AUC.]
 
 ### 4.4 Ablation Study
@@ -488,23 +488,23 @@ We estimate the mutual information matrix among all 38 features (23 original + 1
 | Quantity | Estimate | Interpretation |
 |----------|----------|----------------|
 | $H(Y)$ | 0.7624 | Default-rate entropy |
-| $H(Y \mid \mathbf{F})$ | N/A (see results files) | Residual entropy (saturation parameter) |
+| $H(Y \mid \mathbf{F})$ | — | Residual entropy (saturation parameter) |
 | $I(Y; \mathbf{F})$ | N/A | Information in original features |
 | $I(\mathbf{D}; \mathbf{F}) = H(\mathbf{D})$ | N/A | Redundancy (since D = g(F)) |
 | $I(\mathbf{D}; Y)$ | N/A | Marginal information about target |
 | $I(\mathbf{D}; Y \mid \mathbf{F})$ | N/A | Conditional information gain (expect ≈ 0) |
-| Redundancy ratio $I(\mathbf{D};\mathbf{F}) / I(\mathbf{D};Y)$ | N/A (see results files) | > 1 confirms Theorem 1 condition |
+| Redundancy ratio $I(\mathbf{D};\mathbf{F}) / I(\mathbf{D};Y)$ | — | > 1 confirms Theorem 1 condition |
 | Saturation $\varepsilon = H(Y \mid \mathbf{F})$ | N/A | Small $\varepsilon$ confirms Theorem 2 condition |
 
-N/A (see results files)
+—
 
 #### 4.5.1 Feature Clustering
 
-N/A (see results files)
+—
 
 #### 4.5.2 Conditional Mutual Information Ranking
 
-N/A (see results files)
+—
 
 ### 4.6 Statistical Significance Analysis
 
@@ -596,7 +596,7 @@ We use TreeSHAP [22, 23] for the four tree-based models. The central question: d
 
 #### 4.7.2 SHAP Interaction Values
 
-N/A (see results files)
+—
 
 #### 4.7.3 Group-Level SHAP Contribution
 
@@ -612,7 +612,7 @@ N/A (see results files)
 
 #### 4.7.4 Local Explanations
 
-N/A (see results files)
+—
 
 ### 4.8 Parameter Sensitivity Analysis (Elasticity)
 
@@ -659,7 +659,7 @@ To simulate temporal distribution shift (economic cycle, policy change), we spli
 | Temporal split A | Apr–Jul | Aug–Sep | N/A | N/A | N/A | N/A |
 | Temporal split B | Apr–Aug | Sep | N/A | N/A | N/A | N/A |
 
-N/A (see results files)
+—
 
 ### 4.10 Noise Robustness Analysis
 
@@ -676,7 +676,7 @@ We inject Gaussian noise ($\sigma \in \{0.0, 0.05, 0.10, 0.15, 0.20, 0.25\}$) in
 | 0.20 | N/A | N/A | N/A |
 | 0.25 | N/A | N/A | N/A |
 
-N/A (see results files)
+—
 
 ### 4.11 Fairness Analysis
 
@@ -699,7 +699,7 @@ We measure prediction fairness across demographic groups: gender (X2), education
 | Age | 30–45 | N/A | N/A | N/A | N/A |
 | Age | >45 | N/A | N/A | N/A | N/A |
 
-N/A (see results files)
+—
 
 ### 4.12 Computational Performance and Deployment Cost
 
@@ -726,7 +726,7 @@ N/A (see results files)
 
 ### 4.13 Practical Case Study
 
-N/A (see results files)
+—
 
 ---
 

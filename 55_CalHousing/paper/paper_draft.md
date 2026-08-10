@@ -260,39 +260,39 @@ Total augmented features: 12, yielding $d' = 20$ total features in the Domain co
 
 **R² improvement (∆R²):** XGBoost: ΔR² = +0.006300, LightGBM: ΔR² = +0.004057, CatBoost: ΔR² = +0.002613, RandomForest: ΔR² = +0.007288.
 
-N/A (see results files)
+—
 
-N/A (see results files)
+—
 
-N/A (see results files)
+—
 
-N/A (see results files)
+—
 
-N/A (see results files)
+—
 
 ### 3.3 Ablation Study
 
 We conduct component-level ablation by systematically removing each feature family and measuring the impact on R².
 
-N/A (see results files)
+—
 
-N/A (see results files)
+—
 
-N/A (see results files)
+—
 
-N/A (see results files)
+—
 
-N/A (see results files)
+—
 
-N/A (see results files)
+—
 
-N/A (see results files)
+—
 
 ### 3.4 Parameter Sensitivity Analysis
 
 We analyze sensitivity to key hyperparameters: number of K-means clusters ($K$), number of spatial neighbors ($k$), and learning rate ($\eta$).
 
-N/A (see results files)
+—
 
 **Elasticity coefficient for K (K-means clusters):** parameter range [5, 50], best value = 20, sensitivity level = Low.
 
@@ -300,63 +300,63 @@ N/A (see results files)
 
 **Elasticity coefficient for learning rate η:** parameter range [0.01, 0.3], best value = 0.1, sensitivity level = Low.
 
-N/A (see results files)
+—
 
 ### 3.5 Statistical Analysis
 
 **Multi-seed experiments.** All experiments are repeated with 5 random seeds.
 
-N/A (see results files)
+—
 
 **Mean ± std R²:** XGBoost: Raw = 0.8351±0.0000, Domain = 0.8414±0.0000; LightGBM: Raw = 0.8376±0.0000, Domain = 0.8416±0.0000; CatBoost: Raw = 0.8149±0.0007, Domain = 0.8175±0.0009; RandomForest: Raw = 0.7935±0.0008, Domain = 0.8008±0.0008.
 
-N/A (see results files)
+—
 
-N/A (see results files)
+—
 
-N/A (see results files)
+—
 
 **Correlation analysis.**
 
-N/A (see results files)
+—
 
-N/A (see results files)
+—
 
-N/A (see results files)
+—
 
 ### 3.6 SHAP Interpretability Analysis
 
 We use SHAP (TreeExplainer) to attribute feature importance and analyze feature interactions.
 
-N/A (see results files)
+—
 
-N/A (see results files)
+—
 
-N/A (see results files)
+—
 
-N/A (see results files)
+—
 
-N/A (see results files)
+—
 
-N/A (see results files)
+—
 
 ### 3.7 Robustness Analysis
 
-N/A (see results files)
+—
 
-N/A (see results files)
+—
 
-N/A (see results files)
+—
 
 ### 3.8 Computational Performance
 
-N/A (see results files)
+—
 
-N/A (see results files)
+—
 
-N/A (see results files)
+—
 
-N/A (see results files)
+—
 
 ---
 
@@ -374,7 +374,7 @@ The experimental results reveal several important findings:
 
 ### 4.2 Comparison with Related Work
 
-N/A (see results files), Mostafa et al. [25], and other recent studies]
+—, Mostafa et al. [25], and other recent studies]
 
 Our results are consistent with the literature, where gradient-boosting methods typically achieve R² in the range of 0.80-0.85 on California Housing. The marginal improvement from domain features (+0.005 to +0.008) is in line with the general observation that California Housing is a relatively saturated benchmark where raw features already capture most of the predictive signal.
 

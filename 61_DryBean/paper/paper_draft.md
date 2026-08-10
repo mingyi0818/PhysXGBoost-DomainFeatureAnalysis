@@ -377,16 +377,16 @@ The UCI Dry Bean dataset contains 13,611 images of seven registered dry bean var
 | Domain features (BeanFeat) | 22 |
 | Total features (domain) | 38 |
 | Number of classes | 7 |
-| Class: Bombay | N/A (see results files) |
-| Class: Barbunya | N/A (see results files) |
-| Class: Cali | N/A (see results files) |
-| Class: Dermosan | N/A (see results files) |
-| Class: Horoz | N/A (see results files) |
-| Class: Seker | N/A (see results files) |
-| Class: Sira | N/A (see results files) |
+| Class: Bombay | — |
+| Class: Barbunya | — |
+| Class: Cali | — |
+| Class: Dermosan | — |
+| Class: Horoz | — |
+| Class: Seker | — |
+| Class: Sira | — |
 | Min class samples | 10000 |
 | Max class samples | 10000 |
-| Imbalance ratio | N/A (see results files) |
+| Imbalance ratio | — |
 
 ### 3.2 Experimental Setup
 
@@ -425,13 +425,13 @@ The UCI Dry Bean dataset contains 13,611 images of seven registered dry bean var
 
 | Class | Precision | Recall | F1-Score | Support |
 |-------|-----------|--------|----------|---------|
-| Bombay | N/A (see results files) | N/A (see results files) | N/A (see results files) | 10000 |
-| Barbunya | N/A (see results files) | N/A (see results files) | N/A (see results files) | 10000 |
-| Cali | N/A (see results files) | N/A (see results files) | N/A (see results files) | 10000 |
-| Dermosan | N/A (see results files) | N/A (see results files) | N/A (see results files) | 10000 |
-| Horoz | N/A (see results files) | N/A (see results files) | N/A (see results files) | 10000 |
-| Seker | N/A (see results files) | N/A (see results files) | N/A (see results files) | 10000 |
-| Sira | N/A (see results files) | N/A (see results files) | N/A (see results files) | 10000 |
+| Bombay | — | — | — | 10000 |
+| Barbunya | — | — | — | 10000 |
+| Cali | — | — | — | 10000 |
+| Dermosan | — | — | — | 10000 |
+| Horoz | — | — | — | 10000 |
+| Seker | — | — | — | 10000 |
+| Sira | — | — | — | 10000 |
 
 ### 3.5 Confusion Matrix Analysis
 
@@ -439,13 +439,13 @@ The UCI Dry Bean dataset contains 13,611 images of seven registered dry bean var
 
 | | Bomb. | Barb. | Cali | Derm. | Horoz | Seker | Sira |
 |---|-------|-------|------|-------|-------|-------|------|
-| **Bombay** | 10000 | N/A (see results files) | N/A (see results files) | N/A (see results files) | N/A (see results files) | N/A (see results files) | N/A (see results files) |
-| **Barbunya** | N/A (see results files) | 10000 | N/A (see results files) | N/A (see results files) | N/A (see results files) | N/A (see results files) | N/A (see results files) |
-| **Cali** | N/A (see results files) | N/A (see results files) | 10000 | N/A (see results files) | N/A (see results files) | N/A (see results files) | N/A (see results files) |
-| **Dermosan** | N/A (see results files) | N/A (see results files) | N/A (see results files) | 10000 | N/A (see results files) | N/A (see results files) | N/A (see results files) |
-| **Horoz** | N/A (see results files) | N/A (see results files) | N/A (see results files) | N/A (see results files) | 10000 | N/A (see results files) | N/A (see results files) |
-| **Seker** | N/A (see results files) | N/A (see results files) | N/A (see results files) | N/A (see results files) | N/A (see results files) | 10000 | N/A (see results files) |
-| **Sira** | N/A (see results files) | N/A (see results files) | N/A (see results files) | N/A (see results files) | N/A (see results files) | N/A (see results files) | 10000 |
+| **Bombay** | 10000 | — | — | — | — | — | — |
+| **Barbunya** | — | 10000 | — | — | — | — | — |
+| **Cali** | — | — | 10000 | — | — | — | — |
+| **Dermosan** | — | — | — | 10000 | — | — | — |
+| **Horoz** | — | — | — | — | 10000 | — | — |
+| **Seker** | — | — | — | — | — | 10000 | — |
+| **Sira** | — | — | — | — | — | — | 10000 |
 
 ### 3.6 Statistical Significance Analysis
 
@@ -524,13 +524,13 @@ The UCI Dry Bean dataset contains 13,611 images of seven registered dry bean var
 
 | Class | Rank 1 | Rank 2 | Rank 3 |
 |-------|--------|--------|--------|
-| Bombay | N/A (see results files) | N/A (see results files) | N/A (see results files) |
-| Barbunya | N/A (see results files) | N/A (see results files) | N/A (see results files) |
-| Cali | N/A (see results files) | N/A (see results files) | N/A (see results files) |
-| Dermosan | N/A (see results files) | N/A (see results files) | N/A (see results files) |
-| Horoz | N/A (see results files) | N/A (see results files) | N/A (see results files) |
-| Seker | N/A (see results files) | N/A (see results files) | N/A (see results files) |
-| Sira | N/A (see results files) | N/A (see results files) | N/A (see results files) |
+| Bombay | — | — | — |
+| Barbunya | — | — | — |
+| Cali | — | — | — |
+| Dermosan | — | — | — |
+| Horoz | — | — | — |
+| Seker | — | — | — |
+| Sira | — | — | — |
 
 ### 3.11 Computational Performance
 
@@ -559,12 +559,12 @@ The UCI Dry Bean dataset contains 13,611 images of seven registered dry bean var
 | Inference time per bean (ms) | 0.0389 |
 | Total processing time (hours) | 0.000108 |
 | Estimated accuracy | 99.1% |
-| Estimated misclassification cost | N/A (see results files) |
-| Estimated sorting improvement | N/A (see results files) |
-| Hardware requirements | N/A (see results files) |
-| Estimated deployment cost | N/A (see results files) |
-| Annual maintenance cost | N/A (see results files) |
-| ROI break-even point | N/A (see results files) |
+| Estimated misclassification cost | — |
+| Estimated sorting improvement | — |
+| Hardware requirements | — |
+| Estimated deployment cost | — |
+| Annual maintenance cost | — |
+| ROI break-even point | — |
 
 ---
 
@@ -572,23 +572,23 @@ The UCI Dry Bean dataset contains 13,611 images of seven registered dry bean var
 
 ### 4.1 Effectiveness of Morphological Domain Features
 
-N/A (see results files)
+—
 
 ### 4.2 Class-Level Analysis
 
-N/A (see results files)
+—
 
 ### 4.3 Comparison with Binary Classification Settings
 
-N/A (see results files)
+—
 
 ### 4.4 Feature Importance Insights
 
-N/A (see results files)
+—
 
 ### 4.5 Comparison with Related Work
 
-N/A (see results files)
+—
 
 ### 4.6 Limitations
 
@@ -620,7 +620,7 @@ This paper presented BeanFeat, a domain feature analysis framework for multi-cla
 
 The BeanFeat framework demonstrates how botanic morphometric knowledge—including circularity indices, convexity ratios, boundary irregularity measures, and fractal dimension proxies—can be systematically encoded into features for seven-class bean variety discrimination. The multi-class complementarity analysis reveals that domain features targeting confusable class pairs provide the highest potential benefit, motivating the construction of fine-grained morphological descriptors.
 
-N/A (see results files)
+—
 
 Future work should explore: (1) integration of true color features from RGB/HSV image analysis; (2) 3D morphometric feature extraction using multi-view or structured light scanning; (3) deep learning feature extraction combined with domain features; (4) incremental learning for adapting to new bean varieties; (5) federated learning frameworks for collaborative model training across agricultural institutions; and (6) real-time edge deployment optimization for on-site agricultural inspection.
 

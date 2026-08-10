@@ -1,0 +1,64 @@
+{
+  "direction": "64_FlightDelay",
+  "metric": "AUC",
+  "seeds": [],
+  "per_model": {
+    "XGB": {
+      "t_stat": null,
+      "t_p": null,
+      "wilcoxon_stat": null,
+      "wilcoxon_p": null,
+      "cohens_d": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "mean_diff": 1.4565056716264735e-07,
+      "n": 1
+    },
+    "LGB": {
+      "t_stat": null,
+      "t_p": null,
+      "wilcoxon_stat": null,
+      "wilcoxon_p": null,
+      "cohens_d": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "mean_diff": -2.913011342142724e-07,
+      "n": 1
+    },
+    "Cat": {
+      "t_stat": null,
+      "t_p": null,
+      "wilcoxon_stat": null,
+      "wilcoxon_p": null,
+      "cohens_d": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "mean_diff": -1.3164570489276883e-07,
+      "n": 1
+    },
+    "RF": {
+      "t_stat": null,
+      "t_p": null,
+      "wilcoxon_stat": null,
+      "wilcoxon_p": null,
+      "cohens_d": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "mean_diff": -0.0006534220555920456,
+      "n": 1
+    }
+  },
+  "anova": {
+    "f_stat": null,
+    "p_value": null,
+    "df_between": 3,
+    "df_within": 0,
+    "df_total": 3,
+    "ss_between": 5.113687419939515e-07,
+    "ss_within": 0.0,
+    "ss_total": 5.113687419939515e-07,
+    "ms_between": 1.7045624733131717e-07,
+    "ms_within": 0.0,
+    "eta_squared": 1.0
+  }
+}

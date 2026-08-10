@@ -315,8 +315,8 @@ The UCI Student Performance dataset contains 649 student records from two Portug
 | Raw features | 30 |
 | Domain features (StuFeat) | 20 |
 | Total features (domain) | 50 |
-| Positive class (pass) | N/A (see results files) |
-| Negative class (fail) | N/A (see results files) |
+| Positive class (pass) | — |
+| Negative class (fail) | — |
 | Categorical features | 30 |
 | Numeric features | 9 |
 
@@ -349,13 +349,13 @@ The UCI Student Performance dataset contains 649 student records from two Portug
 
 | Metric | Raw Features | Domain Features |
 |--------|-------------|-----------------|
-| AUC-ROC | N/A (see results files) | N/A (see results files) |
-| Accuracy | N/A (see results files) | N/A (see results files) |
-| F1-Macro | N/A (see results files) | N/A (see results files) |
-| F1-Micro | N/A (see results files) | N/A (see results files) |
-| Precision | N/A (see results files) | N/A (see results files) |
-| Recall | N/A (see results files) | N/A (see results files) |
-| Cohen's Kappa | N/A (see results files) | N/A (see results files) |
+| AUC-ROC | — | — |
+| Accuracy | — | — |
+| F1-Macro | — | — |
+| F1-Micro | — | — |
+| Precision | — | — |
+| Recall | — | — |
+| Cohen's Kappa | — | — |
 
 ### 3.4 Statistical Significance Analysis
 
@@ -385,9 +385,9 @@ The UCI Student Performance dataset contains 649 student records from two Portug
 
 | Source | SS | df | MS | F | p-value |
 |--------|-----|-----|-----|-----|---------|
-| Between groups | N/A (see results files) | 4 | N/A (see results files) | N/A (see results files) | N/A (see results files) |
-| Within groups | N/A (see results files) | 20 | N/A (see results files) | | |
-| Total | N/A (see results files) | 24 |  |  |  |
+| Between groups | 0.0564 | 4 | 0.0188 | 1.93 | 0.166 |
+| Within groups | 0.1561 | 20 | 0.0098 |  |  |
+| Total | 0.2124 | 24 |  |  |  |
 
 ### 3.6 Parameter Sensitivity Analysis
 
@@ -407,10 +407,10 @@ The UCI Student Performance dataset contains 649 student records from two Portug
 
 | Noise Level ($\sigma$) | AUC-ROC | Accuracy | F1-Macro |
 |------------------------|---------|----------|----------|
-| 0.0 (baseline) | N/A (see results files) | N/A (see results files) | N/A (see results files) |
-| 0.1 | N/A (see results files) | N/A (see results files) | N/A (see results files) |
-| 0.2 | N/A (see results files) | N/A (see results files) | N/A (see results files) |
-| 0.5 | N/A (see results files) | N/A (see results files) | N/A (see results files) |
+| 0.0 (baseline) | — | — | — |
+| 0.1 | — | — | — |
+| 0.2 | — | — | — |
+| 0.5 | — | — | — |
 
 ### 3.8 SHAP Feature Importance Analysis
 
@@ -435,14 +435,14 @@ The UCI Student Performance dataset contains 649 student records from two Portug
 
 | Model | Training Time (s) | Inference Time (ms) | Memory (MB) | Feature Dim |
 |-------|-------------------|---------------------|-------------|-------------|
-| XGBoost (Raw) | 0.18 | 1.0000 | N/A (see results files) | 30 |
-| XGBoost (Domain) | 0.18 | 1.0000 | N/A (see results files) | 50 |
-| LightGBM (Raw) | 0.11 | 0.6250 | N/A (see results files) | 30 |
-| LightGBM (Domain) | 0.11 | 0.6250 | N/A (see results files) | 50 |
-| CatBoost (Raw) | 0.37 | 0.1875 | N/A (see results files) | 30 |
-| CatBoost (Domain) | 0.37 | 0.1875 | N/A (see results files) | 50 |
-| RandomForest (Raw) | 0.94 | 0.4375 | N/A (see results files) | 30 |
-| RandomForest (Domain) | 0.94 | 0.4375 | N/A (see results files) | 50 |
+| XGBoost (Raw) | 0.18 | 1.0000 | — | 30 |
+| XGBoost (Domain) | 0.18 | 1.0000 | — | 50 |
+| LightGBM (Raw) | 0.11 | 0.6250 | — | 30 |
+| LightGBM (Domain) | 0.11 | 0.6250 | — | 50 |
+| CatBoost (Raw) | 0.37 | 0.1875 | — | 30 |
+| CatBoost (Domain) | 0.37 | 0.1875 | — | 50 |
+| RandomForest (Raw) | 0.94 | 0.4375 | — | 30 |
+| RandomForest (Domain) | 0.94 | 0.4375 | — | 50 |
 
 ### 3.10 Practical Case Study
 
@@ -453,11 +453,11 @@ The UCI Student Performance dataset contains 649 student records from two Portug
 | Metric | Value |
 |--------|-------|
 | Total students | 300 |
-| At-risk students (predicted fail) | N/A (see results files) |
-| True positive rate | N/A (see results files) |
+| At-risk students (predicted fail) | — |
+| True positive rate | — |
 | Recommended interventions | Tutoring, mentoring, study habit coaching |
-| Estimated pass rate improvement | N/A (see results files) |
-| Model confidence (mean SHAP) | N/A (see results files) |
+| Estimated pass rate improvement | — |
+| Model confidence (mean SHAP) | — |
 
 ---
 
@@ -465,19 +465,19 @@ The UCI Student Performance dataset contains 649 student records from two Portug
 
 ### 4.1 Effectiveness of Domain Features in Educational Settings
 
-N/A (see results files)
+—
 
 ### 4.2 Impact of Small Sample Size
 
-The UCI Student Performance dataset contains only 649 samples, which Proposition 1 predicts is far below the critical sample size $n^*$ for meaningful domain feature benefit. N/A (see results files)
+The UCI Student Performance dataset contains only 649 samples, which Proposition 1 predicts is far below the critical sample size $n^*$ for meaningful domain feature benefit. —
 
 ### 4.3 Feature Importance Insights
 
-N/A (see results files)
+—
 
 ### 4.4 Comparison with Related Work
 
-N/A (see results files)
+—
 
 ### 4.5 Limitations
 
@@ -509,7 +509,7 @@ This paper presented StuFeat, a domain feature analysis framework for student pe
 
 The StuFeat framework demonstrates how educational domain knowledge—including grade trajectory analysis, family support modeling, behavioral risk indexing, and demographic interaction effects—can be systematically encoded into features. While Proposition 1 predicts that the small sample size ($n = 649$) limits the practical benefit of domain feature engineering, the framework provides a principled approach that can scale to larger educational datasets.
 
-N/A (see results files)
+—
 
 Future work should explore: (1) evaluation on larger educational datasets to test the sample size threshold; (2) integration of temporal features from longitudinal student records; (3) multi-modal feature fusion combining structured data with text from teacher feedback; (4) fairness-aware domain feature construction; and (5) causal feature engineering using educational domain knowledge to identify intervention-lever features.
 

@@ -463,7 +463,7 @@ $$S_{\text{total}} = O(N \cdot d' + T \cdot k)$$
 
 #### 2.5.2 Actual Performance
 
-N/A (see results files)
+—
 
 **Table 2: Actual Computational Performance**
 
@@ -617,7 +617,7 @@ We conduct ablation experiments by systematically removing each category of doma
 | Domain − sentiment_* | sentiment_* (3 features) | 0.1609 | N/A |
 | Domain − content_* − sentiment_* | 6 features removed | 0.1609 | N/A |
 
-N/A (see results files)
+—
 
 Figure 3 illustrates the ablation results.
 
@@ -625,7 +625,7 @@ Figure 3 illustrates the ablation results.
     Ablation Study: Domain Feature Categories (CatBoost)
     ─────────────────────────────────────────────────────
     
-N/A (see results files)
+—
     
     Figure 3: Ablation Study Results
 ```
@@ -649,13 +649,13 @@ We run all experiments with 5 random seeds (42, 123, 456, 789, 2024) for CatBoos
 | RandomForest | Raw | $-0.0336$ | $0.0083$ | $-0.0499$ | $0.0218$ |
 | RandomForest | Domain | $-0.0355$ | $0.0097$ | $-0.0499$ | $0.0218$ |
 
-N/A (see results files)$. Full CI values to be computed and verified from multi-seed results files.]
+—$. Full CI values to be computed and verified from multi-seed results files.]
 
 #### 3.5.2 Significance Testing
 
 **Paired t-test (Raw vs. Domain):** For CatBoost, we test whether the domain feature improvement is statistically significant.
 
-N/A (see results files)
+—
 
 **Table 7: Statistical Significance Tests**
 
@@ -667,7 +667,7 @@ N/A (see results files)
 
 #### 3.5.3 Effect Size Analysis
 
-N/A (see results files)
+—
 
 ### 3.6 Parameter Sensitivity Analysis
 
@@ -686,7 +686,7 @@ Sensitivity levels: High ($|E| > 0.5$), Medium ($0.2 \leq |E| \leq 0.5$), Low ($
 | Iterations | $[50, 500]$ | 300 | -0.1289 | 0.10 | Low |
 | L2 regularization | $[1, 10]$ | 1 | -0.1289 | 0.02 | Low |
 
-N/A (see results files)
+—
 
 Figure 4 illustrates the parameter sensitivity analysis.
 
@@ -694,7 +694,7 @@ Figure 4 illustrates the parameter sensitivity analysis.
     Parameter Sensitivity Analysis (CatBoost, Domain Features)
     ───────────────────────────────────────────────────────────
     
-N/A (see results files)
+—
     
     Figure 4: Parameter Sensitivity Analysis
 ```
@@ -735,7 +735,7 @@ We evaluate the effect of applying $\log(1 + y)$ transformation to the target va
 
 We analyze prediction performance across different quantiles of the shares distribution to understand where the model succeeds and fails.
 
-N/A (see results files)
+—
 
 **Table 10: Performance by Shares Quantile (CatBoost, Domain)**
 
@@ -753,7 +753,7 @@ N/A (see results files)
 
 We evaluate model robustness by adding Gaussian noise to the features.
 
-N/A (see results files)
+—
 
 **Table 11: Robustness to Feature Noise (CatBoost, Domain)**
 
@@ -769,7 +769,7 @@ N/A (see results files)
 
 We evaluate robustness to outliers by progressively removing the top $k\%$ of samples by shares.
 
-N/A (see results files)
+—
 
 **Table 12: Robustness to Outliers (CatBoost, Domain)**
 
@@ -784,7 +784,7 @@ N/A (see results files)
 
 To directly verify our theoretical framework, we compute the mutual information between each feature and the target variable.
 
-N/A (see results files)
+—
 
 **Table 13: Top 10 Features by Mutual Information with Shares**
 
@@ -805,7 +805,7 @@ N/A (see results files)
 
 For practical deployment considerations, we analyze the computational requirements of each model.
 
-N/A (see results files)
+—
 
 **Table 14: Edge Deployment Analysis**
 
@@ -828,7 +828,7 @@ We present a practical case study analyzing how the prediction failure impacts r
 2. **External factors dominate:** Popularity is likely driven by factors not captured in the dataset, including social network dynamics, timing relative to trending topics, author reputation, and platform algorithms.
 3. **Recommendation implication:** Rather than predicting absolute shares, a more practical approach would be relative ranking (e.g., top-10 selection), which may be more robust to the irreducible noise.
 
-N/A (see results files)
+—
 
 ### 3.12 Summary of Experimental Findings
 

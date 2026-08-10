@@ -277,41 +277,41 @@ Total augmented features: 16.
 
 **AUC improvement (∆AUC):** XGBoost: ΔAUC = +0.000248, LightGBM: ΔAUC = +0.000577, CatBoost: ΔAUC = +0.000532, RandomForest: ΔAUC = +0.002166. All improvements are negligible.
 
-N/A (see results files)
+—
 
-N/A (see results files)
+—
 
-N/A (see results files)
+—
 
-N/A (see results files)
+—
 
-N/A (see results files)
+—
 
-N/A (see results files)
+—
 
 ### 3.3 Ablation Study
 
 We conduct component-level ablation by removing each feature family.
 
-N/A (see results files)
+—
 
-N/A (see results files)
+—
 
-N/A (see results files)
+—
 
-N/A (see results files)
+—
 
-N/A (see results files)
+—
 
-N/A (see results files)
+—
 
-N/A (see results files)
+—
 
 ### 3.4 Parameter Sensitivity Analysis
 
 We analyze sensitivity to key hyperparameters: learning rate ($\eta$), max depth ($D$), number of estimators ($T$), and subsample ratio ($s$).
 
-N/A (see results files)
+—
 
 **Elasticity coefficient for learning rate η:** parameter range [0.01, 0.3], best value = 0.1, sensitivity level = Low.
 
@@ -321,85 +321,85 @@ N/A (see results files)
 
 **Elasticity coefficient for subsample ratio s:** parameter range [0.5, 1.0], best value = 1.0, sensitivity level = Low.
 
-N/A (see results files)
+—
 
 ### 3.5 Statistical Analysis
 
 **Multi-seed experiments.**
 
-N/A (see results files)
+—
 
 **Mean ± std AUC:** XGBoost: Raw = 0.8852±0.0000, Domain = 0.8855±0.0000; LightGBM: Raw = 0.8845±0.0000, Domain = 0.8850±0.0000; CatBoost: Raw = 0.8749±0.0003, Domain = 0.8754±0.0002; RandomForest: Raw = 0.8724±0.0006, Domain = 0.8746±0.0004.
 
-N/A (see results files)
+—
 
-N/A (see results files)
+—
 
-N/A (see results files)
+—
 
 **Correlation analysis.**
 
-N/A (see results files)
+—
 
-N/A (see results files)
+—
 
-N/A (see results files)
+—
 
-N/A (see results files)
+—
 
 ### 3.6 SHAP Interpretability Analysis
 
-N/A (see results files)
+—
 
-N/A (see results files)
+—
 
-N/A (see results files)
+—
 
-N/A (see results files)
+—
 
-N/A (see results files)
+—
 
-N/A (see results files)
+—
 
-N/A (see results files)
+—
 
-N/A (see results files)
+—
 
-N/A (see results files)
+—
 
 ### 3.7 Robustness Analysis
 
-N/A (see results files)
+—
 
-N/A (see results files)
+—
 
-N/A (see results files)
+—
 
-N/A (see results files)
+—
 
-N/A (see results files)
+—
 
 ### 3.8 Computational Performance
 
-N/A (see results files)
+—
 
-N/A (see results files)
+—
 
-N/A (see results files)
+—
 
-N/A (see results files)
+—
 
-N/A (see results files)
+—
 
 ### 3.9 Real-World Case Study
 
-N/A (see results files)
+—
 
-N/A (see results files)
+—
 
-N/A (see results files)
+—
 
-N/A (see results files)
+—
 
 ---
 
@@ -427,7 +427,7 @@ The negligible improvement can be explained by three converging factors:
 
 ### 4.3 Comparison with Related Work
 
-N/A (see results files), Chen et al. [8], Nair et al. [9], Jiang et al. [26]]
+—, Chen et al. [8], Nair et al. [9], Jiang et al. [26]]
 
 Our results are consistent with the literature, where tree-based models typically achieve AUC in the range of 0.85–0.90 on Hotel Booking Demand. The negligible improvement from domain features aligns with the observation that the dataset's original features are already well-suited for tree-based models.
 

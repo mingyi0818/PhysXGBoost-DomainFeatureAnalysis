@@ -257,39 +257,39 @@ Total augmented features: 11.
 
 **AUC improvement (∆AUC):** XGBoost: ΔAUC = +0.000001, LightGBM: ΔAUC = +0.000216, CatBoost: ΔAUC = -0.000205, RandomForest: ΔAUC = -0.000605. All improvements are negligible (< 0.001).
 
-N/A (see results files)
+—
 
-N/A (see results files)
+—
 
-N/A (see results files)
+—
 
-N/A (see results files)
+—
 
-N/A (see results files)
+—
 
-N/A (see results files)
+—
 
 ### 3.3 Ablation Study
 
 We conduct component-level ablation by removing each feature family.
 
-N/A (see results files)
+—
 
-N/A (see results files)
+—
 
-N/A (see results files)
+—
 
-N/A (see results files)
+—
 
-N/A (see results files)
+—
 
-N/A (see results files)
+—
 
 ### 3.4 Parameter Sensitivity Analysis
 
 We analyze sensitivity to key hyperparameters: learning rate ($\eta$), max depth ($D$), and number of estimators ($T$).
 
-N/A (see results files)
+—
 
 **Elasticity coefficient for learning rate η:** parameter range as specified, best value = 0.1, sensitivity level = Low.
 
@@ -297,77 +297,77 @@ N/A (see results files)
 
 **Elasticity coefficient for number of estimators T:** parameter range as specified, best value = 300, sensitivity level = Low.
 
-N/A (see results files)
+—
 
 ### 3.5 Statistical Analysis
 
 **Multi-seed experiments.**
 
-N/A (see results files)
+—
 
 **Mean ± std AUC:** XGBoost: Raw = 0.8272±0.0000, Domain = 0.8272±0.0000; LightGBM: Raw = 0.8273±0.0000, Domain = 0.8275±0.0000; CatBoost: Raw = 0.8272±0.0001, Domain = 0.8269±0.0002; RandomForest: Raw = 0.8234±0.0001, Domain = 0.8228±0.0001.
 
-N/A (see results files)
+—
 
-N/A (see results files)
+—
 
-N/A (see results files)
+—
 
 **Correlation analysis.**
 
-N/A (see results files)
+—
 
-N/A (see results files)
+—
 
-N/A (see results files)
+—
 
-N/A (see results files)
+—
 
 ### 3.6 SHAP Interpretability Analysis
 
-N/A (see results files)
+—
 
-N/A (see results files)
+—
 
-N/A (see results files)
+—
 
-N/A (see results files)
+—
 
-N/A (see results files)
+—
 
-N/A (see results files)
+—
 
-N/A (see results files)
+—
 
-N/A (see results files)
+—
 
 ### 3.7 Robustness Analysis
 
-N/A (see results files)
+—
 
-N/A (see results files)
+—
 
-N/A (see results files)
+—
 
-N/A (see results files)
+—
 
 ### 3.8 Computational Performance
 
-N/A (see results files)
+—
 
-N/A (see results files)
+—
 
-N/A (see results files)
+—
 
-N/A (see results files)
+—
 
 ### 3.9 Real-World Case Study
 
-N/A (see results files)
+—
 
-N/A (see results files)
+—
 
-N/A (see results files)
+—
 
 ---
 
@@ -395,7 +395,7 @@ The negligible improvement observed in this study can be explained by three fact
 
 ### 4.3 Comparison with Related Work
 
-N/A (see results files), Ma et al. [15], and other recent studies]
+—, Ma et al. [15], and other recent studies]
 
 Our results are consistent with the literature, where RFM-based models typically achieve AUC in the range of 0.80–0.85 on CDNOW. The null effect of domain features aligns with findings from Erdogan et al. [12], who noted that extended RFM variants (RFMTC) showed minimal improvement over standard RFM for churn prediction.
 

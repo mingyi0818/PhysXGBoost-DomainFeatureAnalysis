@@ -647,13 +647,13 @@ Table 2 summarizes the dataset statistics.
 
 | Property | Value |
 |----------|-------|
-| Number of records | N/A (see results files) |
-| Number of raw features | N/A (see results files) |
+| Number of records | — |
+| Number of raw features | — |
 | Number of domain features | 12 |
-| Delayed ratio | N/A (see results files) |
-| Date range | N/A (see results files) |
-| Number of airports | N/A (see results files) |
-| Number of airlines | N/A (see results files) |
+| Delayed ratio | — |
+| Date range | — |
+| Number of airports | — |
+| Number of airlines | — |
 | Classification threshold | 15 minutes |
 
 **Table 2.** Dataset statistics.
@@ -778,23 +778,23 @@ Table 6 classifies the raw features by temporal causality.
 
 #### 3.5.2 Mutual Information Analysis
 
-N/A (see results files)
+—
 
 | Feature | $\hat{I}(Y; X_j)$ | Leakage Suspect? |
 |---------|---------------------|-------------------|
-| actual_arrival_time | N/A (see results files) | **Yes** |
-| actual_departure_time | N/A (see results files) | **Yes** |
-| taxi_out_time | N/A (see results files) | **Yes** |
-| wheels_off | N/A (see results files) | **Yes** |
-| taxi_in_time | N/A (see results files) | **Yes** |
-| wheels_on | N/A (see results files) | **Yes** |
-| scheduled_departure | N/A (see results files) | No |
-| airline | N/A (see results files) | No |
-| origin_airport | N/A (see results files) | No |
-| distance | N/A (see results files) | No |
-| day_of_week | N/A (see results files) | No |
+| actual_arrival_time | — | **Yes** |
+| actual_departure_time | — | **Yes** |
+| taxi_out_time | — | **Yes** |
+| wheels_off | — | **Yes** |
+| taxi_in_time | — | **Yes** |
+| wheels_on | — | **Yes** |
+| scheduled_departure | — | No |
+| airline | — | No |
+| origin_airport | — | No |
+| distance | — | No |
+| day_of_week | — | No |
 
-**Table 7.** Normalized mutual information of features with the delay label. N/A (see results files) The post-departure features have dramatically higher mutual information than pre-departure features, confirming Hypotheses 1 and 2.
+**Table 7.** Normalized mutual information of features with the delay label. — The post-departure features have dramatically higher mutual information than pre-departure features, confirming Hypotheses 1 and 2.
 
 #### 3.5.3 Progressive Feature Removal
 
@@ -803,14 +803,14 @@ We progressively remove suspected leakage features and measure the AUC change. T
 | Removed Feature | AUC After Removal | $\Delta$AUC from Baseline |
 |-----------------|-------------------|---------------------------|
 | None (baseline) | 0.999992 | -- |
-| actual_arrival_time | N/A (see results files) | N/A (see results files) |
-| + actual_departure_time | N/A (see results files) | N/A (see results files) |
-| + taxi_out_time | N/A (see results files) | N/A (see results files) |
-| + wheels_off | N/A (see results files) | N/A (see results files) |
-| + taxi_in_time | N/A (see results files) | N/A (see results files) |
-| + wheels_on | N/A (see results files) | N/A (see results files) |
+| actual_arrival_time | — | — |
+| + actual_departure_time | — | — |
+| + taxi_out_time | — | — |
+| + wheels_off | — | — |
+| + taxi_in_time | — | — |
+| + wheels_on | — | — |
 
-**Table 8.** Progressive leakage feature removal using XGBoost. N/A (see results files) The dramatic AUC drop upon removing post-departure features confirms they are the primary leakage sources.
+**Table 8.** Progressive leakage feature removal using XGBoost. — The dramatic AUC drop upon removing post-departure features confirms they are the primary leakage sources.
 
 **[Figure 3: Progressive feature removal AUC curve, showing AUC as each leakage feature is sequentially removed.]**
 
@@ -820,12 +820,12 @@ Table 9 compares AUC under random split and temporal split.
 
 | Model | Random Split AUC | Temporal Split AUC | Difference |
 |-------|-----------------|--------------------|--------------|
-| XGBoost | 0.999992 | 1.0000 | N/A (see results files) |
-| LightGBM | 0.999994 | 1.0000 | N/A (see results files) |
-| CatBoost | 0.999984 | 1.0000 | N/A (see results files) |
-| Random Forest | 0.999818 | 0.9998 | N/A (see results files) |
+| XGBoost | 0.999992 | 1.0000 | — |
+| LightGBM | 0.999994 | 1.0000 | — |
+| CatBoost | 0.999984 | 1.0000 | — |
+| Random Forest | 0.999818 | 0.9998 | — |
 
-**Table 9.** Random split vs. temporal split AUC comparison. N/A (see results files) The large difference confirms Hypothesis 3: random split causes temporal contamination.
+**Table 9.** Random split vs. temporal split AUC comparison. — The large difference confirms Hypothesis 3: random split causes temporal contamination.
 
 ### 3.6 Ablation Study
 
@@ -840,7 +840,7 @@ We conduct component-level ablation by removing each category of domain features
 | w/o temporal_* | N/A | N/A | N/A | N/A |
 | w/o all domain features | N/A | N/A | N/A | N/A |
 
-**Table 10.** Ablation study: removing each domain feature category. N/A (see results files) Due to the presence of leakage features in the raw dataset, removing domain features has negligible impact, consistent with Theorem 1.
+**Table 10.** Ablation study: removing each domain feature category. — Due to the presence of leakage features in the raw dataset, removing domain features has negligible impact, consistent with Theorem 1.
 
 **[Figure 4: Ablation study bar chart showing AUC for each configuration across all four models.]**
 
@@ -857,7 +857,7 @@ We conduct experiments with 5 random seeds to assess the stability of results.
 | CatBoost (Raw) | 0.999984 | N/A | N/A | N/A | N/A | N/A | N/A |
 | RF (Raw) | 0.999818 | N/A | N/A | N/A | N/A | N/A | N/A |
 
-**Table 11.** Multi-seed AUC results. N/A (see results files) Seed 1 values are from `results/summary.json`.
+**Table 11.** Multi-seed AUC results. — Seed 1 values are from `results/summary.json`.
 
 #### 3.7.2 Statistical Significance Tests
 
@@ -870,7 +870,7 @@ We perform paired Wilcoxon signed-rank tests to compare raw vs. domain feature p
 | CatBoost | N/A | N/A | N/A | N/A | N/A |
 | RF | N/A | N/A | N/A | N/A | N/A |
 
-**Table 12.** Statistical significance tests (paired Wilcoxon signed-rank, 95% confidence intervals, Cohen's d effect size). N/A (see results files) Degrees of freedom = 4 for each test.
+**Table 12.** Statistical significance tests (paired Wilcoxon signed-rank, 95% confidence intervals, Cohen's d effect size). — Degrees of freedom = 4 for each test.
 
 ### 3.8 Parameter Sensitivity Analysis
 
@@ -888,7 +888,7 @@ Sensitivity levels: High ($|E| > 0.5$), Medium ($0.2 \leq |E| \leq 0.5$), Low ($
 | max_depth | [3, 10] | 6 | 6 | 6 |
 | n_estimators | [100, 1000] | 300 | 300 | 300 |
 
-**Table 13.** Parameter sensitivity analysis for XGBoost. N/A (see results files)
+**Table 13.** Parameter sensitivity analysis for XGBoost. —
 
 **[Figure 5: Parameter sensitivity curves showing AUC as a function of learning rate, tree depth, and n_estimators.]**
 
@@ -908,7 +908,7 @@ We evaluate model robustness across different airlines, airports, and seasons. A
 | Airline D | N/A | N/A | N/A | N/A |
 | Airline E | N/A | N/A | N/A | N/A |
 
-**Table 14.** Airline-level robustness analysis. N/A (see results files)
+**Table 14.** Airline-level robustness analysis. —
 
 #### 3.9.2 Season-Level Robustness
 
@@ -919,7 +919,7 @@ We evaluate model robustness across different airlines, airports, and seasons. A
 | Fall | N/A | N/A | N/A | N/A |
 | Winter | N/A | N/A | N/A | N/A |
 
-**Table 15.** Season-level robustness analysis. N/A (see results files)
+**Table 15.** Season-level robustness analysis. —
 
 #### 3.9.3 Airport-Level Robustness
 
@@ -929,7 +929,7 @@ We evaluate model robustness across different airlines, airports, and seasons. A
 | Medium (11--50) | N/A | N/A | N/A | N/A |
 | Small (51+) | N/A | N/A | N/A | N/A |
 
-**Table 16.** Airport-level robustness analysis. N/A (see results files)
+**Table 16.** Airport-level robustness analysis. —
 
 #### 3.9.4 Noise Robustness Analysis
 
@@ -944,7 +944,7 @@ We evaluate model robustness to Gaussian noise added to the input features. This
 | 0.20 | N/A | N/A | N/A | N/A |
 | 0.50 | N/A | N/A | N/A | N/A |
 
-**Table 17.** Noise robustness analysis. Gaussian noise with standard deviation $\sigma$ is added to all numeric features. N/A (see results files)
+**Table 17.** Noise robustness analysis. Gaussian noise with standard deviation $\sigma$ is added to all numeric features. —
 
 **Expected behavior under leakage:** When leakage features are present, models should be highly robust to noise on non-leakage features (because the leakage feature alone determines the prediction). However, models should be extremely sensitive to noise on leakage features. This asymmetric noise sensitivity is a diagnostic indicator of leakage.
 
@@ -954,16 +954,16 @@ We systematically perturb each feature by adding noise and measure the AUC chang
 
 | Feature | Perturbation | XGBoost $\Delta$AUC | Classification |
 |---------|-------------|----------------------|----------------|
-| actual_arrival_time | +30 min | N/A (see results files) | **Leakage** |
-| actual_departure_time | +30 min | N/A (see results files) | **Leakage** |
-| taxi_out_time | +10 min | N/A (see results files) | **Leakage** |
-| wheels_off | +10 min | N/A (see results files) | **Leakage** |
-| scheduled_departure | +30 min | N/A (see results files) | Non-leakage |
-| airline | Random shuffle | N/A (see results files) | Non-leakage |
-| origin_airport | Random shuffle | N/A (see results files) | Non-leakage |
-| distance | +100 miles | N/A (see results files) | Non-leakage |
+| actual_arrival_time | +30 min | — | **Leakage** |
+| actual_departure_time | +30 min | — | **Leakage** |
+| taxi_out_time | +10 min | — | **Leakage** |
+| wheels_off | +10 min | — | **Leakage** |
+| scheduled_departure | +30 min | — | Non-leakage |
+| airline | Random shuffle | — | Non-leakage |
+| origin_airport | Random shuffle | — | Non-leakage |
+| distance | +100 miles | — | Non-leakage |
 
-**Table 18.** Feature perturbation analysis. N/A (see results files) Features whose perturbation causes large AUC drops are identified as leakage features, confirming our temporal causality analysis.
+**Table 18.** Feature perturbation analysis. — Features whose perturbation causes large AUC drops are identified as leakage features, confirming our temporal causality analysis.
 
 ### 3.10 Computational Complexity Evaluation
 
@@ -983,7 +983,7 @@ As established in Section 2.5.3, the FlightFeat framework has:
 | Model size (MB) | N/A | N/A | N/A | N/A |
 | Throughput (records/s) | N/A | N/A | N/A | N/A |
 
-**Table 17.** Actual computational performance. N/A (see results files)
+**Table 17.** Actual computational performance. —
 
 #### 3.10.3 Edge Deployment Analysis
 
@@ -994,7 +994,7 @@ As established in Section 2.5.3, the FlightFeat framework has:
 | Inference latency (ms) | N/A |
 | Energy consumption estimate (J/inference) | N/A |
 
-**Table 18.** Edge deployment analysis. N/A (see results files)
+**Table 18.** Edge deployment analysis. —
 
 ### 3.11 Practical Case Study
 
@@ -1158,7 +1158,7 @@ This study has several limitations:
 | Training cost | Personnel training for leakage diagnosis | $1,000-$3,000 |
 | Data acquisition cost | Real-time weather and flight data feeds | $5,000-$20,000/year |
 
-**Table 20.** Deployment cost analysis. N/A (see results files)
+**Table 20.** Deployment cost analysis. —
 
 ### 4.7 Broader Impact on Aviation ML Research
 

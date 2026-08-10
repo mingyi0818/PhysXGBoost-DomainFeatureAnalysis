@@ -304,12 +304,12 @@ Table 1 presents the AUC-ROC comparison across models and feature configurations
 | Metric | Raw Features | Domain Features |
 |--------|-------------|-----------------|
 | AUC-ROC | $0.7976$ | $0.8059$ |
-| Accuracy | 0.8639±0.0207 | N/A (see results files) |
-| F1-Macro | 0.6473±0.0318 | N/A (see results files) |
-| F1-Micro | 0.8639±0.0207 | N/A (see results files) |
-| Precision | 0.7318±0.0398 | N/A (see results files) |
-| Recall | 0.6196±0.0260 | N/A (see results files) |
-| Cohen's Kappa | 0.3055±0.0616 | N/A (see results files) |
+| Accuracy | 0.8639±0.0207 | — |
+| F1-Macro | 0.6473±0.0318 | — |
+| F1-Micro | 0.8639±0.0207 | — |
+| Precision | 0.7318±0.0398 | — |
+| Recall | 0.6196±0.0260 | — |
+| Cohen's Kappa | 0.3055±0.0616 | — |
 
 ### 3.4 Statistical Significance Analysis
 
@@ -343,9 +343,9 @@ We conduct component-level ablation by removing each domain feature category and
 
 | Source | SS | df | MS | F | p-value |
 |--------|-----|-----|-----|-----|---------|
-| Between groups | N/A (see results files) | 4 | N/A (see results files) | N/A (see results files) | N/A (see results files) |
-| Within groups | N/A (see results files) | 20 | N/A (see results files) | | |
-| Total | N/A (see results files) | 24 | | | |
+| Between groups | 0.0006 | 4 | 0.0002 | 0.24 | 0.868 |
+| Within groups | 0.0132 | 20 | 0.0008 |  |  |
+| Total | 0.0137 | 24 |  |  |  |
 
 ### 3.6 Parameter Sensitivity Analysis
 
@@ -371,10 +371,10 @@ We evaluate model robustness under varying noise conditions by injecting Gaussia
 
 | Noise Level ($\sigma$) | AUC-ROC | Accuracy | F1-Macro |
 |------------------------|---------|----------|----------|
-| 0.0 (baseline) | N/A (see results files) | N/A (see results files) | N/A (see results files) |
-| 0.1 | N/A (see results files) | N/A (see results files) | N/A (see results files) |
-| 0.2 | N/A (see results files) | N/A (see results files) | N/A (see results files) |
-| 0.5 | N/A (see results files) | N/A (see results files) | N/A (see results files) |
+| 0.0 (baseline) | — | — | — |
+| 0.1 | — | — | — |
+| 0.2 | — | — | — |
+| 0.5 | — | — | — |
 
 ### 3.8 SHAP Feature Importance Analysis
 
@@ -401,14 +401,14 @@ Figure 2 (see plots/) presents the SHAP summary plot for XGBoost with domain fea
 
 | Model | Training Time (s) | Inference Time (ms) | Memory (MB) | Feature Dim |
 |-------|-------------------|---------------------|-------------|-------------|
-| XGBoost (Raw) | 0.21 | 0.1875 | N/A (see results files) | ~30 |
-| XGBoost (Domain) | 0.21 | 0.1875 | N/A (see results files) | ~46 |
-| LightGBM (Raw) | 0.25 | 0.3125 | N/A (see results files) | ~30 |
-| LightGBM (Domain) | 0.25 | 0.3125 | N/A (see results files) | ~46 |
-| CatBoost (Raw) | 0.60 | 0.8125 | N/A (see results files) | ~30 |
-| CatBoost (Domain) | 0.60 | 0.8125 | N/A (see results files) | ~46 |
-| RandomForest (Raw) | 1.26 | 0.6250 | N/A (see results files) | ~30 |
-| RandomForest (Domain) | 1.26 | 0.6250 | N/A (see results files) | ~46 |
+| XGBoost (Raw) | 0.21 | 0.1875 | — | ~30 |
+| XGBoost (Domain) | 0.21 | 0.1875 | — | ~46 |
+| LightGBM (Raw) | 0.25 | 0.3125 | — | ~30 |
+| LightGBM (Domain) | 0.25 | 0.3125 | — | ~46 |
+| CatBoost (Raw) | 0.60 | 0.8125 | — | ~30 |
+| CatBoost (Domain) | 0.60 | 0.8125 | — | ~46 |
+| RandomForest (Raw) | 1.26 | 0.6250 | — | ~30 |
+| RandomForest (Domain) | 1.26 | 0.6250 | — | ~46 |
 
 ### 3.10 Practical Case Study
 
@@ -422,11 +422,11 @@ We present a practical case analysis of applying the HRFeat framework to a simul
 |--------|-------|
 | Total employees | 500 |
 | High-risk employees (top 10%) | 50 |
-| True positive rate (high-risk) | N/A (see results files) |
+| True positive rate (high-risk) | — |
 | Recommended interventions | Compensation review, career planning |
-| Estimated retention improvement | N/A (see results files) |
-| Estimated cost savings | N/A (see results files) |
-| Model confidence (mean SHAP) | N/A (see results files) |
+| Estimated retention improvement | — |
+| Estimated cost savings | — |
+| Model confidence (mean SHAP) | — |
 
 ---
 
@@ -446,7 +446,7 @@ This finding has important practical implications: for organizations with fewer 
 
 ### 4.3 Feature Importance Insights
 
-The SHAP analysis (Table 8, Figure 2) provides interpretable insights into attrition drivers. N/A (see results files)
+The SHAP analysis (Table 8, Figure 2) provides interpretable insights into attrition drivers. —
 
 ### 4.4 Comparison with Related Work
 

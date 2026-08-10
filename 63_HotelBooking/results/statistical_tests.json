@@ -1,0 +1,64 @@
+{
+  "direction": "63_HotelBooking",
+  "metric": "AUC",
+  "seeds": [],
+  "per_model": {
+    "XGB": {
+      "t_stat": null,
+      "t_p": null,
+      "wilcoxon_stat": null,
+      "wilcoxon_p": null,
+      "cohens_d": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "mean_diff": 0.00024805048264464613,
+      "n": 1
+    },
+    "LGB": {
+      "t_stat": null,
+      "t_p": null,
+      "wilcoxon_stat": null,
+      "wilcoxon_p": null,
+      "cohens_d": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "mean_diff": 0.0005766623772525126,
+      "n": 1
+    },
+    "Cat": {
+      "t_stat": null,
+      "t_p": null,
+      "wilcoxon_stat": null,
+      "wilcoxon_p": null,
+      "cohens_d": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "mean_diff": 0.0005323242700617792,
+      "n": 1
+    },
+    "RF": {
+      "t_stat": null,
+      "t_p": null,
+      "wilcoxon_stat": null,
+      "wilcoxon_p": null,
+      "cohens_d": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "mean_diff": 0.0021664712796723995,
+      "n": 1
+    }
+  },
+  "anova": {
+    "f_stat": null,
+    "p_value": null,
+    "df_between": 3,
+    "df_within": 0,
+    "df_total": 3,
+    "ss_between": 0.00010625209070403886,
+    "ss_within": 0.0,
+    "ss_total": 0.00010625209070403886,
+    "ms_between": 3.541736356801295e-05,
+    "ms_within": 0.0,
+    "eta_squared": 1.0
+  }
+}

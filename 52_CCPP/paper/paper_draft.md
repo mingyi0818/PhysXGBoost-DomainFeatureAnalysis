@@ -55,7 +55,7 @@ This paper makes the following contributions:
 
 3. **Minimal-Dimension Information Saturation**: We demonstrate that with only 4 original features, CCPP models achieve R² > 0.96, and domain feature augmentation yields negligible improvement. This provides the cleanest known demonstration of information saturation in a thermodynamic prediction system.
 
-4. **Comprehensive Empirical Validation**: We conduct extensive experiments including four-model comparisons, category-level ablation, SHAP analysis, five-seed statistical testing, parameter sensitivity with elasticity coefficients, and robustness analysis—all using N/A (see results files).
+4. **Comprehensive Empirical Validation**: We conduct extensive experiments including four-model comparisons, category-level ablation, SHAP analysis, five-seed statistical testing, parameter sensitivity with elasticity coefficients, and robustness analysis—all using —.
 
 ### 1.4 Paper Organization
 
@@ -410,7 +410,7 @@ The UCI Combined Cycle Power Plant dataset [1] contains 9,568 samples collected 
 
 | Model | Cohen's $d$ | 95% CI | Interpretation |
 |---|---|---|---|
-| XGBoost | N/A | 0.0625 | N/A (see results files) |
+| XGBoost | N/A | 0.0625 | — |
 | LightGBM | N/A | 0.0625 | N/A |
 | CatBoost | N/A | 0.0625 | N/A |
 | RandomForest | N/A | 0.0625 | N/A |
@@ -583,7 +583,7 @@ See plots/fig5_training_time.png
 
 The most striking finding of this study is that with only 4 original features, CCPP models achieve R² > 0.96, and domain feature engineering provides negligible improvement. This is the cleanest demonstration of information saturation in a thermodynamic prediction system.
 
-The theoretical explanation is provided by Theorem 1: since all domain features (enthalpy, Carnot efficiency, wet bulb temperature, dew point, interaction terms) are deterministic functions of the 4 original variables (AT, V, AP, RH), they cannot increase the mutual information $I(Y; \mathbf{X})$. The practical redundancy coefficients $\hat{\rho}$ (N/A (see results files)) confirm that the domain features capture N/A (see results files) of the already-minimal reducible loss, leaving virtually no room for improvement.
+The theoretical explanation is provided by Theorem 1: since all domain features (enthalpy, Carnot efficiency, wet bulb temperature, dew point, interaction terms) are deterministic functions of the 4 original variables (AT, V, AP, RH), they cannot increase the mutual information $I(Y; \mathbf{X})$. The practical redundancy coefficients $\hat{\rho}$ (—) confirm that the domain features capture — of the already-minimal reducible loss, leaving virtually no room for improvement.
 
 This result is particularly significant because it contradicts the intuition that low-dimensional feature spaces should benefit most from feature engineering. In the CCPP case, the 4 original variables form a thermodynamically complete state description: ambient conditions (AT, AP, RH) fully characterize the environment, and exhaust vacuum (V) captures the process state. Any thermodynamic quantity (enthalpy, efficiency, dew point) is uniquely determined by these 4 measurements, making domain features information-theoretically redundant.
 
@@ -607,7 +607,7 @@ The findings have several practical implications:
 
 ### 4.4 SHAP Analysis Insights
 
-The SHAP analysis (N/A (see results files)) reveals that the original features AT and V dominate the predictive contribution, consistent with their strong physical relationship with CCPP output. The domain features, when present, contribute N/A (see results files), typically ranking below the original features. This confirms that the model's predictive power is entirely captured by the raw variables.
+The SHAP analysis (—) reveals that the original features AT and V dominate the predictive contribution, consistent with their strong physical relationship with CCPP output. The domain features, when present, contribute —, typically ranking below the original features. This confirms that the model's predictive power is entirely captured by the raw variables.
 
 Notably, the interaction features (AT×V, AP×RH) do not rank among the top SHAP features, despite capturing joint thermodynamic effects. This is because tree-based models can learn such interactions through their hierarchical split structure, making explicit interaction features unnecessary.
 

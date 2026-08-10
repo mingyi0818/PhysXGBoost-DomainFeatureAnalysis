@@ -381,17 +381,17 @@ Because the dominant factor is the $O(N \cdot d)$ term and the domain features a
 
 **Actual performance.**
 
-`N/A (see results files)`
+`—`
 
-`N/A (see results files)`
+`—`
 
-`N/A (see results files)`
+`—`
 
-`N/A (see results files)`
+`—`
 
 **Edge-deployment considerations.** For deployment on a smart-meter-class edge device, the relevant quantities are the model size, the per-sample inference latency, and the energy cost per inference. Gradient-boosting models with a few hundred trees fit comfortably in a few megabytes and infer in microseconds on a modest CPU, making them suitable for one-minute-resolution on-device forecasting. The autoregressive and rolling features require maintaining a short history buffer ($O(w)$ memory), which is negligible.
 
-`N/A (see results files)`
+`—`
 
 ### 2.7 Supplementary Theoretical Results
 
@@ -467,11 +467,11 @@ The relationship between our results and the classical bias-variance tradeoff is
 | Split (main) | Random 80/20 |
 | Split (chronological) | Train: 2006-12 to 2009-09; Test: 2009-10 to 2010-11 |
 
-`N/A (see results files)`
+`—`
 
-`N/A (see results files)`
+`—`
 
-`N/A (see results files)`
+`—`
 
 **Missing values.** Approximately 1.25% of samples (roughly 25,979 rows) contain missing entries, concentrated in several gaps of up to several days during 2008 (notably April and August 2008). We use forward-fill (carry last observation forward) followed by zero-fill for any remaining leading gaps, which preserves the time-series structure and avoids look-ahead. We do not use interpolation across the train/test boundary in the chronological-split experiment, to prevent leakage through the interpolation window.
 
@@ -555,7 +555,7 @@ We examine each model's behaviour in the saturation regime in detail.
 
 **Cross-model summary.** The monotonic relationship between headroom $\eta$ and observed $\Delta R^2$ across the four models (XGBoost: $\eta = 0.0037$, $\Delta R^2 = 5.16 \times 10^{-4}$; LightGBM: $\eta = 0.0010$, $\Delta R^2 = 1.37 \times 10^{-5}$; CatBoost: $\eta = 0.0004$, $\Delta R^2 = 2.27 \times 10^{-5}$; RF: $\eta = 0.0003$, $\Delta R^2 = 7.28 \times 10^{-6}$) is the empirical signature of Corollary 1. The fact that every observed $\Delta R^2$ is far below its Theorem-1 bound $\eta$ confirms that the domain features are not leakage channels in the random-split regime (they add almost nothing), while the raw feature set itself is the saturation source via the physical-redundancy channel.
 
-**Table 1b. Supplementary metrics (RMSE and MAE) for the main comparison.** `N/A (see results files)`
+**Table 1b. Supplementary metrics (RMSE and MAE) for the main comparison.** `—`
 
 | Model | Raw RMSE | Domain RMSE | Raw MAE | Domain MAE |
 |-------|----------|-------------|---------|------------|
@@ -574,11 +574,11 @@ We now run the diagnosis procedure of Section 2.5. We reiterate that the main-co
 
 **Hypothesis H1.** `global_intensity` is a near-deterministic transform of the target via $P = V \times I$, so removing it should cause a large $R^2$ drop.
 
-`N/A (see results files)`
+`—`
 
-`N/A (see results files)`
+`—`
 
-`N/A (see results files)`
+`—`
 
 **Interpretation (pending the placeholder values).** If the drop is large, H1 is supported and `global_intensity` is confirmed as the physical-redundancy channel predicted by Theorem 1. The reported raw $R^2$ of 0.9963-0.9997 is then attributable primarily to the $P = V \times I$ identity rather than to any sophisticated modelling.
 
@@ -586,9 +586,9 @@ We now run the diagnosis procedure of Section 2.5. We reiterate that the main-co
 
 **Hypothesis H2.** `lag_1min` $\approx y_t$ at one-minute resolution, so it is a leakage channel whose contribution collapses under a chronological split.
 
-`N/A (see results files)`
+`—`
 
-`N/A (see results files)`
+`—`
 
 **Interpretation (pending the placeholder values).** A large gap between the random-split and chronological-split $R^2$ on the lag-augmented feature set would confirm H2 and identify `lag_1min` as a leakage channel in the sense of Proposition 1.
 
@@ -596,9 +596,9 @@ We now run the diagnosis procedure of Section 2.5. We reiterate that the main-co
 
 **Hypothesis H3.** A random split causes temporal leakage; switching to a chronological split should reduce $R^2$.
 
-`N/A (see results files)`
+`—`
 
-`N/A (see results files)`
+`—`
 
 **Interpretation (pending the placeholder values).** A non-trivial $\Delta_{\text{split}}$ supports H3 and motivates the chronological-split protocol of Section 2.5.
 
@@ -606,7 +606,7 @@ We now run the diagnosis procedure of Section 2.5. We reiterate that the main-co
 
 We ablate the three domain-feature families one at a time. Because $R^2(F) \approx 1$ already, Theorem 1 predicts that removing any single family should produce a near-zero change in $R^2$—unless the family is a leakage channel, in which case its removal under a *chronological* split should produce a measurable drop.
 
-**Table 3. Component-level ablation (domain feature set, random split).** `N/A (see results files)`
+**Table 3. Component-level ablation (domain feature set, random split).** `—`
 
 | Configuration | XGBoost $R^2$ | LightGBM $R^2$ | CatBoost $R^2$ | RF $R^2$ |
 |---------------|---------------|-----------------|-----------------|----------|
@@ -617,7 +617,7 @@ We ablate the three domain-feature families one at a time. Because $R^2(F) \appr
 | $-$ temporal $-$ seasonal | `N/A` | `N/A` | `N/A` | `N/A` |
 | Raw only ($F$) | 0.9963 | 0.9990 | 0.9996 | 0.9997 |
 
-**Table 4. Component-level ablation under chronological split.** `N/A (see results files)`
+**Table 4. Component-level ablation under chronological split.** `—`
 
 | Configuration | XGBoost $R^2$ | LightGBM $R^2$ | CatBoost $R^2$ | RF $R^2$ |
 |---------------|---------------|-----------------|-----------------|----------|
@@ -638,7 +638,7 @@ $$
 
 with the magnitude graded as *high* ($E > 0.5$), *medium* ($0.2 \leq E \leq 0.5$), or *low* ($E < 0.2$).
 
-**Table 5. Parameter sensitivity (XGBoost, domain feature set).** `N/A (see results files)`
+**Table 5. Parameter sensitivity (XGBoost, domain feature set).** `—`
 
 | Parameter | Range tested | Best value | Elasticity $E$ | Grade |
 |-----------|--------------|------------|----------------|-------|
@@ -646,7 +646,7 @@ with the magnitude graded as *high* ($E > 0.5$), *medium* ($0.2 \leq E \leq 0.5$
 | Max depth $k$ | `3--10` | `6` | `0.02` | `Low` |
 | Num. estimators $T$ | `100--1000` | `300` | `0.01` | `Low` |
 
-`N/A (see results files)`
+`—`
 
 **Interpretation framework.** Because $R^2(F) \approx 1$ already, we expect *low* elasticity for all hyperparameters in the random-split regime: the model is saturating and hyperparameter changes move $R^2$ only within the tiny headroom $1 - R^2 \approx 10^{-3}$. Under the chronological split, we expect higher elasticity, because the model is no longer coasting on the physical-redundancy channel.
 
@@ -654,7 +654,7 @@ with the magnitude graded as *high* ($E > 0.5$), *medium* ($0.2 \leq E \leq 0.5$
 
 **Multi-seed experiments.** We run each model with at least 5 random seeds and report the mean, standard deviation, and 95% confidence interval of $R^2$.
 
-**Table 6. Multi-seed $R^2$ (5 seeds, random split, domain features).** `N/A (see results files)`
+**Table 6. Multi-seed $R^2$ (5 seeds, random split, domain features).** `—`
 
 | Model | Mean $R^2$ | Std. dev. | 95% CI (lower) | 95% CI (upper) |
 |-------|------------|-----------|-----------------|-----------------|
@@ -665,7 +665,7 @@ with the magnitude graded as *high* ($E > 0.5$), *medium* ($0.2 \leq E \leq 0.5$
 
 **Significance tests.** For the comparison of raw vs. domain features, we use a paired $t$-test across the 5 seeds. For the ablation, we use one-way ANOVA with Bonferroni correction. For the split-protocol comparison, we use the Wilcoxon signed-rank test.
 
-**Table 7. Statistical tests.** `N/A (see results files)`
+**Table 7. Statistical tests.** `—`
 
 | Test | Method | Statistic | dof | $p$-value | Effect size |
 |------|--------|-----------|-----|-----------|-------------|
@@ -674,7 +674,7 @@ with the magnitude graded as *high* ($E > 0.5$), *medium* ($0.2 \leq E \leq 0.5$
 | Family ablation (4 configs) | One-way ANOVA | `N/A` | `N/A` | `N/A` | `N/A` ($\eta^2$) |
 | Random vs. Chrono split | Wilcoxon signed-rank | `N/A` | — | `N/A` | `N/A` ($r$) |
 
-`N/A (see results files)`
+`—`
 
 ### 3.7 Robustness Analysis
 
@@ -682,15 +682,15 @@ We assess robustness along three axes.
 
 **Distribution drift.** We evaluate on a held-out year (2010) after training on 2006-2009, and we partition the test year by season to measure seasonal drift.
 
-`N/A (see results files)`
+`—`
 
 **Noise injection.** We add Gaussian noise to the test features at several signal-to-noise ratios and measure the $R^2$ degradation.
 
-`N/A (see results files)`
+`—`
 
 **Missing-feature robustness.** We randomly mask a fraction of test features (5%, 10%, 20%) and measure the $R^2$ degradation, which tests the model's reliance on the physical-redundancy channel.
 
-`N/A (see results files)`
+`—`
 
 ### 3.8 Synthesis: Theoretical Predictions vs. Empirical Observations
 
@@ -735,7 +735,7 @@ We illustrate the framework on a realistic household demand-response scenario.
 
 **Application of the framework.** The operator runs Algorithm 1 and observes: (a) $R^2 \approx 0.999$ on the random split, (b) $R^2$ drops sharply when `global_intensity` is removed (physical redundancy) and when the split is made chronological (temporal leakage). The operator concludes that the headline $R^2$ is leakage-inflated and switches to a chronological-split protocol and to a feature set excluding the current-minute current (keeping only lagged load, voltage, and sub-metering). The resulting, honest $R^2$ is substantially lower but is a trustworthy basis for battery scheduling.
 
-`N/A (see results files)`
+`—`
 
 **Deployment constraints.**
 

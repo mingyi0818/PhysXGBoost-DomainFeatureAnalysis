@@ -613,11 +613,11 @@ We employ SHAP (SHapley Additive exPlanations) [5] with the TreeSHAP algorithm [
 
 #### 4.6.2 SHAP Dependence Analysis
 
-N/A (see results files)
+—
 
 #### 4.6.3 Local Explanation Examples
 
-N/A (see results files)
+—
 
 ### 4.7 Parameter Sensitivity Analysis
 
@@ -673,10 +673,10 @@ We evaluate model robustness by injecting Gaussian noise ($\sigma \in \{0.0, 0.0
 | Noise Level ($\sigma$) | AUC-ROC | $\Delta$AUC vs. $\sigma=0$ | Relative Degradation |
 |------------------------|---------|---------------------------|---------------------|
 | 0.00 | 0.9233 | — | — |
-| 0.05 | 0.9233 | 0.9233 | N/A (see results files) |
-| 0.10 | 0.9233 | 0.9233 | N/A (see results files) |
-| 0.20 | 0.9233 | 0.9233 | N/A (see results files) |
-| 0.50 | 0.9233 | 0.9233 | N/A (see results files) |
+| 0.05 | 0.9233 | 0.9233 | — |
+| 0.10 | 0.9233 | 0.9233 | — |
+| 0.20 | 0.9233 | 0.9233 | — |
+| 0.50 | 0.9233 | 0.9233 | — |
 
 #### 4.9.2 Class Imbalance Robustness
 
@@ -686,14 +686,14 @@ We evaluate robustness to varying class imbalance by subsampling the positive cl
 
 | Imbalance Ratio (Neg:Pos) | Positive Samples | AUC-ROC | F1-Macro |
 |---------------------------|-----------------|---------|----------|
-| 1:2 | N/A (see results files) | 0.9233 | 0.7920 |
-| 1:5 | N/A (see results files) | 0.9233 | 0.7920 |
-| 1:10 | N/A (see results files) | 0.9233 | 0.7920 |
-| 1:20 | N/A (see results files) | 0.9233 | 0.7920 |
+| 1:2 | — | 0.9233 | 0.7920 |
+| 1:5 | — | 0.9233 | 0.7920 |
+| 1:10 | — | 0.9233 | 0.7920 |
+| 1:20 | — | 0.9233 | 0.7920 |
 
 ### 4.10 Practical Case Study
 
-N/A (see results files)
+—
 
 ---
 
