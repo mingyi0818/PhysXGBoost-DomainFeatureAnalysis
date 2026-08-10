@@ -1,0 +1,104 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+dist/
+build/
+
+# Large data files (>50MB) - use download scripts instead
+*.npy
+*.pth
+*.ckpt
+# Keep small CSVs for reproducibility, exclude large ones
+44_Energy_Anomaly/data/processed/
+44_Energy_Anomaly/checkpoints/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Temporary
+*.tmp
+*.bak
+*.log
+
+# Large external datasets (not part of the research)
+ALANA/
+EuroCrops/
+Agricultural-SandboxNL/
+climate-travel-dataset/
+coffee-quality-database/
+codestacker-frontend-visit-oman/
+dataset/
+eurocropsml/
+field_dataset_survey/
+maldives-travel-data/
+rural-facilities-pmgsy/
+smart-agriculture-datasets/
+QuadABSA-TourismDataset/
+Smart-tourist-guide/
+NewDatasets/
+backup/
+checkpoints/
+# Root-level results (from earlier projects, not part of this research)
+/results/
+
+# Earlier project directories (01-43)
+01_Tabular_Framework/
+02_HSIC_FDANet/
+03_Imbalanced_Learning/
+04_Time_Series_Framework/
+05_Agriculture_Fusion/
+06_Tourism_Prediction/
+07_Tabular_FewShot/
+08_Agriculture_FewShot/
+09_AI_Tourism_Forecast/
+10_Tourism_ABSA/
+12_Student_Dropout/
+14_Tabular_Anomaly/
+15_Hotel_Cancellation/
+16_Hotel_Sentiment_Topic/
+17_Evidence_Rainfall/
+18_CrossRegion_Energy/
+19_MultiScale_Power/
+20_Fraud_SelfSupervised/
+21_Contrastive_Churn/
+22_Graph_Purchase/
+23_Ensemble_Imbalanced/
+24_FeatureInteraction_House/
+25_FewShot_Weed/
+26_Lightweight_EuroSAT/
+27_AdaptiveIntrusion/
+29_Fairness_Tabular/
+30_STGCN_PM25/
+35_Federated_Tabular/
+36_Interpretable_Tabular/
+37_GenAug_Tabular/
+38_AdaptiveAttention_Rain/
+39_Phishing_URL/
+40_Tabular_FeatureSelection/
+41_Carbon_Emission/
+42_Probabilistic_TS/
+43_Tourism_Recommend/
+45_PM25_PhysXGBoost/
+66_NYC_Taxi_DomainFeat/
+JX01_Teaching_Research_1/
+JX02_Teaching_Research_2/
+
+# Large data files (use download scripts instead)
+56_PowerConsumption/data/power.csv
+59_NYCProperty/data/nyc_property_sales.csv
+50_BuildingEnergy/data/energy.csv
+63_HotelBooking/data/hotel.csv
+48_CreditDefault/data/credit_default.csv
+49_Superconductor/data/superconductor.csv

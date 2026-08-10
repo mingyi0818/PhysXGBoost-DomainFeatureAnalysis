@@ -1,0 +1,168 @@
+{
+  "shap_ranking": [
+    {
+      "rank": 1,
+      "feature": "GROSS SQUARE FEET",
+      "shap_value": 0.2330961525440216,
+      "category": "Raw"
+    },
+    {
+      "rank": 2,
+      "feature": "TOTAL UNITS",
+      "shap_value": 0.14784687757492065,
+      "category": "Raw"
+    },
+    {
+      "rank": 3,
+      "feature": "BOROUGH",
+      "shap_value": 0.11783155053853989,
+      "category": "Raw"
+    },
+    {
+      "rank": 4,
+      "feature": "is_brooklyn",
+      "shap_value": 0.09382563829421997,
+      "category": "Location"
+    },
+    {
+      "rank": 5,
+      "feature": "ZIP CODE",
+      "shap_value": 0.05996786430478096,
+      "category": "Raw"
+    },
+    {
+      "rank": 6,
+      "feature": "YEAR BUILT",
+      "shap_value": 0.04202168062329292,
+      "category": "Raw"
+    },
+    {
+      "rank": 7,
+      "feature": "BLOCK",
+      "shap_value": 0.03453764691948891,
+      "category": "Raw"
+    },
+    {
+      "rank": 8,
+      "feature": "unit_density",
+      "shap_value": 0.03252033144235611,
+      "category": "Building"
+    },
+    {
+      "rank": 9,
+      "feature": "LAND SQUARE FEET",
+      "shap_value": 0.02939600683748722,
+      "category": "Raw"
+    },
+    {
+      "rank": 10,
+      "feature": "block_lot_ratio",
+      "shap_value": 0.028896234929561615,
+      "category": "Temporal"
+    },
+    {
+      "rank": 11,
+      "feature": "residential_ratio",
+      "shap_value": 0.024330010637640953,
+      "category": "Market"
+    },
+    {
+      "rank": 12,
+      "feature": "RESIDENTIAL UNITS",
+      "shap_value": 0.02175666205585003,
+      "category": "Raw"
+    },
+    {
+      "rank": 13,
+      "feature": "BUILDING CLASS CATEGORY",
+      "shap_value": 0.0217167679220438,
+      "category": "Raw"
+    },
+    {
+      "rank": 14,
+      "feature": "commercial_ratio",
+      "shap_value": 0.019793501123785973,
+      "category": "Market"
+    },
+    {
+      "rank": 15,
+      "feature": "is_queens",
+      "shap_value": 0.01777392439544201,
+      "category": "Location"
+    }
+  ],
+  "saturation_table": [
+    {
+      "feature": "Raw features",
+      "r2": 0.6553882373151029,
+      "delta_r2": 0,
+      "bound": 1,
+      "utilization": 0
+    },
+    {
+      "feature": "is_brooklyn",
+      "r2": 0.6641373945479346,
+      "delta_r2": 0.008749157232831761,
+      "bound": 0.3446117626848971,
+      "utilization": 2.538844630452076
+    },
+    {
+      "feature": "residential_ratio",
+      "r2": 0.6711712381875808,
+      "delta_r2": 0.007033843639646209,
+      "bound": 0.33586260545206537,
+      "utilization": 2.094262214806193
+    },
+    {
+      "feature": "block_lot_ratio",
+      "r2": 0.678014745976947,
+      "delta_r2": 0.0068435077893661544,
+      "bound": 0.32882876181241916,
+      "utilization": 2.0811767655744307
+    },
+    {
+      "feature": "is_bronx",
+      "r2": 0.6839852349514083,
+      "delta_r2": 0.0059704889744612855,
+      "bound": 0.321985254023053,
+      "utilization": 1.8542740389079493
+    },
+    {
+      "feature": "building_age",
+      "r2": 0.6893908902529284,
+      "delta_r2": 0.005405655301520151,
+      "bound": 0.3160147650485917,
+      "utilization": 1.7105704857458024
+    },
+    {
+      "feature": "building_age_squared",
+      "r2": 0.6947965455544486,
+      "delta_r2": 0.005405655301520151,
+      "bound": 0.31060910974707157,
+      "utilization": 1.740340232107798
+    },
+    {
+      "feature": "is_pre_war",
+      "r2": 0.7002022008559687,
+      "delta_r2": 0.005405655301520151,
+      "bound": 0.3052034544455514,
+      "utilization": 1.7711645208408102
+    },
+    {
+      "feature": "is_new_construction",
+      "r2": 0.7056078561574889,
+      "delta_r2": 0.005405655301520151,
+      "bound": 0.29979779914403126,
+      "utilization": 1.80310039531782
+    },
+    {
+      "feature": "is_manhattan",
+      "r2": 0.711013511459009,
+      "delta_r2": 0.005405655301520151,
+      "bound": 0.2943921438425111,
+      "utilization": 1.8362090886542055
+    }
+  ],
+  "raw_r2": 0.6553882373151029,
+  "domain_r2": 0.6591938175349379
+}
