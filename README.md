@@ -276,7 +276,7 @@ All datasets are publicly available from the UCI Machine Learning Repository or 
 
 - All experimental results are stored in `results/` directories as JSON/CSV files.
 - Every number in the paper drafts can be traced to a specific result file field.
-- Negative results (e.g., `54_NewsPopularity`: R-squared approx 0) and data-leakage investigations (e.g., `56_PowerConsumption`, `64_FlightDelay`) are reported honestly.
+- Negative results (e.g., `54_NewsPopularity`) and data-leakage investigations (e.g., `56_PowerConsumption`, `64_FlightDelay`) are reported honestly.
 - No data has been fabricated or manipulated.
 - Reviewers can reproduce all experiments by following each direction's `reproduce.md`.
 
