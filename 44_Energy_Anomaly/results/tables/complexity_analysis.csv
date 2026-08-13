@@ -1,5 +1,0 @@
-model,params,inference_time_ms
-TCR-AD,412067,2.0022
-AE,148416,0.0951
-VAE,156672,0.1567
-DAGMM,149119,0.1965
