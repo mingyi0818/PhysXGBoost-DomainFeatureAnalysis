@@ -24,14 +24,14 @@ The repository contains 19 research directions, each in its own numbered directo
 |---|-----------|---------|------|----------------------|-------------|
 | 1 | `44_Energy_Anomaly` | SGCC Electricity Theft | Classification (Anomaly) | Temporal contrastive reconstruction features | TCR-AD deep model for electricity-theft detection |
 | 2 | `46_FlightDelay_PhysXGBoost` | Bank Marketing | Classification | Financial-behavior domain features | Domain features show minimal gain |
-| 3 | `47_OnlineShoppers` | Online Shoppers Intention | Classification | Browsing-behavior domain features | AUC 0.923-0.930; minimal domain feature gain |
+| 3 | `47_OnlineShoppers` | Online Shoppers Intention | Classification | Browsing-behavior domain features | minimal domain feature gain |
 | 4 | `48_CreditDefault` | Credit Card Default | Classification | Credit-risk domain features | Zero gain - information saturation |
 | 5 | `49_Superconductor` | Superconductivity | Regression | Material-science domain features | Domain features improve R-squared |
 | 6 | `50_BuildingEnergy` | Building Energy Efficiency | Regression | Thermodynamic domain features | Energy prediction with domain features |
-| 7 | `51_GasTurbine` | Gas Turbine CO/NOx Emission | Regression | Thermodynamic domain features (pressure ratios, air density, combustion efficiency) | XGBoost+Domain R-squared = 0.8791 |
+| 7 | `51_GasTurbine` | Gas Turbine CO/NOx Emission | Regression | Thermodynamic domain features (pressure ratios, air density, combustion efficiency) | domain features improve R-squared |
 | 8 | `52_CCPP` | Combined Cycle Power Plant | Regression | Thermodynamic domain features | Thermodynamic feature analysis |
 | 9 | `53_BikeSharing` | Bike Sharing | Regression | Transportation domain features | Temporal and weather-derived features |
-| 10 | `54_NewsPopularity` | Online News Popularity | Regression | Content and social domain features | Negative result - R-squared approx 0 |
+| 10 | `54_NewsPopularity` | Online News Popularity | Regression | Content and social domain features | Negative result - no measurable improvement |
 | 11 | `55_CalHousing` | California Housing | Regression | Real-estate domain features | Spatial and economic derived features |
 | 12 | `56_PowerConsumption` | Household Power Consumption | Regression | Time-series domain features | Data-leakage investigation |
 | 13 | `58_CDNOW` | CDNOW | Classification | Customer-lifetime-value features | RFM and purchase-pattern features |
